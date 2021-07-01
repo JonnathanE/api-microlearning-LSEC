@@ -1,0 +1,11 @@
+# environment variables
+.env
+
+# node mofules
+node_modules
+
+# ejecution
+build
+
+# configuración de editor de texto
+.vscode
