@@ -2,12 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const controllersFactory = require('../controllers/controllersFactory');
-const User = require('../controllers/user.controller');
-const userController = new User();
 
-// const factory = new controllersFactory();
-// const user = factory.factory('user')
+const factory = new controllersFactory();
+const user = factory.getController('user');
 
-router.get('/', userController.signup);
+router.get('/', user.signup);
 
 module.exports=router;
