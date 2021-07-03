@@ -1,13 +1,9 @@
 const User = require('../controllers/user.controller');
-
-
-
+const Module = require('../controllers/module.controller');
 class controllersFactory {
-    factory = (option) => {
-        if (option === 'user') {
-            const user = new User();
-            return user;
-        }
+    getController = (option) => {
+        if (option === 'user') return new User();
+        if (option === 'module') return new Module;
     }
 }
 

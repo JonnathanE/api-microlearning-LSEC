@@ -17,6 +17,7 @@ app.use(cors());
 
 // Routes
 app.use('/api/user', require('../routes/user.routes'));
+app.use('/api/module', require('../routes/module.routes'));
 app.use('/', (req, res) => {
     res.send('Hola desde el servidor proyecto Microlearning LSEC');
 });
