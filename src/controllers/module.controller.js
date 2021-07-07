@@ -17,6 +17,22 @@ class Module {
             res.status(200).json(data);
         });
     }
+
+    remove = async (req, res) => {
+        let module = req.module;
+        module.remove((err, data) => {
+            if (err) return res.status(400).json({ error: errorHandler(err) });
+            res.status(200).json({ message: 'Modulo eliminado correctamente' });
+        });
+    }
+
+    byId = async (req, res, next, id) => {
+        await Modules.findById(id).exec((err, data) => {
+            if (err || !data) return res.status(400).json({ error: 'El modulo no se encontró o no existe' });
+            req.module = data;
+            next();
+        });
+    }
 }
 
 module.exports = Module;
