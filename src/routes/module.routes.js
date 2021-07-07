@@ -10,6 +10,8 @@ const ml = factory.getController('module');
 router.post('/', [verifyToken, isAdmin], ml.create);
 // get all modules
 router.get('/', ml.getAll);
+// update module
+router.put('/:moduleId', [verifyToken, isAdmin], ml.update);
 // delete module
 router.delete('/:moduleId', [verifyToken, isAdmin], ml.remove);
 

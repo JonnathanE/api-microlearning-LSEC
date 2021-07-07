@@ -26,6 +26,17 @@ class Module {
         });
     }
 
+    update = async (req, res) => {
+        const { number, name } = req.body;
+        let module = req.module;
+        module.number = number;
+        module.name = name;
+        module.save((err, data) => {
+            if (err) return res.status(400).json({ error: errorHandler(err) });
+            res.status(200).json({ message: 'Modulo actualizado correctamente' });
+        });
+    }
+
     byId = async (req, res, next, id) => {
         await Modules.findById(id).exec((err, data) => {
             if (err || !data) return res.status(400).json({ error: 'El modulo no se encontró o no existe' });
