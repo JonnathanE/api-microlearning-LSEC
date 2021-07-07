@@ -8,5 +8,7 @@ const ml = factory.getController('module');
 
 // create module
 router.post('/', [verifyToken, isAdmin], ml.create);
+// get all modules
+router.get('/', ml.getAll);
 
 module.exports = router;
