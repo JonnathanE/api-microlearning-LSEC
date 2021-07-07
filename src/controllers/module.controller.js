@@ -18,6 +18,10 @@ class Module {
         });
     }
 
+    getById = async (req, res) => {
+        return res.status(200).json(req.module);
+    }
+
     remove = async (req, res) => {
         let module = req.module;
         module.remove((err, data) => {
