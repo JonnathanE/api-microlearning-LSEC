@@ -5,7 +5,7 @@ const Role = require('../models/Role');
 exports.verifyToken = async (req, res, next) => {
     try {
         // extract token from http header
-        const bearerHeader = req.headers['Authorization'];
+        const bearerHeader = req.headers['authorization'];
         if (!bearerHeader) return res.status(403).json({ message: 'No se proporcionó token' });
         // I separate the Bearer from the Token
         const bearer = bearerHeader.split(' ');
