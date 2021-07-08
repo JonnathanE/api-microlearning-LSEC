@@ -15,6 +15,8 @@ router.get('/', lesson.getAll);
 router.get('/:lessonId', lesson.getById);
 // get icon
 router.get('/icon/:lessonId', lessonIcon)
+// update name and module of lesson
+router.put('/:lessonId', lesson.update);
 // delete module
 router.delete('/:lessonId', lesson.remove);
 

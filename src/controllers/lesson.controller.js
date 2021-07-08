@@ -60,7 +60,16 @@ class Lesson {
         });
     }
 
-    update = () => { }
+    update = (req, res) => {
+        const { name, module } = req.body;
+        let lesson = req.lesson;
+        lesson.name = name;
+        lesson.module = module;
+        lesson.save((err, data) => {
+            if (err) return res.status(400).json({ error: errorHandler(err) });
+            res.status(200).json({ message: 'Lección actualizado correctamente' });
+        });
+    }
 
     byId = async (req, res, next, id) => {
         await Lessons.findById(id)
