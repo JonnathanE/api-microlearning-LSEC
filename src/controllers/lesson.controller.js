@@ -47,7 +47,10 @@ class Lesson {
             });
     }
 
-    getById = () => { }
+    getById = (req, res) => {
+        req.lesson.icon = undefined;
+        return res.status(200).json(req.lesson);
+    }
 
     remove = (req, res) => {
         let lesson = req.lesson;
