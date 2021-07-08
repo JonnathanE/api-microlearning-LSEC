@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const controllersFactory = require('../controllers/controllersFactory');
 const { verifyToken, isAdmin, isModerator } = require('../middlewares/authJwt');
+const { lessonIcon } = require('../controllers/images.controller');
 
 const factory = new controllersFactory();
 const lesson = factory.getController('lesson');
@@ -10,6 +11,8 @@ const lesson = factory.getController('lesson');
 router.post('/', lesson.create);
 // get the whole lesson without the icon
 router.get('/', lesson.getAll);
+// get icon
+router.get('/icon/:lessonId', lessonIcon)
 // delete module
 router.delete('/:lessonId', lesson.remove);
 
