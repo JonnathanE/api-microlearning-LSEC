@@ -11,14 +11,14 @@ class Lesson {
         let form = new formidable.IncomingForm();
         form.keepExtensions = true;
         form.parse(req, async (err, fields, files) => {
-            if (err) return res.status(400).json({ error: "Image could not be uploaded" });
+            if (err) return res.status(400).json({ error: "No se pudo cargar la imagen" });
 
-            const { name, module} = fields;
+            const { name, module } = fields;
             let lesson = new Lessons(fields);
 
             if (files.icon) {
                 if (files.icon.size > 1000000) {
-                    return res.status(400).json({ error: "Image should be less than 1MB in size" });
+                    return res.status(400).json({ error: "La imagen debe tener un tamaño inferior a 1 MB." });
                 }
                 lesson.icon.data = fs.readFileSync(files.icon.path);
                 lesson.icon.contentType = files.icon.type;
@@ -31,7 +31,21 @@ class Lesson {
         });
     }
 
-    getAll = () => { }
+    getAll = async (req, res) => {
+        let order = req.query.order ? req.query.order : 'asc'; // variable to sort the results; ascending by default
+        let sortBy = req.query.sortBy ? req.query.sortBy : 'name'; // filter
+
+        await Lessons.find()
+            .select("-icon")
+            .populate("module")
+            .sort([[sortBy, order]])
+            .exec((err, lesson) => {
+                if (err) {
+                    return res.status(400).json({ error: "Lecciones no encontrados" });
+                }
+                res.json(lesson);
+            });
+    }
 
     getById = () => { }
 
