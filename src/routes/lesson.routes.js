@@ -10,6 +10,10 @@ const lesson = factory.getController('lesson');
 router.post('/', lesson.create);
 // get the whole lesson without the icon
 router.get('/', lesson.getAll);
+// delete module
+router.delete('/:lessonId', lesson.remove);
 
+// method to obtain the parameter
+router.param('lessonId', lesson.byId);
 
 module.exports = router;

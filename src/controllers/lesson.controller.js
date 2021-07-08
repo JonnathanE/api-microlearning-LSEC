@@ -49,11 +49,27 @@ class Lesson {
 
     getById = () => { }
 
-    remove = () => { }
+    remove = (req, res) => {
+        let lesson = req.lesson;
+        lesson.remove((err, deleteLesson) => {
+            if (err) return res.status(400).json({ error: errorHandler(err) });
+            res.json({ message: "La lección se eliminó con éxito" });
+        });
+    }
 
     update = () => { }
 
-    byId = () => { }
+    byId = async (req, res, next, id) => {
+        await Lessons.findById(id)
+            .populate("module")
+            .exec((err, lesson) => {
+                if (err || !lesson) {
+                    return res.json({ error: "La lección no se encontró o no existe" });
+                }
+                req.lesson = lesson;
+                next();
+            });
+    }
 }
 
 module.exports = Lesson;
