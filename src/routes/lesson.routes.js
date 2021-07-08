@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const controllersFactory = require('../controllers/controllersFactory');
 const { verifyToken, isAdmin, isModerator } = require('../middlewares/authJwt');
-const { lessonIcon } = require('../controllers/images.controller');
+const { lessonIcon, updateLessonIcon } = require('../controllers/images.controller');
 
 const factory = new controllersFactory();
 const lesson = factory.getController('lesson');
@@ -17,6 +17,8 @@ router.get('/:lessonId', lesson.getById);
 router.get('/icon/:lessonId', lessonIcon)
 // update name and module of lesson
 router.put('/:lessonId', lesson.update);
+// update lesson icon
+router.put('/icon/update/:lessonId', updateLessonIcon);
 // delete module
 router.delete('/:lessonId', lesson.remove);
 
