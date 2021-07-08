@@ -6,5 +6,7 @@ const { checkRolesExisted, checkDuplicateUsernameOrEmail } = require('../middlew
 const auth = new AuthController();
 
 router.post('/signup', [checkDuplicateUsernameOrEmail, checkRolesExisted], auth.signup);
+router.post('/signin', auth.sigin);
+router.post('/signout', auth.signout);
 
 module.exports = router;
