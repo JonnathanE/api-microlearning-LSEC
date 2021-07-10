@@ -3,6 +3,7 @@ const _ = require('lodash');
 const fs = require('fs');
 
 const Lessons = require('../models/Lesson');
+const Microlearning = require('../models/Microlearning');
 const { errorHandler } = require('../helpers/dberrorHandler');
 
 exports.lessonIcon = (req, res, next) => {
@@ -34,4 +35,12 @@ exports.updateLessonIcon = (req, res) => {
             res.json(result);
         });
     });
+}
+
+exports.microlearningImage = (req, res, next) => {
+    if (req.microlearning.image.data) {
+        res.set('Content-Type', req.microlearning.image.contentType);
+        return res.send(req.microlearning.image.data);
+    }
+    next();
 }

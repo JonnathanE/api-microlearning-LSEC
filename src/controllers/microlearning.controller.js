@@ -57,6 +57,14 @@ class Microlearning {
         return res.status(200).json(req.microlearning);
     }
 
+    remove = (req, res) => {
+        let microlearning = req.microlearning;
+        microlearning.remove((err, deleteMicro) => {
+            if (err) return res.status(400).json({ error: errorHandler(err) });
+            res.status(200).json({ message: 'El microcontenido se eliminó con éxito' })
+        });
+    }
+
     byId = async (req, res, next, id) => {
         await Micro.findById(id)
             .exec((err, micro) => {
@@ -64,14 +72,6 @@ class Microlearning {
                 req.microlearning = micro;
                 next();
             });
-    }
-
-    remove = (req, res) => {
-        let microlearning = req.microlearning;
-        microlearning.remove((err, deleteMicro) => {
-            if (err) return res.status(400).json({ error: errorHandler(err) });
-            res.status(200).json({ message: 'El microcontenido se eliminó con éxito' })
-        });
     }
 }
 
