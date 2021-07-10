@@ -14,7 +14,7 @@ router.get('/', lesson.getAll);
 // get lesson by id without icon
 router.get('/:lessonId', lesson.getById);
 // get icon
-router.get('/icon/:lessonId', lessonIcon)
+router.get('/icon/:lessonId', lessonIcon);
 // update name and module of lesson
 router.put('/:lessonId', [verifyToken, isAdmin],lesson.update);
 // update lesson icon

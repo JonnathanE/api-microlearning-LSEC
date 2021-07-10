@@ -50,6 +50,21 @@ class Microlearning {
                 res.status(200).json(micro);
             });
     }
+
+    getById = (req, res) => {
+        req.microlearning.image = undefined;
+        req.microlearning.gif = undefined;
+        return res.status(200).json(req.microlearning);
+    }
+
+    byId = async (req, res, next, id) => {
+        await Micro.findById(id)
+            .exec((err, micro) => {
+                if (err || !micro) return res.status(400).json({ err: 'El microcontenido no se encontró o no existe' });
+                req.microlearning = micro;
+                next();
+            });
+    }
 }
 
 module.exports = Microlearning;

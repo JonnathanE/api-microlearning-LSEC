@@ -10,5 +10,10 @@ const micro = factory.getController('microlearning');
 router.post('/', micro.create);
 // get the whole microlearning without the image and gif
 router.get('/', micro.getAll);
+// get microlearning by id without image and gif
+router.get('/:microId', micro.getById);
+
+// method to obtain the parameter
+router.param('microId', micro.byId);
 
 module.exports = router;
