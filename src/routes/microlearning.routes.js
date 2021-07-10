@@ -12,6 +12,8 @@ router.post('/', micro.create);
 router.get('/', micro.getAll);
 // get microlearning by id without image and gif
 router.get('/:microId', micro.getById);
+// delete microlearning
+router.delete('/:microId', micro.remove);
 
 // method to obtain the parameter
 router.param('microId', micro.byId);

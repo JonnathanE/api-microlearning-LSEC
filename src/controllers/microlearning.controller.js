@@ -65,6 +65,14 @@ class Microlearning {
                 next();
             });
     }
+
+    remove = (req, res) => {
+        let microlearning = req.microlearning;
+        microlearning.remove((err, deleteMicro) => {
+            if (err) return res.status(400).json({ error: errorHandler(err) });
+            res.status(200).json({ message: 'El microcontenido se eliminó con éxito' })
+        });
+    }
 }
 
 module.exports = Microlearning;
