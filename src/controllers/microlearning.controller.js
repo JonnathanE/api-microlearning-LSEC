@@ -24,10 +24,10 @@ class Microlearning {
             }
 
             if (files.gif) {
-                if (files.image.size > 9000000) {
+                if (files.gif.size > 9000000) {
                     return res.status(400).json({ error: 'El GIF debe tener un tamaño inferior a 9 MB.' });
                 }
-                micro.gif.data = fs.readFileSync(files.image.path);
+                micro.gif.data = fs.readFileSync(files.gif.path);
                 micro.gif.contentType = files.gif.type;
             }
 

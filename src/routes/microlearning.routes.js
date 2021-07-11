@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const controllersFactory = require('../controllers/controllersFactory');
 const { verifyToken, isAdmin, isModerator } = require('../middlewares/authJwt');
-const { microlearningImage } = require('../controllers/images.controller');
+const { microlearningImage, microlearningGif } = require('../controllers/images.controller');
 
 const factory = new controllersFactory();
 const micro = factory.getController('microlearning');
@@ -18,6 +18,8 @@ router.delete('/:microId', micro.remove);
 
 // get image
 router.get('/image/:microId', microlearningImage);
+// get gif
+router.get('/gif/:microId', microlearningGif);
 
 // method to obtain the parameter
 router.param('microId', micro.byId);

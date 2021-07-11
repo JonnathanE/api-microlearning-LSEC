@@ -44,3 +44,11 @@ exports.microlearningImage = (req, res, next) => {
     }
     next();
 }
+
+exports.microlearningGif = (req, res, next) => {
+    if (req.microlearning.gif.data) {
+        res.set('Content-Type', req.microlearning.gif.contentType);
+        return res.send(req.microlearning.gif.data);
+    }
+    next();
+}
