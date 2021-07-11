@@ -15,6 +15,8 @@ router.get('/', micro.getAll);
 router.get('/:microId', micro.getById);
 // delete microlearning
 router.delete('/:microId', micro.remove);
+// update title and lesson of mucrolearnig
+router.put('/:microId', micro.update);
 
 // get image
 router.get('/image/:microId', microlearningImage);
