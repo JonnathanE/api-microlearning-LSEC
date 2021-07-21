@@ -12,7 +12,7 @@ class Module {
     }
 
     getAll = async (req, res) => {
-        await Modules.find().exec((err, data) => {
+        await Modules.find().sort({number: 1}).exec((err, data) => {
             if (err) return res.status(400).json({ error: errorHandler(err) });
             res.status(200).json(data);
         });

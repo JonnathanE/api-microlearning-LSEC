@@ -25,7 +25,7 @@ class Lesson {
             }
 
             await lesson.save((err, result) => {
-                if (err) return res.starus(400).json({ error: errorHandler(err) });
+                if (err) return res.status(400).json({ error: errorHandler(err) });
                 res.json(result);
             });
         });
