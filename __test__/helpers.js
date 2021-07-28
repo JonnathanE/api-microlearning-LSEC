@@ -19,3 +19,19 @@ exports.signInStudent = {
     email: 'damian@unl.edu.ec',
     password: '123'
 }
+
+exports.adminUser = {
+    "name": "admin",
+    "email": "admin@test.com",
+    "password": "123",
+    "roles": [
+        "student",
+        "admin",
+        "moderator"
+    ]
+}
+
+exports.singnInAdminUser = {
+    "email": "admin@test.com",
+    "password": "123",
+}
