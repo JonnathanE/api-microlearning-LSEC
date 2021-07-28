@@ -6,7 +6,7 @@ exports.verifyToken = async (req, res, next) => {
     try {
         // extract token from http header
         const bearerHeader = req.headers['authorization'];
-        if (!bearerHeader) return res.status(403).json({ message: 'No se proporcionó token' });
+        if (!bearerHeader) return res.status(403).json({ error: 'No se proporcionó token' });
         // I separate the Bearer from the Token
         const bearer = bearerHeader.split(' ');
         const token = bearer[1];
@@ -15,7 +15,7 @@ exports.verifyToken = async (req, res, next) => {
         req.userId = decoded._id;
         // we check if the user exists with the user id extracted from the token
         const user = await User.findById(req.userId, { password: 0 });
-        if (!user) return res.status(404).json({ message: 'Ningún usuario encontrado' });
+        if (!user) return res.status(404).json({ error: 'Ningún usuario encontrado' });
 
         next();
     } catch (error) {
@@ -44,5 +44,5 @@ exports.isAdmin = async (req, res, next) => {
             return;
         }
     }
-    return res.status(403).json({ message: 'Requiere rol de administrador' });
+    return res.status(403).json({ error: 'Requiere rol de administrador' });
 }
