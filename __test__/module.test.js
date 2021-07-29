@@ -157,11 +157,6 @@ describe('POST /api/module', () => {
     });
 
     test('a module cannot be created if the token is not sent', async () => {
-        const adminLogin = await api
-            .post('/api/auth/signin')
-            .send(singnInAdminUser)
-            .expect(200)
-            .expect('Content-Type', /application\/json/)
         const newModule = {
             number: 3,
             name: "Modulo 3"
@@ -217,6 +212,117 @@ describe('GET /api/module/', () => {
         const response = await api.get('/api/module');
         const contents = response.body.map(module => module.number);
         expect(contents).toContain(1);
+    });
+});
+
+describe('PUT /api/module/', () => {
+
+    test('update a module with authenticated admin', async () => {
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const getModuleOne = await Module.findOne({name: initialModules[0].name});
+        const updateModule = {
+            name: 'Modulo 1',
+            number: 4
+        }
+        const response = await api
+            .put(`/api/module/${getModuleOne._id}`)
+            .send(updateModule)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(response.body.message).toBe('Modulo actualizado correctamente');
+    });
+
+    test('the module cannot be updated if the user is not admin', async () => {
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(signInStudent)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const getModuleOne = await Module.findOne({name: initialModules[0].name});
+        const updateModule = {
+            name: 'Modulo 1',
+            number: 1
+        }
+        const response = await api
+            .put(`/api/module/${getModuleOne._id}`)
+            .send(updateModule)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(403)
+        expect(response.body.error).toBe('Requiere rol de administrador');
+    });
+
+    test('the module cannot be updated if the token has been modified', async () => {
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const getModuleOne = await Module.findOne({name: initialModules[0].name});
+        const updateModule = {
+            name: 'Modulo 1',
+            number: 4
+        }
+        const response = await api
+            .put(`/api/module/${getModuleOne._id}`)
+            .send(updateModule)
+            .set('authorization', `Bearer ${adminLogin.body.token}modi`)
+            .expect('Content-Type', /application\/json/)
+            .expect(401)
+        expect(response.body.error).toBe('No autorizado');
+    });
+});
+
+describe('DELETE /api/module/', () => {
+
+    test('delete a module with authenticated admin', async () => {
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const deleteModule = await Module.findOne({name: initialModules[0].name});
+        const response = await api
+            .delete(`/api/module/${deleteModule._id}`)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(response.body.message).toBe('Modulo eliminado correctamente');
+    });
+
+    test('the module cannot be deleted if the user is not admin', async () => {
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(signInStudent)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const deleteModule = await Module.findOne({name: initialModules[0].name});
+        const response = await api
+            .put(`/api/module/${deleteModule._id}`)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(403)
+        expect(response.body.error).toBe('Requiere rol de administrador');
+    });
+
+    test('the module cannot be deleted if the token has been modified', async () => {
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const deleteModule = await Module.findOne({name: initialModules[0].name});
+        const response = await api
+            .put(`/api/module/${deleteModule._id}`)
+            .set('authorization', `Bearer ${adminLogin.body.token}modi`)
+            .expect('Content-Type', /application\/json/)
+            .expect(401)
+        expect(response.body.error).toBe('No autorizado');
     });
 });
 
