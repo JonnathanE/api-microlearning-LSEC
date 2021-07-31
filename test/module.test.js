@@ -278,6 +278,44 @@ describe('PUT /api/module/', () => {
             .expect(401)
         expect(response.body.error).toBe('No autorizado');
     });
+
+    test('update the module name', async () => {
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const getModuleOne = await Module.findOne({name: initialModules[0].name});
+        const updateModule = {
+            name: 'Modulo 137',
+        }
+        const response = await api
+            .put(`/api/module/${getModuleOne._id}`)
+            .send(updateModule)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(response.body.message).toBe('Modulo actualizado correctamente');
+    });
+
+    test('update the module number', async () => {
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const getModuleOne = await Module.findOne({name: initialModules[0].name});
+        const updateModule = {
+            number: 137,
+        }
+        const response = await api
+            .put(`/api/module/${getModuleOne._id}`)
+            .send(updateModule)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(response.body.message).toBe('Modulo actualizado correctamente');
+    });
 });
 
 describe('DELETE /api/module/', () => {
@@ -423,6 +461,104 @@ describe('GET /api/lesson', () => {
             .expect(400)
             .expect('Content-Type', /application\/json/)
         expect(response.body.error).toBe('La lección no se encontró o no existe');
+    });
+});
+
+describe('PUT /api/lesson/', () => {
+    test('update the parameter of the lesson name', async () => {
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const lessons = await api
+            .get('/api/lesson/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const updateLesson = {
+            name: 'Lesson 137',
+        }
+        const response = await api
+            .put(`/api/lesson/${lessons.body[0]._id}`)
+            .send(updateLesson)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(response.body.message).toBe('Lección actualizado correctamente');
+        const lessonsw = await api
+            .get('/api/lesson/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+    });
+
+    test('update the parameter of the lesson module', async () => {
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const lessons = await api
+            .get('/api/lesson/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const modules = await api
+            .get('/api/module/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const updateLesson = {
+            module: modules.body[0]._id
+        }
+        const response = await api
+            .put(`/api/lesson/${lessons.body[0]._id}`)
+            .send(updateLesson)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(response.body.message).toBe('Lección actualizado correctamente');
+    });
+
+    test('update name and module of the lesson', async () => {
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const lessons = await api
+            .get('/api/lesson/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const modules = await api
+            .get('/api/module/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const updateLesson = {
+            name: '137',
+            module: modules.body[0]._id
+        }
+        const response = await api
+            .put(`/api/lesson/${lessons.body[0]._id}`)
+            .send(updateLesson)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(response.body.message).toBe('Lección actualizado correctamente');
+    });
+    test('update lesson icon', async () => {
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const lessons = await api
+            .get('/api/lesson/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const response = await api
+            .put(`/api/lesson/icon/update/${lessons.body[0]._id}`)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .set({connection: 'keep-alive'})
+            .attach('icon', 'test/fixtures/lsec.png')
+            .expect(200)
     });
 });
 

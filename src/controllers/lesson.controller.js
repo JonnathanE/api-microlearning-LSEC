@@ -64,10 +64,10 @@ class Lesson {
     update = (req, res) => {
         const { name, module } = req.body;
         let lesson = req.lesson;
-        lesson.name = name;
-        lesson.module = module;
+        if (name) lesson.name = name;
+        if (module) lesson.module = module;
         lesson.save((err, data) => {
-            if (err) return res.status(400).json({ error: errorHandler(err) });
+            if (err) return res.status(400).json({ error: 'No se guardaron los cambios' });
             res.status(200).json({ message: 'Lección actualizado correctamente' });
         });
     }
