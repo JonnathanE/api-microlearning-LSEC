@@ -4,12 +4,14 @@ const { app, server } = require('../src/index');
 
 const Module = require('../src/models/Module');
 const User = require('../src/models/User');
+const Lesson = require('../src/models/Lesson');
 
 const { initialModules, student, signInStudent, adminUser, singnInAdminUser } = require('./helpers');
 
 const api = supertest(app);
 
 beforeEach(async () => {
+    jest.setTimeout(60000);
     await Module.deleteMany({});
 
     for (const module of initialModules) {
@@ -326,13 +328,81 @@ describe('DELETE /api/module/', () => {
     });
 });
 
+describe('POST /api/lesson/', () => {
+    test('create a new lesson with an authenticated admin', async () => {
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const models = await api.get('/api/module');
+        const response = await api
+            .post('/api/lesson/')
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .set({connection: 'keep-alive'})
+            .field('name', 'lesson 1')
+            .field('module', models.body[0]._id)
+            .attach('icon', 'test/fixtures/lsec.png')
+            .expect(200)
+        expect(response.body.name).toBe('lesson 1');
+    });
 
+    test.skip('you cannot create a new lesson if the token is not valid', async () => {
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const models = await api.get('/api/module');
+        const response = await api
+            .post('/api/lesson/')
+            .set('authorization', `Bearer ${adminLogin.body.token}mo`)
+            .set({connection: 'keep-alive'})
+            .field('name', 'lesson 2')
+            .field('module', models.body[0]._id)
+            .attach('icon', 'test/fixtures/lsec.png')
+            .expect(401)
+        expect(response.body.error).toBe('No autorizado')
+    });
 
+    test.skip('the lesson is not created if the token is not sent', async () => {
+        const models = await api.get('/api/module');
+        const response = await api
+            .post('/api/lesson/')
+            .set({connection: 'keep-alive'})
+            .field('name', 'lesson 3')
+            .field('module', models.body[0]._id)
+            .attach('icon', 'test/fixtures/lsec.png')
+            .expect(403)
+            expect(response.body.error).toBe('No se proporcionó token');
+    });
+});
 
+describe('GET /api/lesson', () => {
+    test('get all lesson', async () => {
+        await api
+            .get('/api/lesson/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+    });
+
+    test('get lesson by', async () => {
+        const lessons = await api
+            .get('/api/lesson/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const response = await api
+            .get(`/api/lesson/${lessons.body[0]._id}`)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        expect(lessons.body[0].name).toBe(response.body.name);
+    });
+});
 
 
 afterAll(async () => {
     await User.deleteMany({});
+    await Lesson.deleteMany({});
     mongoose.connection.close();
     server.close();
 });

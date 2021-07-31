@@ -25,8 +25,9 @@ class Lesson {
             }
 
             await lesson.save((err, result) => {
-                if (err) return res.status(400).json({ error: errorHandler(err) });
-                res.json(result);
+                if (err) return res.status(400).json({ error: 'No se ha creado' });
+                result.icon = undefined;
+                res.status(200).json(result);
             });
         });
     }
