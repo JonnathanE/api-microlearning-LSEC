@@ -9,3 +9,6 @@ build
 
 # configuración de editor de texto
 .vscode
+
+# testing
+coverage
