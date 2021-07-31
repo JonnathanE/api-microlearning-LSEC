@@ -77,7 +77,7 @@ class Lesson {
             .populate("module")
             .exec((err, lesson) => {
                 if (err || !lesson) {
-                    return res.json({ error: "La lección no se encontró o no existe" });
+                    return res.status(400).json({ error: "La lección no se encontró o no existe" });
                 }
                 req.lesson = lesson;
                 next();

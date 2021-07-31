@@ -282,7 +282,7 @@ describe('PUT /api/module/', () => {
 
 describe('DELETE /api/module/', () => {
 
-    test('delete a module with authenticated admin', async () => {
+    test('the module cannot be removed if the id does not match', async () => {
         const adminLogin = await api
             .post('/api/auth/signin')
             .send(singnInAdminUser)
@@ -290,11 +290,11 @@ describe('DELETE /api/module/', () => {
             .expect('Content-Type', /application\/json/)
         const deleteModule = await Module.findOne({name: initialModules[0].name});
         const response = await api
-            .delete(`/api/module/${deleteModule._id}`)
+            .delete(`/api/module/${deleteModule._id}f`)
             .set('authorization', `Bearer ${adminLogin.body.token}`)
             .expect('Content-Type', /application\/json/)
-            .expect(200)
-        expect(response.body.message).toBe('Modulo eliminado correctamente');
+            .expect(400)
+        expect(response.body.error).toBe('El modulo no se encontró o no existe');
     });
 
     test('the module cannot be deleted if the user is not admin', async () => {
@@ -325,6 +325,21 @@ describe('DELETE /api/module/', () => {
             .expect('Content-Type', /application\/json/)
             .expect(401)
         expect(response.body.error).toBe('No autorizado');
+    });
+
+    test('delete a module with authenticated admin', async () => {
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const deleteModule = await Module.findOne({name: initialModules[0].name});
+        const response = await api
+            .delete(`/api/module/${deleteModule._id}`)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(response.body.message).toBe('Modulo eliminado correctamente');
     });
 });
 
@@ -397,8 +412,106 @@ describe('GET /api/lesson', () => {
             .expect('Content-Type', /application\/json/)
         expect(lessons.body[0].name).toBe(response.body.name);
     });
+
+    test('if an invalid id is provided it presents an error', async () => {
+        const lessons = await api
+            .get('/api/lesson/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const response = await api
+            .get(`/api/lesson/${lessons.body[0]._id}f`)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        expect(response.body.error).toBe('La lección no se encontró o no existe');
+    });
 });
 
+describe('DELETE /api/lesson/', () => {
+
+    test('the lesson cannot be deleted if the id does not match', async () => {
+        const lessons = await api
+            .get('/api/lesson/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const response = await api
+            .delete(`/api/lesson/${lessons.body[0]._id}ff`)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(400)
+        expect(response.body.error).toBe('La lección no se encontró o no existe');
+    });
+
+    test('the lesson cannot be deleted if the token is not sent', async () => {
+        const lessons = await api
+            .get('/api/lesson/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const response = await api
+            .delete(`/api/lesson/${lessons.body[0]._id}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(403)
+        expect(response.body.error).toBe('No se proporcionó token');
+    });
+
+    test('the lesson cannot be eliminated if the token is not valid', async () => {
+        const lessons = await api
+            .get('/api/lesson/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const response = await api
+            .delete(`/api/lesson/${lessons.body[0]._id}`)
+            .set('authorization', `Bearer ${adminLogin.body.token}f`)
+            .expect('Content-Type', /application\/json/)
+            .expect(401)
+        expect(response.body.error).toBe('No autorizado');
+    });
+
+    test('the lesson cannot be deleted if the user is not admin', async () => {
+        const lessons = await api
+            .get('/api/lesson/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(signInStudent)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const response = await api
+            .delete(`/api/lesson/${lessons.body[0]._id}`)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(403)
+        expect(response.body.error).toBe('Requiere rol de administrador');
+    });
+
+    test('delete a lesson with authenticated admin', async () => {
+        const lessons = await api
+            .get('/api/lesson/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const response = await api
+            .delete(`/api/lesson/${lessons.body[0]._id}`)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(response.body.message).toBe('La lección se eliminó con éxito');
+    });
+});
 
 afterAll(async () => {
     await User.deleteMany({});
