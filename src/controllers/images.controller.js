@@ -63,7 +63,7 @@ exports.updateMicrolearningImage = (req, res) => {
 
         await microlearning.save((err, result) => {
             if (err) return res.starus(400).json({ error: errorHandler(err) });
-            res.json(result);
+            res.status(200).json(result);
         });
     });
 }
