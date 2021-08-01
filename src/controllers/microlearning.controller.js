@@ -32,8 +32,8 @@ class Microlearning {
             }
 
             await micro.save((err, result) => {
-                if (err) return res.status(400).json({ error: errorHandler(err) });
-                res.json(result);
+                if (err) return res.status(400).json({ error: 'No se pudo cerar el microcontenido' });
+                res.status(200).json(result);
             });
         });
     }
@@ -81,7 +81,7 @@ class Microlearning {
         await Micro.findById(id)
             .populate('lesson', 'name')
             .exec((err, micro) => {
-                if (err || !micro) return res.status(400).json({ err: 'El microcontenido no se encontró o no existe' });
+                if (err || !micro) return res.status(400).json({ error: 'El microcontenido no se encontró o no existe' });
                 req.microlearning = micro;
                 next();
             });
