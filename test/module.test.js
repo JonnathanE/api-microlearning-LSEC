@@ -399,36 +399,6 @@ describe('POST /api/lesson/', () => {
             .expect(200)
         expect(response.body.name).toBe('lesson 1');
     });
-
-    test.skip('you cannot create a new lesson if the token is not valid', async () => {
-        const adminLogin = await api
-            .post('/api/auth/signin')
-            .send(singnInAdminUser)
-            .expect(200)
-            .expect('Content-Type', /application\/json/)
-        const models = await api.get('/api/module');
-        const response = await api
-            .post('/api/lesson/')
-            .set('authorization', `Bearer ${adminLogin.body.token}mo`)
-            .set({connection: 'keep-alive'})
-            .field('name', 'lesson 2')
-            .field('module', models.body[0]._id)
-            .attach('icon', 'test/fixtures/lsec.png')
-            .expect(401)
-        expect(response.body.error).toBe('No autorizado')
-    });
-
-    test.skip('the lesson is not created if the token is not sent', async () => {
-        const models = await api.get('/api/module');
-        const response = await api
-            .post('/api/lesson/')
-            .set({connection: 'keep-alive'})
-            .field('name', 'lesson 3')
-            .field('module', models.body[0]._id)
-            .attach('icon', 'test/fixtures/lsec.png')
-            .expect(403)
-            expect(response.body.error).toBe('No se proporcionó token');
-    });
 });
 
 describe('GET /api/lesson', () => {
@@ -892,6 +862,93 @@ describe('PUT /api/micro/', () => {
             .set('authorization', `Bearer ${adminLogin.body.token}`)
             .expect(400)
         expect(response.body.error).toBe('Debe de enviar un gif')
+    });
+});
+
+describe('DELETE /api/micro/', () => {
+
+    test('the microcontnet cannot be deleted if the id does not match', async () => {
+        const micros = await api
+            .get('/api/micro/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const response = await api
+            .delete(`/api/micro/${micros.body[0]._id}ff`)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(400)
+        expect(response.body.error).toBe('El microcontenido no se encontró o no existe');
+    });
+
+    test('the microcontent cannot be deleted if the token is not sent', async () => {
+        const micros = await api
+            .get('/api/micro/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const response = await api
+            .delete(`/api/micro/${micros.body[0]._id}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(403)
+        expect(response.body.error).toBe('No se proporcionó token');
+    });
+
+    test('the microcontent cannot be eliminated if the token is not valid', async () => {
+        const micros = await api
+            .get('/api/micro/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const response = await api
+            .delete(`/api/micro/${micros.body[0]._id}`)
+            .set('authorization', `Bearer ${adminLogin.body.token}f`)
+            .expect('Content-Type', /application\/json/)
+            .expect(401)
+        expect(response.body.error).toBe('No autorizado');
+    });
+
+    test('the microcontent cannot be deleted if the user is not admin', async () => {
+        const micros = await api
+            .get('/api/micro/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(signInStudent)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const response = await api
+            .delete(`/api/micro/${micros.body[0]._id}`)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(403)
+        expect(response.body.error).toBe('Requiere rol de administrador');
+    });
+
+    test('delete a microcontent with authenticated admin', async () => {
+        const micros = await api
+            .get('/api/micro/')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const adminLogin = await api
+            .post('/api/auth/signin')
+            .send(singnInAdminUser)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const response = await api
+            .delete(`/api/micro/${micros.body[0]._id}`)
+            .set('authorization', `Bearer ${adminLogin.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(response.body.message).toBe('El microcontenido se eliminó con éxito');
     });
 });
 
