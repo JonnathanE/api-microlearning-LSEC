@@ -28,11 +28,13 @@ exports.updateLessonIcon = (req, res) => {
             }
             lesson.icon.data = fs.readFileSync(files.icon.path);
             lesson.icon.contentType = files.icon.type;
+        } else {
+            return res.status(400).json({ error: 'Debe de enviar un icono' });
         }
 
         await lesson.save((err, result) => {
             if (err) return res.starus(400).json({ error: errorHandler(err) });
-            res.json(result);
+            res.status(200).json(result);
         });
     });
 }
@@ -59,10 +61,12 @@ exports.updateMicrolearningImage = (req, res) => {
             }
             microlearning.image.data = fs.readFileSync(files.image.path);
             microlearning.image.contentType = files.image.type;
+        } else {
+            return res.status(400).json({ error: 'Debe de enviar una imagen' });
         }
 
         await microlearning.save((err, result) => {
-            if (err) return res.starus(400).json({ error: errorHandler(err) });
+            if (err) return res.starus(400).json({ error: 'La imágen no se ha guardado' });
             res.status(200).json(result);
         });
     });
@@ -90,11 +94,13 @@ exports.updateMicrolearningGif = (req, res) => {
             }
             microlearning.gif.data = fs.readFileSync(files.gif.path);
             microlearning.gif.contentType = files.gif.type;
+        } else {
+            return res.status(400).json({ error: 'Debe de enviar un gif' });
         }
 
         await microlearning.save((err, result) => {
-            if (err) return res.starus(400).json({ error: errorHandler(err) });
-            res.json(result);
+            if (err) return res.starus(400).json({ error: 'El gif no se ha guardado' });
+            res.status(200).json(result);
         });
     });
 }

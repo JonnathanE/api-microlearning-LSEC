@@ -1,3 +1,7 @@
+const Module = require('../src/models/Module');
+const User = require('../src/models/User');
+const Lesson = require('../src/models/Lesson');
+
 exports.initialModules = [
     {
         number: 1,
