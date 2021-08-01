@@ -69,8 +69,8 @@ class Microlearning {
     update = (req, res) => {
         const { title, lesson } = req.body;
         let microlearning = req.microlearning;
-        microlearning.title = title;
-        microlearning.lesson = lesson;
+        if (title) microlearning.title = title;
+        if (lesson) microlearning.lesson = lesson;
         microlearning.save((err, data) => {
             if (err) return res.status(400).json({ error: errorHandler(err) });
             res.status(200).json({ message: 'El microcontenido se actualizado correctamente' });
