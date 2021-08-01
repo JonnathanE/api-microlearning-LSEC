@@ -44,6 +44,7 @@ class Microlearning {
 
         await Micro.find()
             .select(['-image', '-gif'])
+            .populate('lesson')
             .sort([[sortBy, order]])
             .exec((err, micro) => {
                 if (err) return res.status(400).json({ error: 'Microcontenidos no encontrados' });
@@ -78,6 +79,7 @@ class Microlearning {
 
     byId = async (req, res, next, id) => {
         await Micro.findById(id)
+            .populate('lesson', 'name')
             .exec((err, micro) => {
                 if (err || !micro) return res.status(400).json({ err: 'El microcontenido no se encontró o no existe' });
                 req.microlearning = micro;
