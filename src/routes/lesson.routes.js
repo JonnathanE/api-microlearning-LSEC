@@ -13,14 +13,15 @@ router.post('/', [verifyToken, isAdmin],lesson.create);
 router.get('/', lesson.getAll);
 // get lesson by id without icon
 router.get('/:lessonId', lesson.getById);
-// get icon
-router.get('/icon/:lessonId', lessonIcon)
 // update name and module of lesson
-router.put('/:lessonId', [verifyToken, isAdmin],lesson.update);
+router.put('/:lessonId', [verifyToken, isAdmin], lesson.update);
+// delete lesson
+router.delete('/:lessonId', [verifyToken, isAdmin], lesson.remove);
+
+// get icon
+router.get('/icon/:lessonId', lessonIcon);
 // update lesson icon
-router.put('/icon/update/:lessonId', [verifyToken, isAdmin],updateLessonIcon);
-// delete module
-router.delete('/:lessonId', [verifyToken, isAdmin],lesson.remove);
+router.put('/icon/update/:lessonId', [verifyToken, isAdmin], updateLessonIcon);
 
 // method to obtain the parameter
 router.param('lessonId', lesson.byId);

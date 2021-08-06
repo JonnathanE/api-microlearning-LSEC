@@ -12,7 +12,7 @@ class Module {
     }
 
     getAll = async (req, res) => {
-        await Modules.find().exec((err, data) => {
+        await Modules.find().sort({number: 1}).exec((err, data) => {
             if (err) return res.status(400).json({ error: errorHandler(err) });
             res.status(200).json(data);
         });
@@ -33,8 +33,8 @@ class Module {
     update = async (req, res) => {
         const { number, name } = req.body;
         let module = req.module;
-        module.number = number;
-        module.name = name;
+        if (number) module.number = number;
+        if (name) module.name = name;
         module.save((err, data) => {
             if (err) return res.status(400).json({ error: errorHandler(err) });
             res.status(200).json({ message: 'Modulo actualizado correctamente' });
