@@ -25,6 +25,12 @@ exports.lessonsAssigned = async (req, res) => {
     return res.status(200).json(lessons);
 }
 
+exports.microlearningAssigned = async (req, res) => {
+    const microlearnings = await Microlearning.find({ lesson: req.lesson._id }).select(['-image', '-gif']);
+    if (microlearnings.length === 0) return res.status(400).json({ error: 'No se ha registrado contenido para esta lección' });
+    return res.status(200).json(microlearnings);
+}
+
 exports.lessonById = async (req, res, next, id) => {
     await Lessons.findById(id)
         .populate("module")
@@ -35,12 +41,4 @@ exports.lessonById = async (req, res, next, id) => {
             req.lesson = lesson;
             next();
         });
-}
-
-exports.moduleById = async (req, res, next, id) => {
-    await Modules.findById(id).exec((err, data) => {
-        if (err || !data) return res.status(400).json({ error: 'El modulo no se encontró o no existe' });
-        req.module = data;
-        next();
-    });
 }
