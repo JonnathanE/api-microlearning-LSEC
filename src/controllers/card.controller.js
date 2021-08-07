@@ -18,7 +18,7 @@ class Card {
                 if (files.gif.size > 9000000) return res.status(400).json({ error: 'El gif debe de tener un tamaño inferior a 9 MB' });
 
                 card.gif.data = fs.readFileSync(files.gif.path);
-                card.gif.contetType = files.gif.contetType;
+                card.gif.contentType = files.gif.type;
             }
 
             await card.save((err, result) => {
