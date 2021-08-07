@@ -32,7 +32,7 @@ class Microlearning {
             }
 
             await micro.save((err, result) => {
-                if (err) return res.status(400).json({ error: 'No se pudo cerar el microcontenido' });
+                if (err) return res.status(400).json({ error: 'No se pudo crear el microcontenido' });
                 res.status(200).json(result);
             });
         });

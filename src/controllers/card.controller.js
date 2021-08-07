@@ -75,7 +75,7 @@ class Card {
         await Cards.findById(id)
             .populate('lesson', '-icon')
             .exec((err, card) => {
-                if (err || !card) return res.status(400).json({ error: 'El microcontenido no se encontró o no existe' });
+                if (err || !card) return res.status(400).json({ error: 'La tarjeta de conocimiento no se encontró o no existe' });
                 req.card = card;
                 next();
             });
