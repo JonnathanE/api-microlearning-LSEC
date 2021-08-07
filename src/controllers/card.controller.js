@@ -48,6 +48,29 @@ class Card {
         res.status(200).json(req.card);
     }
 
+    remove = async (req, res) => {
+        let card = req.card;
+        await card.remove((err, deleteCard) => {
+            if (err) return res.status(400).json({ error: 'La tarjeta de conocimiento no se eliminó' });
+            res.status(200).json({ message: 'La tarjeta de conocimiento se eliminó con éxito' });
+        });
+    }
+
+    update = async (req, res) => {
+        const { question, lesson, correctAnswer, wrongAnswer } = req.body;
+        let card = req.card;
+
+        if (question) card.question = question;
+        if (lesson) card.lesson = lesson;
+        if (correctAnswer) card.correctAnswer = correctAnswer;
+        if (wrongAnswer) card.wrongAnswer = wrongAnswer;
+
+        await card.save((err, data) => {
+            if (err) return res.status(400).json({ error: 'La tarjeta de conocimiento no se ha actualizado' });
+            res.status(200).json({ message: 'La tarjeta de conocmiento se actualizado correctamente' });
+        });
+    }
+
     byId = async (req, res, next, id) => {
         await Cards.findById(id)
             .populate('lesson', '-icon')

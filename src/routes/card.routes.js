@@ -12,6 +12,10 @@ router.post('/', [verifyToken, isAdmin], card.create);
 router.get('/', card.getAll);
 // get knowledge card by id without gif
 router.get('/:cardId', card.getById);
+// delete knowledge card
+router.delete('/:cardId', [verifyToken, isAdmin], card.remove);
+// update knowledge card
+router.put('/:cardId', [verifyToken, isAdmin], card.update)
 
 router.param('cardId', card.byId);
 
