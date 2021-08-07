@@ -2,10 +2,7 @@ const formidable = require('formidable');
 const _ = require('lodash');
 const fs = require('fs');
 
-const Lessons = require('../models/Lesson');
-const Microlearning = require('../models/Microlearning');
 const { errorHandler } = require('../helpers/dberrorHandler');
-const { createDiffieHellman } = require('crypto');
 
 exports.lessonIcon = (req, res, next) => {
     if (req.lesson.icon.data) {
@@ -35,7 +32,7 @@ exports.updateLessonIcon = (req, res) => {
 
         await lesson.save((err, result) => {
             if (err) return res.starus(400).json({ error: errorHandler(err) });
-            res.status(200).json(result);
+            res.status(200).json({message: 'Icono actualizado correctamente'});
         });
     });
 }
@@ -68,7 +65,7 @@ exports.updateMicrolearningImage = (req, res) => {
 
         await microlearning.save((err, result) => {
             if (err) return res.starus(400).json({ error: 'La imágen no se ha guardado' });
-            res.status(200).json(result);
+            res.status(200).json({message: 'Imágen actualizado correctamente'});
         });
     });
 }
@@ -101,7 +98,7 @@ exports.updateMicrolearningGif = (req, res) => {
 
         await microlearning.save((err, result) => {
             if (err) return res.starus(400).json({ error: 'El gif no se ha guardado' });
-            res.status(200).json(result);
+            res.status(200).json({message: 'Gif actualzado correctamente'});
         });
     });
 }
@@ -134,7 +131,7 @@ exports.updateCardGif = (req, res) => {
 
         await card.save((err, result) => {
             if (err) return res.starus(400).json({ error: 'El gif no se ha guardado' });
-            res.status(200).json(result);
+            res.status(200).json({message: 'Gif actualizado correctamente'});
         });
     });
 }
