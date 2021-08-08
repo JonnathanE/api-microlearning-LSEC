@@ -1,6 +1,7 @@
 const Lessons = require('../models/Lesson');
 const Microlearning = require('../models/Microlearning');
 const Modules = require('../models/Module');
+const Card = require('../models/Card');
 
 exports.modulesAssigned = async (req, res) => {
     try {
@@ -29,6 +30,12 @@ exports.microlearningAssigned = async (req, res) => {
     const microlearnings = await Microlearning.find({ lesson: req.lesson._id }).select(['-image', '-gif']);
     if (microlearnings.length === 0) return res.status(400).json({ error: 'No se ha registrado contenido para esta lección' });
     return res.status(200).json(microlearnings);
+}
+
+exports.cardAssigned = async (req, res) => {
+    const cards = await Card.find({ lesson: req.lesson._id }).select(['-gif']);
+    if (cards.length === 0) return res.status(400).json({ error: 'No se ha registrado contenido para esta lección' });
+    return res.status(200).json(cards);
 }
 
 exports.lessonById = async (req, res, next, id) => {
