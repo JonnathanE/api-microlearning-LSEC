@@ -2,6 +2,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Role = require('../models/Role');
+const Learn = require('../models/Learn');
 
 class Auth {
     signup = async (req, res) => {
@@ -20,12 +21,14 @@ class Auth {
             user.roles = [role._id];
         }
 
-        await user.save((error, user) => {
+        await user.save(async (error, user) => {
             if (error) return res.status(400).json({
                 message: 'Verifique los campos, hubo un error'
             });
             user.salt = undefined;
             user.hashed_password = undefined;
+            const learn = new Learn({user});
+            const learnSave = await learn.save();
             res.status(200).json({ user });
         });
     }
