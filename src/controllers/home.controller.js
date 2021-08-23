@@ -1,6 +1,8 @@
 const Lessons = require('../models/Lesson');
 const Microlearning = require('../models/Microlearning');
 const Modules = require('../models/Module');
+const Card = require('../models/Card');
+const Learn = require('../models/Learn');
 
 exports.modulesAssigned = async (req, res) => {
     try {
@@ -29,6 +31,30 @@ exports.microlearningAssigned = async (req, res) => {
     const microlearnings = await Microlearning.find({ lesson: req.lesson._id }).select(['-image', '-gif']);
     if (microlearnings.length === 0) return res.status(400).json({ error: 'No se ha registrado contenido para esta lección' });
     return res.status(200).json(microlearnings);
+}
+
+exports.cardAssigned = async (req, res) => {
+    const cards = await Card.find({ lesson: req.lesson._id }).select(['-gif']);
+    if (cards.length === 0) return res.status(400).json({ error: 'No se ha registrado contenido para esta lección' });
+    return res.status(200).json(cards);
+}
+
+exports.addCompleteLesson = async (req, res) => {
+    const { user } = req.body;
+    const learn = await Learn.find({ user }).select(['-microlearning']);
+    await Learn.updateOne(
+        { _id: learn[0]._id },
+        { $addToSet: { lesson: [req.lesson._id] } },
+        function (err, managerparent) {
+            if (err) return res.status(400).json({ error: 'no agregado la lección culminada' });
+            res.status(200).json({ meddage: managerparent })
+        });
+}
+
+exports.getCompleteLearn = async (req, res) => {
+    const userId = req.params.userId;
+    const learn = await Learn.findOne({user: userId});
+    return res.status(200).json(learn);
 }
 
 exports.lessonById = async (req, res, next, id) => {

@@ -1,6 +1,6 @@
 {
-  "name": "backend",
-  "version": "2.0.0",
+  "name": "lsec-api-rest",
+  "version": "2.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,9 @@
     "test": "cross-env NODE_ENV=test jest --verbose --detectOpenHandles --runInBand",
     "test:watch": "npm run test -- --watch",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage"
+  },
+  "engines": {
+    "node": "13.x"
   },
   "keywords": [],
   "author": "",

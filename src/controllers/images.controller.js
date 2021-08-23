@@ -2,8 +2,6 @@ const formidable = require('formidable');
 const _ = require('lodash');
 const fs = require('fs');
 
-const Lessons = require('../models/Lesson');
-const Microlearning = require('../models/Microlearning');
 const { errorHandler } = require('../helpers/dberrorHandler');
 
 exports.lessonIcon = (req, res, next) => {
@@ -34,7 +32,7 @@ exports.updateLessonIcon = (req, res) => {
 
         await lesson.save((err, result) => {
             if (err) return res.starus(400).json({ error: errorHandler(err) });
-            res.status(200).json(result);
+            res.status(200).json({message: 'Icono actualizado correctamente'});
         });
     });
 }
@@ -67,7 +65,7 @@ exports.updateMicrolearningImage = (req, res) => {
 
         await microlearning.save((err, result) => {
             if (err) return res.starus(400).json({ error: 'La imágen no se ha guardado' });
-            res.status(200).json(result);
+            res.status(200).json({message: 'Imágen actualizado correctamente'});
         });
     });
 }
@@ -100,7 +98,40 @@ exports.updateMicrolearningGif = (req, res) => {
 
         await microlearning.save((err, result) => {
             if (err) return res.starus(400).json({ error: 'El gif no se ha guardado' });
-            res.status(200).json(result);
+            res.status(200).json({message: 'Gif actualzado correctamente'});
+        });
+    });
+}
+
+exports.cardGif = (req, res, next) => {
+    if (req.card.gif.data) {
+        res.set('Content-Type', req.card.gif.contentType);
+        return res.send(req.card.gif.data);
+    }
+    next();
+}
+
+exports.updateCardGif = (req, res) => {
+    let form = new formidable.IncomingForm();
+    form.keepExtensions = true;
+    form.parse(req, async (err, fields, files) => {
+        if (err) return res.status(400).json({ error: "No se pudo cargar la imagen" });
+
+        let card = req.card;
+
+        if (files.gif) {
+            if (files.gif.size > 9000000) {
+                return res.status(400).json({ error: "El gif debe tener un tamaño inferior a 9 MB." });
+            }
+            card.gif.data = fs.readFileSync(files.gif.path);
+            card.gif.contentType = files.gif.type;
+        } else {
+            return res.status(400).json({ error: 'Debe de enviar un gif' });
+        }
+
+        await card.save((err, result) => {
+            if (err) return res.starus(400).json({ error: 'El gif no se ha guardado' });
+            res.status(200).json({message: 'Gif actualizado correctamente'});
         });
     });
 }
