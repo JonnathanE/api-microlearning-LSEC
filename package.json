@@ -8,7 +8,8 @@
     "start": "node src/index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --detectOpenHandles --runInBand",
     "test:watch": "npm run test -- --watch",
-    "test:coverage": "cross-env NODE_ENV=test jest --coverage"
+    "test:coverage": "cross-env NODE_ENV=test jest --coverage",
+    "doc": "jsdoc -c jsdoc.json"
   },
   "engines": {
     "node": "13.x"
@@ -26,6 +27,7 @@
     "formidable": "^1.2.2",
     "fs-extra": "^10.0.0",
     "helmet": "^4.6.0",
+    "jsdoc": "^3.6.7",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mongoose": "^5.13.0",
