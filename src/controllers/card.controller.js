@@ -114,7 +114,7 @@ class Card {
      * @param {Object} req Request where the knowledge cards will be stored
      * @param {Object} res Http response parameter
      * @param {Object} next next
-     * @param {string} id User ID obtained from the URL parameter
+     * @param {string} id Card ID obtained from the URL parameter
      */
     byId = async (req, res, next, id) => {
         // search for knowledge cards by id
