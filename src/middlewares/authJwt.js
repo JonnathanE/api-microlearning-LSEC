@@ -2,6 +2,14 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Role = require('../models/Role');
 
+/**
+ * Methods that are executed before the letter request to the server to identify the validity of the token and user roles
+ * @module MiddlewareAuthJwt
+ */
+
+/**
+ * Method to check if the user's token is valid
+ */
 exports.verifyToken = async (req, res, next) => {
     try {
         // extract token from http header
@@ -23,9 +31,15 @@ exports.verifyToken = async (req, res, next) => {
     }
 }
 
+/**
+ * Method to verify if the user is a moderator
+ */
 exports.isModerator = async (req, res, next) => {
+    // Obtains the user according to the id that is sent by the request
     const user = await User.findById(req.userId);
+    // get the roles from the database that match the user
     const roles = await Role.find({ _id: { $in: user.roles } });
+    // it is checked if it has the moderator role
     for (let i = 0; i < roles.length; i++) {
         if (roles[i].name === 'moderator') {
             next();
@@ -35,9 +49,15 @@ exports.isModerator = async (req, res, next) => {
     return res.status(403).json({ message: 'Requiere rol de moderador' });
 }
 
+/**
+ * Method to verify if the user is a admin
+ */
 exports.isAdmin = async (req, res, next) => {
+    // Obtains the user according to the id that is sent by the request
     const user = await User.findById(req.userId);
+    // get the roles from the database that match the user
     const roles = await Role.find({ _id: { $in: user.roles } });
+    // it is checked if it has the admin role
     for (let i = 0; i < roles.length; i++) {
         if (roles[i].name === 'admin') {
             next();
