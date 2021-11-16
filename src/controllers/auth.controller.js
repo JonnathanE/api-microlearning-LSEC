@@ -60,7 +60,7 @@ class Auth {
             // if the user is found, make sure the email and password match
             // call the authentication method in the user model
             if (!user.authenticate(password))
-                return res.status(401).json({ error: 'El correo electrónico y la contraseña no coinciden' });
+                return res.status(401).json({ error: 'El correo electrónico o la contraseña no coinciden' });
             // crear el token con vencimiento en 24 horas
             const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: 86400 });
             // persist the token as 't' in cookie with expiration date

@@ -1,7 +1,14 @@
 const { Promise } = require('mongoose');
 const Role = require('../models/Role');
 
-// create the roles in the database
+/**
+ * Modules that are run when the server starts
+ * @module InitialSetup
+ */
+
+/**
+ * Method to create the roles in the database
+ */
 exports.createRoles = async () => {
     try {
         // check if there are documents in the Role model

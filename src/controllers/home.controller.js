@@ -83,7 +83,7 @@ exports.addCompleteLesson = async (req, res) => {
         { $addToSet: { lesson: [req.lesson._id] } },
         function (err, managerparent) {
             if (err) return res.status(400).json({ error: 'no agregado la lección culminada' });
-            res.status(200).json({ meddage: managerparent })
+            res.status(200).json({ message: managerparent })
         });
 }
 
