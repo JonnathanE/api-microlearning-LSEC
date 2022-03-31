@@ -1,7 +1,9 @@
 const formidable = require('formidable');
 const _ = require('lodash');
 const fs = require('fs');
+const fse = require('fs-extra');
 
+const { uploadImage, deleteImage } = require('../libs/cloudinary');
 const { errorHandler } = require('../helpers/dberrorHandler');
 
 /**
@@ -23,34 +25,29 @@ exports.lessonIcon = (req, res, next) => {
 /**
  * Method that updates the icon of a lesson 
  */
-exports.updateLessonIcon = (req, res) => {
-    // a formidable object is created
-    let form = new formidable.IncomingForm();
-    form.keepExtensions = true;
-    // the request file is extracted
-    form.parse(req, async (err, fields, files) => {
-        if (err) return res.status(400).json({ error: "No se pudo cargar la imagen" });
+exports.updateLessonIcon = async (req, res) => {
+    try {
         // get the lesson object from the request
         let lesson = req.lesson;
-        // check if the new icon exists
-        if (files.icon) {
-            // the size of the new icon is checked
-            if (files.icon.size > 1000000) {
+        // check if an image was sent and save it in cloudinary
+        if (req.files.icon) {
+            // file size is checked
+            if (req.files.icon.size > 1000000) {
                 return res.status(400).json({ error: "La imagen debe tener un tamaño inferior a 1 MB." });
             }
-            // the new icon is replaced in the lesson object
-            lesson.icon.data = fs.readFileSync(files.icon.path);
-            lesson.icon.contentType = files.icon.type;
-        } else {
-            return res.status(400).json({ error: 'Debe de enviar un icono' });
+            // the icon is stored in the object lesson as a buffer data type
+            lesson.icon.data = fs.readFileSync(req.files.icon.tempFilePath);
+            lesson.icon.contentType = req.files.icon.mimetype;
+            await fse.remove(req.files.icon.tempFilePath);
         }
-        // the lesson is updated in the database
-        await lesson.save((err, result) => {
-            if (err) return res.starus(400).json({ error: errorHandler(err) });
-            // returns a message in JSON
-            res.status(200).json({ message: 'Icono actualizado correctamente' });
-        });
-    });
+        // save to database
+        await lesson.save();
+        // returns a message in JSON
+        return res.status(200).json({ message: 'Icono actualizado correctamente' });
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({ error: "No se actualizó el icono" })
+    }
 }
 
 /**
@@ -68,34 +65,35 @@ exports.microlearningImage = (req, res, next) => {
 /**
  * Method that updates the learning capsule image
  */
-exports.updateMicrolearningImage = (req, res) => {
-    // a formidable object is created
-    let form = new formidable.IncomingForm();
-    form.keepExtensions = true;
-    // the request file is extracted
-    form.parse(req, async (err, fields, files) => {
-        if (err) return res.status(400).json({ error: "No se pudo cargar la imagen" });
+exports.updateMicrolearningImage = async (req, res) => {
+    try {
         // get the microlearning object from the request
         let microlearning = req.microlearning;
-        // check if the new image exists
-        if (files.image) {
-            // the size of the new image is checked
-            if (files.image.size > 9000000) {
-                return res.status(400).json({ error: "La imagen debe tener un tamaño inferior a 9 MB." });
+        // check if an image was sent and save it in cloudinary
+        let image;
+        if (req.files.image) {
+            const resultImage = await uploadImage(req.files.image.tempFilePath);
+            image = {
+                url: resultImage.secure_url,
+                public_id: resultImage.public_id
             }
-            // the new image is replaced in the microlearning object
-            microlearning.image.data = fs.readFileSync(files.image.path);
-            microlearning.image.contentType = files.image.type;
-        } else {
-            return res.status(400).json({ error: 'Debe de enviar una imagen' });
+            await fse.remove(req.files.image.tempFilePath);
         }
-        // the microlearning is updated in the database
-        await microlearning.save((err, result) => {
-            if (err) return res.starus(400).json({ error: 'La imágen no se ha guardado' });
-            // returns a message in JSON
-            res.status(200).json({ message: 'Imágen actualizado correctamente' });
-        });
-    });
+        // check if you have the image url registered and delete it
+        if (microlearning.image_url.public_id) {
+            await deleteImage(microlearning.image_url.public_id);
+        }
+        // replace new image url
+        microlearning.image_url = image;
+        // save changes
+        const microSave = await microlearning.save();
+        // check if the changes were saved
+        if (!microSave) return res.starus(400).json({ error: 'La imágen no se ha guardado' });
+        // returns a message in JSON
+        return res.status(200).json({ message: 'Imágen actualizado correctamente' });
+    } catch (error) {
+        return res.status(400).json({ error: 'No se pudo actualizar la imagen' });
+    }
 }
 
 /**
@@ -113,33 +111,35 @@ exports.microlearningGif = (req, res, next) => {
 /**
  * Method that updates the learning capsule gif
  */
-exports.updateMicrolearningGif = (req, res) => {
-    // a formidable object is created
-    let form = new formidable.IncomingForm();
-    form.keepExtensions = true;
-    // the request file is extracted
-    form.parse(req, async (err, fields, files) => {
-        if (err) return res.status(400).json({ error: "No se pudo cargar la imagen" });
+exports.updateMicrolearningGif = async (req, res) => {
+    try {
         // get the microlearning object from the request
         let microlearning = req.microlearning;
-        // check if the new gif exists
-        if (files.gif) {
-            if (files.gif.size > 9000000) {
-                return res.status(400).json({ error: "La imagen debe tener un tamaño inferior a 9 MB." });
+        // check if an gif was sent and save it in cloudinary
+        let gif;
+        if (req.files.gif) {
+            const resultGif = await uploadImage(req.files.gif.tempFilePath);
+            gif = {
+                url: resultGif.secure_url,
+                public_id: resultGif.public_id
             }
-            // the new gif is replaced in the microlearning object
-            microlearning.gif.data = fs.readFileSync(files.gif.path);
-            microlearning.gif.contentType = files.gif.type;
-        } else {
-            return res.status(400).json({ error: 'Debe de enviar un gif' });
+            await fse.remove(req.files.gif.tempFilePath);
         }
-        // the microlearning is updated in the database
-        await microlearning.save((err, result) => {
-            if (err) return res.starus(400).json({ error: 'El gif no se ha guardado' });
-            // returns a message in JSON
-            res.status(200).json({ message: 'Gif actualzado correctamente' });
-        });
-    });
+        // check if you have the gif url registered and delete it
+        if (microlearning.gif_url.public_id) {
+            await deleteImage(microlearning.gif_url.public_id);
+        }
+        // replace new gif url
+        microlearning.gif_url = gif;
+        // save changes
+        const microSave = await microlearning.save();
+        // check if the changes were saved
+        if (!microSave) return res.starus(400).json({ error: 'El gif no se ha guardado' });
+        // returns a message in JSON
+        return res.status(200).json({ message: 'GIF actualizado correctamente' });
+    } catch (error) {
+        return res.status(400).json({ error: 'No se pudo actualizar el GIF' });
+    }
 }
 
 /**
@@ -157,31 +157,33 @@ exports.cardGif = (req, res, next) => {
 /**
  * Method that updates the knowledge card gif
  */
-exports.updateCardGif = (req, res) => {
-    // a formidable object is created
-    let form = new formidable.IncomingForm();
-    form.keepExtensions = true;
-    // the request file is extracted
-    form.parse(req, async (err, fields, files) => {
-        if (err) return res.status(400).json({ error: "No se pudo cargar la imagen" });
+exports.updateCardGif = async (req, res) => {
+    try {
         // get the card object from the request
         let card = req.card;
-        // check if the new gif exists
-        if (files.gif) {
-            if (files.gif.size > 9000000) {
-                return res.status(400).json({ error: "El gif debe tener un tamaño inferior a 9 MB." });
+        // check if an gif was sent and save it in cloudinary
+        let gif;
+        if (req.files.gif) {
+            const resultGif = await uploadImage(req.files.gif.tempFilePath);
+            gif = {
+                url: resultGif.secure_url,
+                public_id: resultGif.public_id
             }
-            // // the new gif is replaced in the card object
-            card.gif.data = fs.readFileSync(files.gif.path);
-            card.gif.contentType = files.gif.type;
-        } else {
-            return res.status(400).json({ error: 'Debe de enviar un gif' });
+            await fse.remove(req.files.gif.tempFilePath);
         }
-        // the card is updated in the database
-        await card.save((err, result) => {
-            if (err) return res.starus(400).json({ error: 'El gif no se ha guardado' });
-            // returns a message in JSON
-            res.status(200).json({ message: 'Gif actualizado correctamente' });
-        });
-    });
+        // check if you have the gif url registered and delete it
+        if (card.gif_url.public_id) {
+            await deleteImage(card.gif_url.public_id);
+        }
+        // replace new gif url
+        card.gif_url = gif;
+        // save changes
+        const cardSave = await card.save();
+        // check if the changes were saved
+        if (!cardSave) return res.starus(400).json({ error: 'El gif no se ha guardado' });
+        // returns a message in JSON
+        return res.status(200).json({ message: 'GIF actualizado correctamente' });
+    } catch (error) {
+        return res.status(400).json({ error: 'No se pudo actualizar el GIF' });
+    }
 }

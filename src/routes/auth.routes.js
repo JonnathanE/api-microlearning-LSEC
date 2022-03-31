@@ -45,6 +45,24 @@ router.post('/signup', [checkDuplicateUsernameOrEmail, checkRolesExisted], auth.
 router.post('/signin', auth.sigin);
 
 /**
+ * Iniciar sesión admin
+ * @name auth/signin
+ * @path {POST} /api/auth/signin
+ * @body {String} email user email
+ * @body {String} password user password
+ * @code {200} if the request is successful
+ * @code {400} if the user with that email does not exist
+ * @code {401} if the user's password does not match
+ * @response {String} token inside a JSON returns the generated token
+ * @response {Object} user inside a JSON it returns the attributes of the user
+ * @response {Number} user._id
+ * @response {String} user.name
+ * @response {String} user.email
+ * @response {Array} user.roles
+ */
+router.post('/signinadmin', auth.siginAdmin);
+
+/**
  * log out user
  * @name auth/signout
  * @path {POST} /api/auth/signout

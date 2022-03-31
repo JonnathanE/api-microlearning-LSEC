@@ -20,8 +20,8 @@ class User {
         let queryLimit = parseInt(req.query.limit, 10) || 5; // the number of accounts to return
         try {
             const users = queryNew
-                ? await UserSchema.find().sort({ _id: -1 }).limit(queryLimit)
-                : await UserSchema.find();
+                ? await UserSchema.find().populate("roles").sort({ _id: -1 }).limit(queryLimit)
+                : await UserSchema.find().populate("roles");
             res.status(200).json(users);
         } catch (error) {
             res.status(500).json(error);
@@ -65,10 +65,8 @@ class User {
     /* Update the user's name, email, and password. */
     update = async (req, res) => {
         const { name, email, password } = req.body;
-        console.log(req.body)
         try {
             const user = req.user;
-            console.log(user)
             if (name) user.name = name;
             if (email) user.email = email;
             if (password) user.hashed_password = user.encryptPassword(password);
@@ -88,7 +86,7 @@ class User {
     */
     byId = async (req, res, next, id) => {
         // search user by id
-        await UserSchema.findById(id)
+        await UserSchema.findById(id).populate("roles")
             .exec((err, user) => {
                 if (err || !user) return res.status(400).json({ error: 'El usuario no se encontró o no existe' });
                 // save the user found in the request

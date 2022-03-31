@@ -16,7 +16,7 @@ class Module {
         // save the module object in the database
         await modules.save((err, data) => {
             if (err) return res.status(400).json({ error: errorHandler(err) });
-            res.status(200).json({ data });
+            res.status(200).json(data);
         });
     }
 

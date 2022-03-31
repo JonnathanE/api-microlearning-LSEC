@@ -18,9 +18,17 @@ const microlearningSchema = new mongoose.Schema(
             data: Buffer,
             contentType: String
         },
+        image_url: {
+            url: String,
+            public_id: String
+        },
         gif: {
             data: Buffer,
             contentType: String
+        },
+        gif_url: {
+            url: String,
+            public_id: String
         }
     },
     {

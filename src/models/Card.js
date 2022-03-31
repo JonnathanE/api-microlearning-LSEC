@@ -13,6 +13,10 @@ const cardSchema = new mongoose.Schema(
             data: Buffer,
             contentType: String
         },
+        gif_url: {
+            url: String,
+            public_id: String
+        },
         correctAnswer: {
             type: String,
             required: true,

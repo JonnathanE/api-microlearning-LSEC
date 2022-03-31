@@ -20,7 +20,7 @@ mongoose.connect(connectionString, {
 })
     .then(db => {
         if (NODE_ENV !== 'test') {
-            console.log('DB is connected')
+            console.log('DB is connected to', db.connection.name)
         } else {
             console.log('DB TEST is connected')
         }
