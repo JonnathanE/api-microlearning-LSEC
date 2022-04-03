@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 const { ObjectId } = mongoose.Schema;
 
 const microlearningSchema = new mongoose.Schema(
@@ -35,5 +36,7 @@ const microlearningSchema = new mongoose.Schema(
         timestamps: true
     }
 );
+
+microlearningSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Microlearning', microlearningSchema);

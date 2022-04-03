@@ -48,7 +48,7 @@ class Lesson {
     getAll = async (req, res) => {
         // the search filters are obtained from the request
         let order = req.query.order ? req.query.order : 'asc'; // variable to sort the results; ascending by default
-        let sortBy = req.query.sortBy ? req.query.sortBy : 'name'; // filter
+        let sortBy = req.query.sortBy ? req.query.sortBy : 'module'; // filter
         // all the lessons from the database are obtained and returned in JSON format
         await Lessons.find()
             .select("-icon")

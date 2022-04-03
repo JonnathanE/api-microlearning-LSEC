@@ -55,7 +55,7 @@ router.get('/card/:lessonId', cardAssigned);
  * @code {400} if the data was not loaded
  * @response {String} message confirmation message
  */
-router.put('/complete/lesson/:lessonId', addCompleteLesson);
+router.put('/complete/lesson/:lessonId', verifyToken, addCompleteLesson);
 
 /**
  * Get the learnings completed by the student
@@ -66,7 +66,7 @@ router.put('/complete/lesson/:lessonId', addCompleteLesson);
  * @code {400} if the data was not loaded
  * @response {Array} learn returns all lessons completed by the user
  */
-router.get('/complete/learn/:userId', getCompleteLearn);
+router.get('/complete/learn/', verifyToken, getCompleteLearn);
 
 // method to obtain the parameter
 router.param('lessonId', lessonById);

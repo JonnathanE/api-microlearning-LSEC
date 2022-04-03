@@ -52,7 +52,16 @@ exports.lessonsAssigned = async (req, res) => {
  */
 exports.microlearningAssigned = async (req, res) => {
     // get all the learning capsules through the lesson id
-    const microlearnings = await Microlearning.find({ lesson: req.lesson._id }).select(['-image', '-gif']);
+    //const microlearnings = await Microlearning.find({ lesson: req.lesson._id }).select(['-image', '-gif']);
+    const page = parseInt(req.query.page, 10) || 1;
+    const microlearnings = await Microlearning.paginate(
+        { lesson: req.lesson._id },
+        {
+            select: ['-image', '-gif'],
+            limit: 1,
+            page
+        }
+    );
     if (microlearnings.length === 0) return res.status(400).json({ error: 'No se ha registrado contenido para esta lección' });
     // returns the response in JSON
     return res.status(200).json(microlearnings);
@@ -63,7 +72,16 @@ exports.microlearningAssigned = async (req, res) => {
  */
 exports.cardAssigned = async (req, res) => {
     // get all the knowledge cards through the lesson id, except the gif
-    const cards = await Card.find({ lesson: req.lesson._id }).select(['-gif']);
+    const page = parseInt(req.query.page, 10) || 1;
+    //const cards = await Card.find({ lesson: req.lesson._id }).select(['-gif']);
+    const cards = await Card.paginate(
+        { lesson: req.lesson._id },
+        {
+            select: ['-gif'],
+            limit: 1,
+            page
+        }
+    );
     if (cards.length === 0) return res.status(400).json({ error: 'No se ha registrado contenido para esta lección' });
     // returns the response in JSON
     return res.status(200).json(cards);
@@ -74,7 +92,7 @@ exports.cardAssigned = async (req, res) => {
  */
 exports.addCompleteLesson = async (req, res) => {
     // I get the user object from the request
-    const { user } = req.body;
+    const user = req.userId;
     // the Learn object corresponding to the database user is obtained, except for the microlearning attribute
     const learn = await Learn.find({ user }).select(['-microlearning']);
     // the new lesson is added in Learn in the database
@@ -92,7 +110,7 @@ exports.addCompleteLesson = async (req, res) => {
  */
 exports.getCompleteLearn = async (req, res) => {
     // the user id is obtained from the request parameters
-    const userId = req.params.userId;
+    const userId = req.userId;
     // the Learn object is obtained from the database associated with the user's id
     const learn = await Learn.findOne({ user: userId });
     // returns the response in JSON
