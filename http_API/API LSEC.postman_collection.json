@@ -1,0 +1,4049 @@
+{
+	"info": {
+		"_postman_id": "f2b562d1-b5ee-49d8-8f09-4b6246579cf5",
+		"name": "API LSEC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "module",
+			"item": [
+				{
+					"name": "create module",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"number\": 2,\r\n    \"name\": \"Modulo 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_url}}/api/module/",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"module",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "create",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"number\": 1,\r\n    \"name\": \"Modulo 1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_url}}/api/module/",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"module",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "149"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"95-cfq+fsbSnf8Y+KnPly6Cho6cOhE\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Mar 2022 21:49:10 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"62422d5607edec250c46d2af\",\n    \"number\": 1,\n    \"name\": \"Modulo 1\",\n    \"createdAt\": \"2022-03-28T21:49:10.462Z\",\n    \"updatedAt\": \"2022-03-28T21:49:10.462Z\",\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "update module",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"number\": 1,\r\n    \"name\": \"Modulo Uno\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_url}}/api/module/62422372dca64612d060d4e2",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"module",
+								"62422372dca64612d060d4e2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"number\": 1,\r\n    \"name\": \"Modulo Uno\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_url}}/api/module/62422372dca64612d060d4e2",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"module",
+										"62422372dca64612d060d4e2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "46"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2e-pHTARQddtY75OhyISp0g9+p2KsE\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Mar 2022 21:09:08 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Modulo actualizado correctamente\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete module",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/module/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"module",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host_url}}/api/module/{{id}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"module",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "44"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2c-fs3ZSPW4ANPiYu/je2lVflC18iA\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Mar 2022 21:48:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Modulo eliminado correctamente\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getAll modules",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/module/",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"module",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getAll",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/module/",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"module",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "153"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"99-s0FlJ89KQNAuJNhhLOcf3giXIrE\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Mar 2022 21:34:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"62422372dca64612d060d4e2\",\n        \"number\": 1,\n        \"name\": \"Modulo Uno\",\n        \"createdAt\": \"2022-03-28T21:06:58.219Z\",\n        \"updatedAt\": \"2022-03-28T21:09:08.177Z\",\n        \"__v\": 0\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "get module By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/module/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"module",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getById",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/module/{{id}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"module",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "151"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"97-PoHPlB4USdhwB4ypIBwCPKkSvTs\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Mar 2022 21:47:08 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"62422372dca64612d060d4e2\",\n    \"number\": 1,\n    \"name\": \"Modulo Uno\",\n    \"createdAt\": \"2022-03-28T21:06:58.219Z\",\n    \"updatedAt\": \"2022-03-28T21:09:08.177Z\",\n    \"__v\": 0\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "signup user",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"gwen\",\r\n    \"email\": \"gwen@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_url}}/api/auth/signup",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "signup user",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"gwen\",\r\n    \"email\": \"gwen@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_url}}/api/auth/signup",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"signup"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "223"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"df-WWRCGLbWQi1EbOjlvS93MJ4t4BM\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Mar 2022 19:29:15 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjQyMGM4YmNlOTU5YTI2ZjgwMDc3NjUiLCJpYXQiOjE2NDg0OTU3NTUsImV4cCI6MTY0ODU4MjE1NX0.L3GXeOtUMFWiVZPXry-13Lnugicxuh8g21GbUCitON8\",\n    \"name\": \"gwen\",\n    \"email\": \"gwen@gmail.com\"\n}"
+						}
+					]
+				},
+				{
+					"name": "signup_admin",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"admin\",\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"1234\",\r\n    \"roles\": [\r\n        \"student\",\r\n        \"moderator\",\r\n        \"admin\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_url}}/api/auth/signup",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "signup_admin",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"admin\",\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"1234\",\r\n    \"roles\": [\r\n        \"student\",\r\n        \"moderator\",\r\n        \"admin\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_url}}/api/auth/signup",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"signup"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "225"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"e1-rfn34XKB0KuFjc2r504CBv1dHls\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Mar 2022 19:27:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjQyMGMzYWNlOTU5YTI2ZjgwMDc3NWYiLCJpYXQiOjE2NDg0OTU2NzQsImV4cCI6MTY0ODU4MjA3NH0.2Q_7P_xB6HCj7kItokM-HgxmvNVvG_VrtRX8XGuEmnE\",\n    \"name\": \"admin\",\n    \"email\": \"admin@gmail.com\"\n}"
+						}
+					]
+				},
+				{
+					"name": "signin user",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"gwen@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_url}}/api/auth/signin",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "signin user",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"gwen@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_url}}/api/auth/signin",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"signin"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "t=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjQyMGM4YmNlOTU5YTI2ZjgwMDc3NjUiLCJpYXQiOjE2NDg0OTgxODgsImV4cCI6MTY0ODU4NDU4OH0.QmC3TTnqK8CrJrKMXCDduSQkYATPyvhAbdvpychKlQA; Path=/"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "223"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"df-Dst8j9szcuf7yMoa8MsYGZ/u8uA\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Mar 2022 20:09:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjQyMGM4YmNlOTU5YTI2ZjgwMDc3NjUiLCJpYXQiOjE2NDg0OTgxODgsImV4cCI6MTY0ODU4NDU4OH0.QmC3TTnqK8CrJrKMXCDduSQkYATPyvhAbdvpychKlQA\",\n    \"name\": \"gwen\",\n    \"email\": \"gwen@gmail.com\"\n}"
+						}
+					]
+				},
+				{
+					"name": "signin admin",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_url}}/api/auth/signinadmin",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"signinadmin"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "signin admin",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_url}}/api/auth/signinadmin",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"signinadmin"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "t=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjQyMGMzYWNlOTU5YTI2ZjgwMDc3NWYiLCJpYXQiOjE2NDg0OTgyMDQsImV4cCI6MTY0ODU4NDYwNH0.zxJw33gfuEiLISDd1ZzsGXEkMDzTKthx1qXPidPTLd4; Path=/"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "242"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"f2-gEJBhH3CXZHnV6DsV9BE4Xzkf6U\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Mar 2022 20:10:04 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjQyMGMzYWNlOTU5YTI2ZjgwMDc3NWYiLCJpYXQiOjE2NDg0OTgyMDQsImV4cCI6MTY0ODU4NDYwNH0.zxJw33gfuEiLISDd1ZzsGXEkMDzTKthx1qXPidPTLd4\",\n    \"name\": \"admin\",\n    \"email\": \"admin@gmail.com\",\n    \"role\": [\n        \"admin\"\n    ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Lesson",
+			"item": [
+				{
+					"name": "create lesson",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Animales",
+									"type": "text"
+								},
+								{
+									"key": "module",
+									"value": "{{id}}",
+									"type": "text"
+								},
+								{
+									"key": "icon",
+									"type": "file",
+									"src": "/C:/Users/LENOVO/Documents/Proyectos/Python/youtube/iconos/mascotas.svg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host_url}}/api/lesson/",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"lesson",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "create",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Frutas",
+											"type": "text"
+										},
+										{
+											"key": "module",
+											"value": "{{id}}",
+											"type": "text"
+										},
+										{
+											"key": "icon",
+											"type": "file",
+											"src": "/C:/Users/LENOVO/Documents/Proyectos/Python/youtube/iconos/frutas.svg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host_url}}/api/lesson/",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"lesson",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "172"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"ac-F/4CVgb+7sxv/tOB3PpKCkzAmDc\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Mar 2022 22:01:52 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"6242305007edec250c46d2b9\",\n    \"name\": \"Frutas\",\n    \"module\": \"62422d5607edec250c46d2af\",\n    \"createdAt\": \"2022-03-28T22:01:52.446Z\",\n    \"updatedAt\": \"2022-03-28T22:01:52.446Z\",\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "update info lesson",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Fruta\",\r\n    \"module\": \"62422d5607edec250c46d2af\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_url}}/api/lesson/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"lesson",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Fruta\",\r\n    \"module\": \"62422d5607edec250c46d2af\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_url}}/api/lesson/{{id}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"lesson",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "48"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"30-rj7SRCBWJopnmZHqgRjO7MJETa0\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Mar 2022 22:06:00 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Lección actualizado correctamente\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get All lesson",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/lesson/",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"lesson",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getAll",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/lesson/",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"lesson",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "296"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"128-ZvH7X68sNEfpW0QaQNBPMte8CeM\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Mar 2022 22:07:18 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"6242305007edec250c46d2b9\",\n        \"name\": \"Fruta\",\n        \"module\": {\n            \"_id\": \"62422d5607edec250c46d2af\",\n            \"number\": 1,\n            \"name\": \"Modulo 1\",\n            \"createdAt\": \"2022-03-28T21:49:10.462Z\",\n            \"updatedAt\": \"2022-03-28T21:49:10.462Z\",\n            \"__v\": 0\n        },\n        \"createdAt\": \"2022-03-28T22:01:52.446Z\",\n        \"updatedAt\": \"2022-03-28T22:06:00.922Z\",\n        \"__v\": 0\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "get lesson By Id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/lesson/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"lesson",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getById",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/lesson/{{id}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"lesson",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "294"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"126-+hLJYCJ7nAC8VxHP7fknVDqmuLk\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Mar 2022 22:09:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"6242305007edec250c46d2b9\",\n    \"name\": \"Fruta\",\n    \"module\": {\n        \"_id\": \"62422d5607edec250c46d2af\",\n        \"number\": 1,\n        \"name\": \"Modulo 1\",\n        \"createdAt\": \"2022-03-28T21:49:10.462Z\",\n        \"updatedAt\": \"2022-03-28T21:49:10.462Z\",\n        \"__v\": 0\n    },\n    \"createdAt\": \"2022-03-28T22:01:52.446Z\",\n    \"updatedAt\": \"2022-03-28T22:06:00.922Z\",\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "render icon for buffer",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/lesson/icon/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"lesson",
+								"icon",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete lesson",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/lesson/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"lesson",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete lesson",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/lesson/{{id}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"lesson",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "48"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"30-hODRtL8Nq1djhb4QxIfb+svCauw\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Mar 2022 22:16:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"La lección se eliminó con éxito\"\n}"
+						}
+					]
+				},
+				{
+					"name": "update_icon",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "icon",
+									"type": "file",
+									"src": "/C:/Users/LENOVO/Documents/Proyectos/Python/youtube/iconos/cuchilleria.svg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host_url}}/api/lesson/icon/update/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"lesson",
+								"icon",
+								"update",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update_icon",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "icon",
+											"type": "file",
+											"src": "/C:/Users/LENOVO/Documents/Proyectos/Python/youtube/iconos/frutas.svg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host_url}}/api/lesson/icon/update/{{id}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"lesson",
+										"icon",
+										"update",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "45"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2d-Ur9V09zOPwvqbL9RF7lr9Q64DDA\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Mar 2022 22:12:38 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Icono actualizado correctamente\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Microlearning",
+			"item": [
+				{
+					"name": "create mocrolearning",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Mandarina",
+									"type": "text"
+								},
+								{
+									"key": "lesson",
+									"value": "6242305007edec250c46d2b9",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/LENOVO/Documents/Proyectos/Python/youtube/img/tangerines.jpg"
+								},
+								{
+									"key": "gif",
+									"type": "file",
+									"src": "/C:/Users/LENOVO/Documents/Proyectos/Python/youtube/frutas/MANDARINA.gif"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host_url}}/api/micro/",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"micro",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "create mocrolearning",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Pera",
+											"type": "text"
+										},
+										{
+											"key": "lesson",
+											"value": "6242305007edec250c46d2b9",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/C:/Users/LENOVO/Documents/Proyectos/Python/youtube/img/pear.jpg"
+										},
+										{
+											"key": "gif",
+											"type": "file",
+											"src": "/C:/Users/LENOVO/Documents/Proyectos/Python/youtube/frutas/PERA.gif"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host_url}}/api/micro/",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"micro",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "485"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1e5-LGSsC1mW4vmqPUWu2c+UOurNTrE\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 30 Mar 2022 03:40:24 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"6243d127e4029329b85c5594\",\n    \"title\": \"Pera\",\n    \"lesson\": \"6242305007edec250c46d2b9\",\n    \"image_url\": {\n        \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648611614/prueba/tabuldbsid8wcr61aq2f.jpg\",\n        \"public_id\": \"prueba/tabuldbsid8wcr61aq2f\"\n    },\n    \"gif_url\": {\n        \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648611622/prueba/q3emoxvrqiteyb71ypmp.gif\",\n        \"public_id\": \"prueba/q3emoxvrqiteyb71ypmp\"\n    },\n    \"createdAt\": \"2022-03-30T03:40:24.002Z\",\n    \"updatedAt\": \"2022-03-30T03:40:24.002Z\",\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "get All microlearning",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/micro/",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"micro",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getAll",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/micro/",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"micro",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "3464"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d88-+CDbNxplA05j5X9xMOgiIDguQtQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 30 Mar 2022 03:43:15 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"612a0032f5ff03219024e9c0\",\n        \"title\": \"Hola\",\n        \"lesson\": null,\n        \"createdAt\": \"2021-08-28T09:21:54.888Z\",\n        \"updatedAt\": \"2021-08-28T09:21:54.888Z\",\n        \"__v\": 0\n    },\n    {\n        \"image_url\": {\n            \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648611705/prueba/kgwqyrakkshmayaiityl.jpg\",\n            \"public_id\": \"prueba/kgwqyrakkshmayaiityl\"\n        },\n        \"gif_url\": {\n            \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648611713/prueba/uzh63emx6vh8dgsux3nt.gif\",\n            \"public_id\": \"prueba/uzh63emx6vh8dgsux3nt\"\n        },\n        \"_id\": \"6243d182e4029329b85c5599\",\n        \"title\": \"Mandarina\",\n        \"lesson\": {\n            \"_id\": \"6242305007edec250c46d2b9\",\n            \"name\": \"Fruta\",\n            \"module\": \"62422d5607edec250c46d2af\",\n            \"createdAt\": \"2022-03-28T22:01:52.446Z\",\n            \"updatedAt\": \"2022-03-28T22:06:00.922Z\",\n            \"__v\": 0\n        },\n        \"createdAt\": \"2022-03-30T03:41:54.690Z\",\n        \"updatedAt\": \"2022-03-30T03:41:54.690Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"6109e6315055381c14edc27f\",\n        \"title\": \"Manzana\",\n        \"lesson\": null,\n        \"createdAt\": \"2021-08-04T00:58:25.721Z\",\n        \"updatedAt\": \"2021-08-04T00:58:25.721Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"624235c807edec250c46d2df\",\n        \"title\": \"Manzana\",\n        \"lesson\": {\n            \"_id\": \"6242305007edec250c46d2b9\",\n            \"name\": \"Fruta\",\n            \"module\": \"62422d5607edec250c46d2af\",\n            \"createdAt\": \"2022-03-28T22:01:52.446Z\",\n            \"updatedAt\": \"2022-03-28T22:06:00.922Z\",\n            \"__v\": 0\n        },\n        \"createdAt\": \"2022-03-28T22:25:12.363Z\",\n        \"updatedAt\": \"2022-03-28T22:25:12.363Z\",\n        \"__v\": 0\n    },\n    {\n        \"image_url\": {\n            \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648609280/prueba/oimdiuvz7ljy0xslnc6u.jpg\",\n            \"public_id\": \"prueba/oimdiuvz7ljy0xslnc6u\"\n        },\n        \"gif_url\": {\n            \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648609289/prueba/jouqsdltp2kotxqwcvbj.gif\",\n            \"public_id\": \"prueba/jouqsdltp2kotxqwcvbj\"\n        },\n        \"_id\": \"6243c80af69e832d3886b49a\",\n        \"title\": \"Manzana\",\n        \"lesson\": {\n            \"_id\": \"6242305007edec250c46d2b9\",\n            \"name\": \"Fruta\",\n            \"module\": \"62422d5607edec250c46d2af\",\n            \"createdAt\": \"2022-03-28T22:01:52.446Z\",\n            \"updatedAt\": \"2022-03-28T22:06:00.922Z\",\n            \"__v\": 0\n        },\n        \"createdAt\": \"2022-03-30T03:01:30.818Z\",\n        \"updatedAt\": \"2022-03-30T03:01:30.818Z\",\n        \"__v\": 0\n    },\n    {\n        \"image_url\": {\n            \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648611614/prueba/tabuldbsid8wcr61aq2f.jpg\",\n            \"public_id\": \"prueba/tabuldbsid8wcr61aq2f\"\n        },\n        \"gif_url\": {\n            \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648611622/prueba/q3emoxvrqiteyb71ypmp.gif\",\n            \"public_id\": \"prueba/q3emoxvrqiteyb71ypmp\"\n        },\n        \"_id\": \"6243d127e4029329b85c5594\",\n        \"title\": \"Pera\",\n        \"lesson\": {\n            \"_id\": \"6242305007edec250c46d2b9\",\n            \"name\": \"Fruta\",\n            \"module\": \"62422d5607edec250c46d2af\",\n            \"createdAt\": \"2022-03-28T22:01:52.446Z\",\n            \"updatedAt\": \"2022-03-28T22:06:00.922Z\",\n            \"__v\": 0\n        },\n        \"createdAt\": \"2022-03-30T03:40:24.002Z\",\n        \"updatedAt\": \"2022-03-30T03:40:24.002Z\",\n        \"__v\": 0\n    },\n    {\n        \"image_url\": {\n            \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648610700/prueba/bixxsmw6vigmap2o0pbc.jpg\",\n            \"public_id\": \"prueba/bixxsmw6vigmap2o0pbc\"\n        },\n        \"gif_url\": {\n            \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648610709/prueba/entrexebz0y5zb0vmfbd.gif\",\n            \"public_id\": \"prueba/entrexebz0y5zb0vmfbd\"\n        },\n        \"_id\": \"6243cd967ba9c62b30037511\",\n        \"title\": \"Pruebita 02\",\n        \"lesson\": {\n            \"_id\": \"6242305007edec250c46d2b9\",\n            \"name\": \"Fruta\",\n            \"module\": \"62422d5607edec250c46d2af\",\n            \"createdAt\": \"2022-03-28T22:01:52.446Z\",\n            \"updatedAt\": \"2022-03-28T22:06:00.922Z\",\n            \"__v\": 0\n        },\n        \"createdAt\": \"2022-03-30T03:25:10.511Z\",\n        \"updatedAt\": \"2022-03-30T03:25:10.511Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"6109e5c75055381c14edc27a\",\n        \"title\": \"Sopa\",\n        \"lesson\": null,\n        \"createdAt\": \"2021-08-04T00:56:39.668Z\",\n        \"updatedAt\": \"2021-08-04T00:56:39.668Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"612a0283f5ff03219024ea73\",\n        \"title\": \"Yasuo\",\n        \"lesson\": null,\n        \"createdAt\": \"2021-08-28T09:31:48.016Z\",\n        \"updatedAt\": \"2021-08-28T09:31:48.016Z\",\n        \"__v\": 0\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "get By Id microlearning",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/micro/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"micro",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getById",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/micro/{{id}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"micro",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "635"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"27b-lK83cXL3gHEp6DYYyFooU/Irp2o\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 30 Mar 2022 03:46:01 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"image_url\": {\n        \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648611705/prueba/kgwqyrakkshmayaiityl.jpg\",\n        \"public_id\": \"prueba/kgwqyrakkshmayaiityl\"\n    },\n    \"gif_url\": {\n        \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648611713/prueba/uzh63emx6vh8dgsux3nt.gif\",\n        \"public_id\": \"prueba/uzh63emx6vh8dgsux3nt\"\n    },\n    \"_id\": \"6243d182e4029329b85c5599\",\n    \"title\": \"Mandarina\",\n    \"lesson\": {\n        \"_id\": \"6242305007edec250c46d2b9\",\n        \"name\": \"Fruta\",\n        \"module\": \"62422d5607edec250c46d2af\",\n        \"createdAt\": \"2022-03-28T22:01:52.446Z\",\n        \"updatedAt\": \"2022-03-28T22:06:00.922Z\",\n        \"__v\": 0\n    },\n    \"createdAt\": \"2022-03-30T03:41:54.690Z\",\n    \"updatedAt\": \"2022-03-30T03:41:54.690Z\",\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "delete microlearning",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/micro/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"micro",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/micro/{{id}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"micro",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "54"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"36-7mozMAikKWSjkXwqAuWqbpNg1f0\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 30 Mar 2022 03:57:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"El microcontenido se eliminó con éxito\"\n}"
+						}
+					]
+				},
+				{
+					"name": "render image for buffer",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/micro/image/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"micro",
+								"image",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "render gif for buffer",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/micro/gif/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"micro",
+								"gif",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update only info microlearning",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Mandarina 02\",\r\n    \"lesson\": \"6242305007edec250c46d2b9\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_url}}/api/micro/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"micro",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Mandarina 02\",\r\n    \"lesson\": \"6242305007edec250c46d2b9\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_url}}/api/micro/{{id}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"micro",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "60"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3c-zKheJE3yhAiCJTWvZM2i3kQzhyQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 30 Mar 2022 03:49:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"El microcontenido se actualizado correctamente\"\n}"
+						}
+					]
+				},
+				{
+					"name": "update_image microlearning",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/LENOVO/Documents/Proyectos/Python/youtube/img/bee.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host_url}}/api/micro/image/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"micro",
+								"image",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update_image",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/C:/Users/LENOVO/Documents/Proyectos/Python/youtube/img/oranges.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host_url}}/api/micro/image/{{id}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"micro",
+										"image",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "47"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2f-HWFiij9Vdy4Sls+hYe5lCIjwd+I\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 30 Mar 2022 05:09:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Imágen actualizado correctamente\"\n}"
+						}
+					]
+				},
+				{
+					"name": "update_gif microlearning",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "gif",
+									"type": "file",
+									"src": "/C:/Users/LENOVO/Documents/Proyectos/Python/youtube/numeros/CUATRO.gif"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host_url}}/api/micro/gif/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"micro",
+								"gif",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update_gif",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "gif",
+											"type": "file",
+											"src": "/C:/Users/LENOVO/Documents/Proyectos/Python/youtube/familia/HERMANA.gif"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host_url}}/api/micro/gif/{{id}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"micro",
+										"gif",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "43"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2b-9QBV8TaeJdVafu5wSzDig8UOijA\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 30 Mar 2022 05:27:27 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"GIF actualizado correctamente\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Card",
+			"item": [
+				{
+					"name": "create card",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "question",
+									"value": "¿Qué significa?",
+									"type": "text"
+								},
+								{
+									"key": "lesson",
+									"value": "6242305007edec250c46d2b9",
+									"type": "text"
+								},
+								{
+									"key": "correctAnswer",
+									"value": "Perro",
+									"type": "text"
+								},
+								{
+									"key": "wrongAnswer",
+									"value": "Abeja",
+									"type": "text"
+								},
+								{
+									"key": "gif",
+									"type": "file",
+									"src": "/C:/Users/LENOVO/Documents/Proyectos/Python/youtube/animales/PERRO.gif"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host_url}}/api/card/",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"card",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "create card",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "question",
+											"value": "¿Qué significa?",
+											"type": "text"
+										},
+										{
+											"key": "lesson",
+											"value": "6242305007edec250c46d2b9",
+											"type": "text"
+										},
+										{
+											"key": "correctAnswer",
+											"value": "Perro",
+											"type": "text"
+										},
+										{
+											"key": "wrongAnswer",
+											"value": "Abeja",
+											"type": "text"
+										},
+										{
+											"key": "gif",
+											"type": "file",
+											"src": "/C:/Users/LENOVO/Documents/Proyectos/Python/youtube/animales/PERRO.gif"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host_url}}/api/card/",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"card",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "389"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"185-2PTrkot2kcWXu+mvwepdTuUgAxE\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 03:22:55 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"62451e8fbcc70619d885376c\",\n    \"question\": \"¿Qué significa?\",\n    \"lesson\": \"6242305007edec250c46d2b9\",\n    \"correctAnswer\": \"Perro\",\n    \"wrongAnswer\": \"Abeja\",\n    \"gif_url\": {\n        \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648696974/prueba/mhwhtwihyrttoutjwxzf.gif\",\n        \"public_id\": \"prueba/mhwhtwihyrttoutjwxzf\"\n    },\n    \"createdAt\": \"2022-03-31T03:22:55.104Z\",\n    \"updatedAt\": \"2022-03-31T03:22:55.104Z\",\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "update_gif_card",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "gif",
+									"type": "file",
+									"src": "/C:/Users/LENOVO/Documents/Proyectos/Python/youtube/animales/VACA.gif"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host_url}}/api/card/gif/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"card",
+								"gif",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update_gif_card",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "gif",
+											"type": "file",
+											"src": "/C:/Users/LENOVO/Documents/Proyectos/Python/youtube/animales/VACA.gif"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host_url}}/api/card/gif/{{id}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"card",
+										"gif",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "43"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2b-9QBV8TaeJdVafu5wSzDig8UOijA\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 03:47:51 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"GIF actualizado correctamente\"\n}"
+						}
+					]
+				},
+				{
+					"name": "update_card",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"question\": \"¿Cuál es el significado?\",\r\n    \"correctAnswer\": \"Perro\",\r\n    \"wrongAnswer\": \"Gato\",\r\n    \"lesson\": \"6242305007edec250c46d2b9\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_url}}/api/card/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"card",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update_card",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"question\": \"¿Cuál es el significado?\",\r\n    \"correctAnswer\": \"Perro\",\r\n    \"wrongAnswer\": \"Gato\",\r\n    \"lesson\": \"6242305007edec250c46d2b9\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_url}}/api/card/{{id}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"card",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "68"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"44-uXGR6CDeox9gNVM/bHVGMtVe/yQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 03:34:06 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"La tarjeta de conocmiento se actualizado correctamente\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete_card",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host_url}}/api/card/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"card",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete_card",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host_url}}/api/card/{{id}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"card",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "63"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3f-V4kB76fUDtPhHjId0v5GZr2JT7U\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 03:37:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"La tarjeta de conocimiento se eliminó con éxito\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get all card",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/card",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"card"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get all card",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/card",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"card"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2757"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"ac5-wjFzHhw2he7m3FDJH5Oo/5HLK54\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 03:24:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"610ecf641ab75a2a6cc44238\",\n        \"question\": \"¿Qué significa la siguiente lengua de señas?\",\n        \"lesson\": null,\n        \"correctAnswer\": \"Sopa\",\n        \"wrongAnswer\": \"manzana\",\n        \"createdAt\": \"2021-08-07T18:22:28.084Z\",\n        \"updatedAt\": \"2021-08-08T19:15:49.176Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"610edef21791c02f7c41ce27\",\n        \"question\": \"Update question\",\n        \"lesson\": null,\n        \"correctAnswer\": \"Manzana\",\n        \"wrongAnswer\": \"Mnago\",\n        \"createdAt\": \"2021-08-07T19:28:50.646Z\",\n        \"updatedAt\": \"2021-08-08T05:08:44.796Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"610ef386876f860e1410cbc7\",\n        \"question\": \"Seleccione la respuesta correcta\",\n        \"lesson\": null,\n        \"correctAnswer\": \"Padre\",\n        \"wrongAnswer\": \"Madre\",\n        \"createdAt\": \"2021-08-07T20:56:38.631Z\",\n        \"updatedAt\": \"2021-08-08T19:16:37.899Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"610ef406849b781a5ca0281b\",\n        \"question\": \"Seleccione la respuesta correcta\",\n        \"lesson\": null,\n        \"correctAnswer\": \"Arroz\",\n        \"wrongAnswer\": \"Pera\",\n        \"createdAt\": \"2021-08-07T20:58:46.368Z\",\n        \"updatedAt\": \"2021-08-08T19:17:14.146Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"610f33793d2b522a78833b98\",\n        \"question\": \"¿Cuál es la respuesta correcta?\",\n        \"lesson\": null,\n        \"correctAnswer\": \"Buenos días\",\n        \"wrongAnswer\": \"Buenas noches\",\n        \"createdAt\": \"2021-08-08T01:29:29.594Z\",\n        \"updatedAt\": \"2021-08-08T19:18:03.903Z\",\n        \"__v\": 0\n    },\n    {\n        \"gif_url\": {\n            \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648696707/prueba/zfpnjze4svhxhiqzxnrq.gif\",\n            \"public_id\": \"prueba/zfpnjze4svhxhiqzxnrq\"\n        },\n        \"_id\": \"62451d8406321f2c64a05a9c\",\n        \"question\": \"¿Qué significa?\",\n        \"lesson\": {\n            \"_id\": \"6242305007edec250c46d2b9\",\n            \"name\": \"Fruta\",\n            \"module\": \"62422d5607edec250c46d2af\",\n            \"createdAt\": \"2022-03-28T22:01:52.446Z\",\n            \"updatedAt\": \"2022-03-28T22:06:00.922Z\",\n            \"__v\": 0\n        },\n        \"correctAnswer\": \"Pera\",\n        \"wrongAnswer\": \"Sopa\",\n        \"createdAt\": \"2022-03-31T03:18:28.310Z\",\n        \"updatedAt\": \"2022-03-31T03:18:28.310Z\",\n        \"__v\": 0\n    },\n    {\n        \"gif_url\": {\n            \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648696875/prueba/bs0p23lboxnqdwvgb0nd.gif\",\n            \"public_id\": \"prueba/bs0p23lboxnqdwvgb0nd\"\n        },\n        \"_id\": \"62451e2c610c1a2e74d28de7\",\n        \"question\": \"¿Qué significa?\",\n        \"lesson\": {\n            \"_id\": \"6242305007edec250c46d2b9\",\n            \"name\": \"Fruta\",\n            \"module\": \"62422d5607edec250c46d2af\",\n            \"createdAt\": \"2022-03-28T22:01:52.446Z\",\n            \"updatedAt\": \"2022-03-28T22:06:00.922Z\",\n            \"__v\": 0\n        },\n        \"correctAnswer\": \"Manzana\",\n        \"wrongAnswer\": \"Abeja\",\n        \"createdAt\": \"2022-03-31T03:21:16.086Z\",\n        \"updatedAt\": \"2022-03-31T03:21:16.086Z\",\n        \"__v\": 0\n    },\n    {\n        \"gif_url\": {\n            \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648696974/prueba/mhwhtwihyrttoutjwxzf.gif\",\n            \"public_id\": \"prueba/mhwhtwihyrttoutjwxzf\"\n        },\n        \"_id\": \"62451e8fbcc70619d885376c\",\n        \"question\": \"¿Qué significa?\",\n        \"lesson\": {\n            \"_id\": \"6242305007edec250c46d2b9\",\n            \"name\": \"Fruta\",\n            \"module\": \"62422d5607edec250c46d2af\",\n            \"createdAt\": \"2022-03-28T22:01:52.446Z\",\n            \"updatedAt\": \"2022-03-28T22:06:00.922Z\",\n            \"__v\": 0\n        },\n        \"correctAnswer\": \"Perro\",\n        \"wrongAnswer\": \"Abeja\",\n        \"createdAt\": \"2022-03-31T03:22:55.104Z\",\n        \"updatedAt\": \"2022-03-31T03:22:55.104Z\",\n        \"__v\": 0\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "get card byId",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/card/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"card",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get card byId",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/card/{{id}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"card",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "534"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"216-u08abb0/JUiooDYEuXnFwz2o0Wc\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 03:27:32 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"gif_url\": {\n        \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648696974/prueba/mhwhtwihyrttoutjwxzf.gif\",\n        \"public_id\": \"prueba/mhwhtwihyrttoutjwxzf\"\n    },\n    \"_id\": \"62451e8fbcc70619d885376c\",\n    \"question\": \"¿Qué significa?\",\n    \"lesson\": {\n        \"_id\": \"6242305007edec250c46d2b9\",\n        \"name\": \"Fruta\",\n        \"module\": \"62422d5607edec250c46d2af\",\n        \"createdAt\": \"2022-03-28T22:01:52.446Z\",\n        \"updatedAt\": \"2022-03-28T22:06:00.922Z\",\n        \"__v\": 0\n    },\n    \"correctAnswer\": \"Perro\",\n    \"wrongAnswer\": \"Abeja\",\n    \"createdAt\": \"2022-03-31T03:22:55.104Z\",\n    \"updatedAt\": \"2022-03-31T03:22:55.104Z\",\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "render gif_card for buffer",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/card/gif/{{id}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"card",
+								"gif",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "estadistica",
+			"item": [
+				{
+					"name": "Add lessons completed by the student",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/home/complete/lesson/{{lessonId}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"home",
+								"complete",
+								"lesson",
+								"{{lessonId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "addLesson",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"user\": \"61185fc977264916acb6d228\"\r\n}"
+								},
+								"url": {
+									"raw": "{{host_url}}/api/home/complete/lesson/{{lessonId}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"home",
+										"complete",
+										"lesson",
+										"{{lessonId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "40"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"28-/E7Lnj2rBTRc8Sw2dUoExH8XZ1Y\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 04:54:28 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": {\n        \"n\": 1,\n        \"nModified\": 1,\n        \"ok\": 1\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get the learnings completed by the student",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/home/complete/learn",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"home",
+								"complete",
+								"learn"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get the learnings completed by the student",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/home/complete/learn/{{userId}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"home",
+										"complete",
+										"learn",
+										"{{userId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "233"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"e9-xPm+eb405im3Vf5O1UoMAZmJOvo\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 04:45:12 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"lesson\": [\n        \"6109e4f25055381c14edc249\",\n        \"6109e53f5055381c14edc25c\",\n        \"6109e4c65055381c14edc23f\",\n        \"6109e5035055381c14edc24e\",\n        \"6109e4365055381c14edc237\"\n    ],\n    \"microlearning\": [],\n    \"_id\": \"61185fc977264916acb6d22b\",\n    \"user\": \"61185fc977264916acb6d228\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "get all users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/user",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get all users",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/user",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "749"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2ed-rJ/3fYImXu8dWmBrtH39qp6BNxs\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 05:03:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"roles\": [\n            {\n                \"_id\": \"60e0c76d4548c92b109fa47b\",\n                \"name\": \"student\"\n            },\n            {\n                \"_id\": \"60e0c76d4548c92b109fa47c\",\n                \"name\": \"moderator\"\n            },\n            {\n                \"_id\": \"60e0c76d4548c92b109fa47d\",\n                \"name\": \"admin\"\n            }\n        ],\n        \"_id\": \"62420c3ace959a26f800775f\",\n        \"name\": \"admin\",\n        \"email\": \"admin@gmail.com\",\n        \"salt\": \"2a98d2f0-aecd-11ec-b05d-8d1cad222d82\",\n        \"hashed_password\": \"95352115bf76c27fffd036f1725a9657069198ba\",\n        \"createdAt\": \"2022-03-28T19:27:54.797Z\",\n        \"updatedAt\": \"2022-03-28T19:27:54.797Z\"\n    },\n    {\n        \"roles\": [\n            {\n                \"_id\": \"60e0c76d4548c92b109fa47b\",\n                \"name\": \"student\"\n            }\n        ],\n        \"_id\": \"62420c8bce959a26f8007765\",\n        \"name\": \"gwen\",\n        \"email\": \"gwen@gmail.com\",\n        \"salt\": \"5accc260-aecd-11ec-b05d-8d1cad222d82\",\n        \"hashed_password\": \"b82d0c575cbdfacf64247b52a2812c936346b321\",\n        \"createdAt\": \"2022-03-28T19:29:15.659Z\",\n        \"updatedAt\": \"2022-03-28T19:29:15.659Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "get user by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/user/find/{{userId}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"find",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get user by id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/user/find/{{userId}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"find",
+										"{{userId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "213"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d5-TjAt8uOEKtm4V6o/gvuBW07tbdo\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 05:07:27 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"roles\": [\n        {\n            \"_id\": \"60e0c76d4548c92b109fa47b\",\n            \"name\": \"student\"\n        }\n    ],\n    \"_id\": \"62420c8bce959a26f8007765\",\n    \"name\": \"gwen\",\n    \"email\": \"gwen@gmail.com\",\n    \"createdAt\": \"2022-03-28T19:29:15.659Z\",\n    \"updatedAt\": \"2022-03-28T19:29:15.659Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete user by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/user/{{userId}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete user by id",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/user/{{userId}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"{{userId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "26"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1a-OqyGMiBy7AdDNIJN+Gnxo5O40xA\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 05:09:38 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "\"El usuario fue eliminado\""
+						}
+					]
+				},
+				{
+					"name": "update user by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Gwen\",\r\n    \"email\": \"gwen@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_url}}/api/user/{{userId}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update user by id",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Gwen\",\r\n    \"email\": \"gwen@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_url}}/api/user/{{userId}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"{{userId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "320"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"140-uxQj/GL+yaXD20pouNK/FrZcDH0\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 05:14:08 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"roles\": [\n        {\n            \"_id\": \"60e0c76d4548c92b109fa47b\",\n            \"name\": \"student\"\n        }\n    ],\n    \"_id\": \"62420c8bce959a26f8007765\",\n    \"name\": \"Gwen\",\n    \"email\": \"gwen@gmail.com\",\n    \"salt\": \"5accc260-aecd-11ec-b05d-8d1cad222d82\",\n    \"hashed_password\": \"b82d0c575cbdfacf64247b52a2812c936346b321\",\n    \"createdAt\": \"2022-03-28T19:29:15.659Z\",\n    \"updatedAt\": \"2022-03-31T05:14:08.895Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get all users query new",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/user?new=true",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							],
+							"query": [
+								{
+									"key": "new",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get all users query new",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/user?new=true",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"user"
+									],
+									"query": [
+										{
+											"key": "new",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "749"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2ed-rfB6NROspZQwMij/9Z6HzXy40Lk\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 05:19:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"roles\": [\n            {\n                \"_id\": \"60e0c76d4548c92b109fa47b\",\n                \"name\": \"student\"\n            }\n        ],\n        \"_id\": \"62420c8bce959a26f8007765\",\n        \"name\": \"Gwen\",\n        \"email\": \"gwen@gmail.com\",\n        \"salt\": \"5accc260-aecd-11ec-b05d-8d1cad222d82\",\n        \"hashed_password\": \"b82d0c575cbdfacf64247b52a2812c936346b321\",\n        \"createdAt\": \"2022-03-28T19:29:15.659Z\",\n        \"updatedAt\": \"2022-03-31T05:16:02.722Z\"\n    },\n    {\n        \"roles\": [\n            {\n                \"_id\": \"60e0c76d4548c92b109fa47b\",\n                \"name\": \"student\"\n            },\n            {\n                \"_id\": \"60e0c76d4548c92b109fa47c\",\n                \"name\": \"moderator\"\n            },\n            {\n                \"_id\": \"60e0c76d4548c92b109fa47d\",\n                \"name\": \"admin\"\n            }\n        ],\n        \"_id\": \"62420c3ace959a26f800775f\",\n        \"name\": \"admin\",\n        \"email\": \"admin@gmail.com\",\n        \"salt\": \"2a98d2f0-aecd-11ec-b05d-8d1cad222d82\",\n        \"hashed_password\": \"95352115bf76c27fffd036f1725a9657069198ba\",\n        \"createdAt\": \"2022-03-28T19:27:54.797Z\",\n        \"updatedAt\": \"2022-03-28T19:27:54.797Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "get all users query new and limit",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/user?new=true&limit=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"user"
+							],
+							"query": [
+								{
+									"key": "new",
+									"value": "true"
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get all users query new and limit",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/api/user?new=true&limit=4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"user"
+									],
+									"query": [
+										{
+											"key": "new",
+											"value": "true"
+										},
+										{
+											"key": "limit",
+											"value": "4"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "749"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2ed-rfB6NROspZQwMij/9Z6HzXy40Lk\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 05:18:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"roles\": [\n            {\n                \"_id\": \"60e0c76d4548c92b109fa47b\",\n                \"name\": \"student\"\n            }\n        ],\n        \"_id\": \"62420c8bce959a26f8007765\",\n        \"name\": \"Gwen\",\n        \"email\": \"gwen@gmail.com\",\n        \"salt\": \"5accc260-aecd-11ec-b05d-8d1cad222d82\",\n        \"hashed_password\": \"b82d0c575cbdfacf64247b52a2812c936346b321\",\n        \"createdAt\": \"2022-03-28T19:29:15.659Z\",\n        \"updatedAt\": \"2022-03-31T05:16:02.722Z\"\n    },\n    {\n        \"roles\": [\n            {\n                \"_id\": \"60e0c76d4548c92b109fa47b\",\n                \"name\": \"student\"\n            },\n            {\n                \"_id\": \"60e0c76d4548c92b109fa47c\",\n                \"name\": \"moderator\"\n            },\n            {\n                \"_id\": \"60e0c76d4548c92b109fa47d\",\n                \"name\": \"admin\"\n            }\n        ],\n        \"_id\": \"62420c3ace959a26f800775f\",\n        \"name\": \"admin\",\n        \"email\": \"admin@gmail.com\",\n        \"salt\": \"2a98d2f0-aecd-11ec-b05d-8d1cad222d82\",\n        \"hashed_password\": \"95352115bf76c27fffd036f1725a9657069198ba\",\n        \"createdAt\": \"2022-03-28T19:27:54.797Z\",\n        \"updatedAt\": \"2022-03-28T19:27:54.797Z\"\n    }\n]"
+						},
+						{
+							"name": "get all users query new and limit",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:5000/api/user?new=true&limit=1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"user"
+									],
+									"query": [
+										{
+											"key": "new",
+											"value": "true"
+										},
+										{
+											"key": "limit",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "322"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"142-TdDPZg+vXDx91wAoRT8eTGABtYs\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 05:20:19 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"roles\": [\n            {\n                \"_id\": \"60e0c76d4548c92b109fa47b\",\n                \"name\": \"student\"\n            }\n        ],\n        \"_id\": \"62420c8bce959a26f8007765\",\n        \"name\": \"Gwen\",\n        \"email\": \"gwen@gmail.com\",\n        \"salt\": \"5accc260-aecd-11ec-b05d-8d1cad222d82\",\n        \"hashed_password\": \"b82d0c575cbdfacf64247b52a2812c936346b321\",\n        \"createdAt\": \"2022-03-28T19:29:15.659Z\",\n        \"updatedAt\": \"2022-03-31T05:16:02.722Z\"\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Home Student",
+			"item": [
+				{
+					"name": "Get the modules created if they have associated lessons",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/home/modules",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"home",
+								"modules"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get the modules created if they have associated lessons",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/home/modules",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"home",
+										"modules"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "151"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"97-OLLEmmWokixzFEnmzUrcU6bSF94\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 04:44:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"62422d5607edec250c46d2af\",\n        \"number\": 1,\n        \"name\": \"Modulo 1\",\n        \"createdAt\": \"2022-03-28T21:49:10.462Z\",\n        \"updatedAt\": \"2022-03-28T21:49:10.462Z\",\n        \"__v\": 0\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get the lessons from a module",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/home/lessons/{{moduleId}}",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"home",
+								"lessons",
+								"{{moduleId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get the lessons from a module",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/home/lessons/{{moduleId}}",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"home",
+										"lessons",
+										"{{moduleId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "348"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"15c-V4zbAilr0+aKdfdtyzwVexuhpcw\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 31 Mar 2022 04:43:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"6242305007edec250c46d2b9\",\n        \"name\": \"Fruta\",\n        \"module\": \"62422d5607edec250c46d2af\",\n        \"createdAt\": \"2022-03-28T22:01:52.446Z\",\n        \"updatedAt\": \"2022-03-28T22:06:00.922Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"624529135620af0f88a17387\",\n        \"name\": \"Animales\",\n        \"module\": \"62422d5607edec250c46d2af\",\n        \"createdAt\": \"2022-03-31T04:07:47.547Z\",\n        \"updatedAt\": \"2022-03-31T04:07:47.547Z\",\n        \"__v\": 0\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get the micro-content of a lesson",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/home/learn/{{lessonId}}?page=1",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"home",
+								"learn",
+								"{{lessonId}}"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get the micro-content of a lesson",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/home/learn/{{lessonId}}?page=1",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"home",
+										"learn",
+										"{{lessonId}}"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "631"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"277-1ixqxEeRmYdfCJwQih0CXyqkL1c\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 04 Apr 2022 20:33:38 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"docs\": [\n        {\n            \"image_url\": {\n                \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648846736/prueba/xtlwv1jxjzroxkvu7iad.png\",\n                \"public_id\": \"prueba/xtlwv1jxjzroxkvu7iad\"\n            },\n            \"gif_url\": {\n                \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648846753/prueba/osxzng9bfgtnbgyfuvfm.gif\",\n                \"public_id\": \"prueba/osxzng9bfgtnbgyfuvfm\"\n            },\n            \"_id\": \"624235c807edec250c46d2df\",\n            \"title\": \"Perro\",\n            \"lesson\": \"624529135620af0f88a17387\",\n            \"createdAt\": \"2022-03-28T22:25:12.363Z\",\n            \"updatedAt\": \"2022-04-01T20:59:15.603Z\",\n            \"__v\": 0\n        }\n    ],\n    \"totalDocs\": 2,\n    \"limit\": 1,\n    \"totalPages\": 2,\n    \"page\": 1,\n    \"pagingCounter\": 1,\n    \"hasPrevPage\": false,\n    \"hasNextPage\": true,\n    \"prevPage\": null,\n    \"nextPage\": 2\n}"
+						}
+					]
+				},
+				{
+					"name": "Get the cards of a lesson",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_url}}/api/home/card/{{lessonId}}?page=1",
+							"host": [
+								"{{host_url}}"
+							],
+							"path": [
+								"api",
+								"home",
+								"card",
+								"{{lessonId}}"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get the cards of a lesson",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_url}}/api/home/card/{{lessonId}}?page=1",
+									"host": [
+										"{{host_url}}"
+									],
+									"path": [
+										"api",
+										"home",
+										"card",
+										"{{lessonId}}"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "542"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"21e-TrcUfRO/uhqgyAdE3nXUfKHknvs\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 04 Apr 2022 20:32:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"docs\": [\n        {\n            \"gif_url\": {\n                \"url\": \"https://res.cloudinary.com/dqynubmo1/image/upload/v1648847141/prueba/y2vg3zimqpcc2flu036c.gif\",\n                \"public_id\": \"prueba/y2vg3zimqpcc2flu036c\"\n            },\n            \"_id\": \"610ecf641ab75a2a6cc44238\",\n            \"question\": \"¿Cuál es el significado?\",\n            \"lesson\": \"624529135620af0f88a17387\",\n            \"correctAnswer\": \"Perro\",\n            \"wrongAnswer\": \"Gato\",\n            \"createdAt\": \"2021-08-07T18:22:28.084Z\",\n            \"updatedAt\": \"2022-04-01T21:06:18.057Z\",\n            \"__v\": 0\n        }\n    ],\n    \"totalDocs\": 2,\n    \"limit\": 1,\n    \"totalPages\": 2,\n    \"page\": 1,\n    \"pagingCounter\": 1,\n    \"hasPrevPage\": false,\n    \"hasNextPage\": true,\n    \"prevPage\": null,\n    \"nextPage\": 2\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}
