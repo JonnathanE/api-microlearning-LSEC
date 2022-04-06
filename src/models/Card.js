@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 const { ObjectId } = mongoose.Schema;
 
 const cardSchema = new mongoose.Schema(
@@ -12,6 +13,10 @@ const cardSchema = new mongoose.Schema(
         gif: {
             data: Buffer,
             contentType: String
+        },
+        gif_url: {
+            url: String,
+            public_id: String
         },
         correctAnswer: {
             type: String,
@@ -35,5 +40,7 @@ const cardSchema = new mongoose.Schema(
         timestamps: true
     }
 );
+
+cardSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Card', cardSchema);

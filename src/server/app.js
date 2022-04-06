@@ -1,4 +1,5 @@
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -16,6 +17,10 @@ app.set('port', process.env.PORT || 3000);
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(cors());
+app.use(fileUpload({
+    useTempFiles : true,
+    tempFileDir : './upload'
+}));
 
 // Routes
 app.use('/api/user', require('../routes/user.routes'));
