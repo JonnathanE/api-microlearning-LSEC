@@ -2,6 +2,7 @@
 const formidable = require('formidable');
 const _ = require('lodash');
 const fs = require('fs');
+const fse = require('fs-extra');
 
 const Lessons = require('../models/Lesson');
 const { errorHandler } = require('../helpers/dberrorHandler');
@@ -15,33 +16,30 @@ class Lesson {
      * Method to create a lesson
      */
     create = async (req, res) => {
-        // created a new form object
-        let form = new formidable.IncomingForm();
-        form.keepExtensions = true;
-        // I extract the data from the request form
-        form.parse(req, async (err, fields, files) => {
-            if (err) return res.status(400).json({ error: "No se pudo cargar la imagen" });
+        try {
             // a lesson is created with the form data
-            const { name, module } = fields;
-            let lesson = new Lessons(fields);
-            // it is verified if the sent file is of type icon
-            if (files.icon) {
+            const { name, module } = req.body;
+            let lesson = new Lessons({ name, module });
+            // check if an image was sent and save it in cloudinary
+            if (req.files.icon) {
                 // file size is checked
-                if (files.icon.size > 1000000) {
+                if (req.files.icon.size > 1000000) {
                     return res.status(400).json({ error: "La imagen debe tener un tamaño inferior a 1 MB." });
                 }
                 // the icon is stored in the object lesson as a buffer data type
-                lesson.icon.data = fs.readFileSync(files.icon.path);
-                lesson.icon.contentType = files.icon.type;
+                lesson.icon.data = fs.readFileSync(req.files.icon.tempFilePath);
+                lesson.icon.contentType = req.files.icon.mimetype;
+                await fse.remove(req.files.icon.tempFilePath);
             }
-            // the lesson is saved in the database
-            await lesson.save((err, result) => {
-                if (err) return res.status(400).json({ error: 'No se ha creado' });
-                result.icon = undefined;
-                // returns the lesson data in JSON format
-                res.status(200).json(result);
-            });
-        });
+            // save to database
+            await lesson.save();
+            // return the created lesson
+            lesson.icon = undefined;
+            return res.status(200).json(lesson);
+        } catch (error) {
+            console.log(error)
+            return res.status(400).json({ error: "No se creó la lección para este módulo" })
+        }
     }
 
     /**
@@ -50,7 +48,7 @@ class Lesson {
     getAll = async (req, res) => {
         // the search filters are obtained from the request
         let order = req.query.order ? req.query.order : 'asc'; // variable to sort the results; ascending by default
-        let sortBy = req.query.sortBy ? req.query.sortBy : 'name'; // filter
+        let sortBy = req.query.sortBy ? req.query.sortBy : 'module'; // filter
         // all the lessons from the database are obtained and returned in JSON format
         await Lessons.find()
             .select("-icon")

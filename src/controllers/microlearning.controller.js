@@ -1,9 +1,10 @@
 'use strict';
 const formidable = require('formidable');
-const fs = require('fs');
+const fs = require('fs-extra');
 
 const Micro = require('../models/Microlearning');
-const { errorHandler } = require('../helpers/dberrorHandler')
+const { errorHandler } = require('../helpers/dberrorHandler');
+const { uploadImage, deleteImage } = require('../libs/cloudinary');
 
 /**
  * Class to manage the learning capsules (microlearning)
@@ -15,41 +16,38 @@ class Microlearning {
      * @returns {JSON}
      */
     create = async (req, res) => {
-        // created a new form object
-        let form = new formidable.IncomingForm();
-        form.keepExtensions = true;
-        // I extract the data from the request form
-        form.parse(req, async (err, fields, files) => {
-
-            if (err) return res.status(400).json({ error: 'No se pudo cargar la imagen' });
-            // a learning capsule is created with the form data
-            let micro = new Micro(fields);
-            // it is verified if the sent file is of type image
-            if (files.image) {
-                 // file size is checked
-                if (files.image.size > 9000000) {
-                    return res.status(400).json({ error: 'La imagen debe tener un tamaño inferior a 9 MB.' });
+        try {
+            // get request body information
+            const { title, lesson } = req.body;
+            // check if an image was sent and save it in cloudinary
+            let image;
+            if (req.files.image) {
+                const resultImage = await uploadImage(req.files.image.tempFilePath);
+                image = {
+                    url: resultImage.secure_url,
+                    public_id: resultImage.public_id
                 }
-                // the image is stored in the object micro as a buffer data type
-                micro.image.data = fs.readFileSync(files.image.path);
-                micro.image.contentType = files.image.type;
+                await fs.remove(req.files.image.tempFilePath)
             }
-            // it is verified if the sent file is of type gif
-            if (files.gif) {
-                 // file size is checked
-                if (files.gif.size > 9000000) {
-                    return res.status(400).json({ error: 'El GIF debe tener un tamaño inferior a 9 MB.' });
+            // check if an gif was sent and save it in cloudinary
+            let gif;
+            if (req.files.gif) {
+                const resultGif = await uploadImage(req.files.gif.tempFilePath);
+                gif = {
+                    url: resultGif.secure_url,
+                    public_id: resultGif.public_id
                 }
-                // the gif is stored in the object micro as a buffer data type
-                micro.gif.data = fs.readFileSync(files.gif.path);
-                micro.gif.contentType = files.gif.type;
+                await fs.remove(req.files.gif.tempFilePath)
             }
-            // the learning capsule is saved in the database
-            await micro.save((err, result) => {
-                if (err) return res.status(400).json({ error: 'No se pudo crear el microcontenido' });
-                res.status(200).json(result);
-            });
-        });
+            // create a Microlearning object
+            const newMicrolearning = new Micro({ title, lesson, image_url: image, gif_url: gif });
+            // save to database
+            await newMicrolearning.save();
+            // return the created microlearning
+            return res.status(200).json(newMicrolearning);
+        } catch (error) {
+            return res.status(400).json({ error: 'No se pudo crear el microcontenido' });
+        }
     }
 
     /**
@@ -63,7 +61,7 @@ class Microlearning {
         // all the learning capsules from the database are obtained and returned in JSON format
         await Micro.find()
             .select(['-image', '-gif'])
-            .populate('lesson')
+            .populate('lesson', '-icon')
             .sort([[sortBy, order]])
             .exec((err, micro) => {
                 if (err) return res.status(400).json({ error: 'Microcontenidos no encontrados' });
@@ -88,12 +86,27 @@ class Microlearning {
      * @param {{body: {microlearning: Object}}} req request with the knowledge cards object provided by the {@link byId} function
      * @returns {JSON}
      */
-    remove = (req, res) => {
-        let microlearning = req.microlearning;
-        microlearning.remove((err, deleteMicro) => {
-            if (err) return res.status(400).json({ error: errorHandler(err) });
-            res.status(200).json({ message: 'El microcontenido se eliminó con éxito' })
-        });
+    remove = async (req, res) => {
+        try {
+            // get microlearning object from req
+            let microlearning = req.microlearning;
+            // check if you have the image url registered and delete it
+            if (microlearning.image_url.public_id) {
+                await deleteImage(microlearning.image_url.public_id);
+            }
+            // check if you have the gif url registered and delete it
+            if (microlearning.gif_url.public_id) {
+                await deleteImage(microlearning.gif_url.public_id);
+            }
+            // remove microlearning from database
+            const microRemoved = microlearning.remove();
+            // check if it was deleted
+            if (!microRemoved) return res.status(400).json({ message: 'El microcontenido no se eliminó' })
+            // return a response
+            return res.status(200).json({ message: 'El microcontenido se eliminó con éxito' });
+        } catch (error) {
+            return res.status(500).json({ error: error.message});
+        }
     }
 
     /**
@@ -127,7 +140,7 @@ class Microlearning {
     byId = async (req, res, next, id) => {
         // search for learning capsule by id
         await Micro.findById(id)
-            .populate('lesson', 'name')
+            .populate('lesson', '-icon')
             .exec((err, micro) => {
                 if (err || !micro) return res.status(400).json({ error: 'El microcontenido no se encontró o no existe' });
                 // save the learning capsule found in the request

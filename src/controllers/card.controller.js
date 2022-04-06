@@ -1,7 +1,9 @@
 'use strict';
 const formidable = require('formidable');
 const _ = require('lodash');
-const fs = require('fs');
+const fs = require('fs-extra');
+const { uploadImage, deleteImage } = require('../libs/cloudinary');
+
 
 const Cards = require('../models/Card');
 
@@ -15,30 +17,28 @@ class Card {
      * @returns {JSON}
      */
     create = async (req, res) => {
-        // created a new form object
-        let form = new formidable.IncomingForm();
-        form.keepExtensions = true;
-        // I extract the data from the request form
-        form.parse(req, async (err, fields, files) => {
-            if (err) return res.status(400).json({ error: "No se pudo cargar el gif" });
-            // a knowledge cards is created with the form data
-            let card = new Cards(fields);
-            // it is verified if the sent file is of type gif
-            if (files.gif) {
-                // file size is checked
-                if (files.gif.size > 9000000) return res.status(400).json({ error: 'El gif debe de tener un tamaño inferior a 9 MB' });
-                // the gif is stored in the object card as a buffer data type
-                card.gif.data = fs.readFileSync(files.gif.path);
-                card.gif.contentType = files.gif.type;
+        try {
+            // get request body information
+            const { question, lesson, correctAnswer, wrongAnswer } = req.body;
+            // check if an gif was sent and save it in cloudinary
+            let gif;
+            if (req.files.gif) {
+                const resultGif = await uploadImage(req.files.gif.tempFilePath);
+                gif = {
+                    url: resultGif.secure_url,
+                    public_id: resultGif.public_id
+                }
+                await fs.remove(req.files.gif.tempFilePath)
             }
-            // the knowledge cards is saved in the database
-            await card.save((err, result) => {
-                if (err) return res.status(400).json({ error: 'No se ha creado' });
-                result.gif = undefined;
-                // returns the knowledge cards data in JSON format
-                res.status(200).json(result);
-            });
-        });
+            // a knowledge cards is created with the form data
+            let card = new Cards({ question, lesson, correctAnswer, wrongAnswer, gif_url: gif });
+            // save to database
+            await card.save();
+            // return the knowledge card
+            return res.status(200).json(card);
+        } catch (error) {
+            return res.status(400).json({ error: 'No se ha creado' });
+        }
     }
 
     /**
@@ -77,13 +77,22 @@ class Card {
      * @returns {JSON}
      */
     remove = async (req, res) => {
-        // get the Card object provided by the request
-        let card = req.card;
-        // remove the knowledge cards
-        await card.remove((err, deleteCard) => {
-            if (err) return res.status(400).json({ error: 'La tarjeta de conocimiento no se eliminó' });
-            res.status(200).json({ message: 'La tarjeta de conocimiento se eliminó con éxito' });
-        });
+        try {
+            // get the Card object provided by the request
+            let card = req.card;
+            // check if you have the gif url registered and delete it
+            if (card.gif_url.public_id) {
+                await deleteImage(card.gif_url.public_id);
+            }
+            // remove the knowledge cards
+            const cardRemoved = card.remove();
+            // check if it was deleted
+            if (!cardRemoved) return res.status(400).json({ error: 'La tarjeta de conocimiento no se eliminó' });
+            // return a response
+            return res.status(200).json({ message: 'La tarjeta de conocimiento se eliminó con éxito' });
+        } catch (error) {
+            return res.status(400).json({ error: 'La tarjeta de conocimiento no se eliminó' });
+        }
     }
 
     /**

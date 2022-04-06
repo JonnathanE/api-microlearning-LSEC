@@ -2,6 +2,10 @@
 
 The project is a rest API with the objective of teaching Ecuadorian Sign Language.
 
+The proyect is build in Nodejs. The forntend are below:
+
+- Fontend: https://github.com/JonnathanE/microlearning-LSEC
+- DEMO: https://learn-lsec.herokuapp.com/
 
 ## Tech Stack
 
@@ -9,15 +13,24 @@ The project is a rest API with the objective of teaching Ecuadorian Sign Languag
 
 **Server:** Node, Express, MongoDb
 
-  
-## Installation
 
-Install my-project with npm
+## Environment Variables
 
-```bash
-  npm install my-project
-  cd my-project
-```
+To run this project, you will need to add the following environment variables to your .env file
+
+`DATABASE`
+
+`DATABASE_TEST`
+
+`JWT_SECRET`
+
+`PORT`
+
+`CLOUDINARY_CLOUD_NAME`
+
+`CLOUDINARY_API_KEY`
+
+`CLOUDINARY_API_SECRET`
     
 ## Run Locally
 
@@ -30,7 +43,7 @@ Clone the project
 Go to the project directory
 
 ```bash
-  cd my-project
+  cd api-microlearning-LSEC
 ```
 
 Install dependencies
@@ -63,44 +76,7 @@ To run tests, run the following command
   npm run test
 ```
 
-  
-## Environment Variables
-
-To run this project, you will need to add the following environment variables to your .env file
-
-`DATABASE`
-
-`DATABASE_TEST`
-
-`JWT_SECRET`
-
-`PORT`
-
-    
 ## API Reference
 
-#### Get all items
-
-```http
-  GET /api/items
-```
-
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
-
-#### Get item
-
-```http
-  GET /api/items/${id}
-```
-
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
-
-#### add(num1, num2)
-
-Takes two numbers and returns the sum.
-
+You can go to the `http_API` folder, where you can find a json document of the API and its routes. Upload the file to Postman to view it.
   
