@@ -25,7 +25,7 @@ class Module {
      */
     getAll = async (req, res) => {
         // get all the modules from the database in ascending order according to the module number
-        await Modules.find().sort({number: 1}).exec((err, data) => {
+        await Modules.find().sort({ number: 1 }).exec((err, data) => {
             if (err) return res.status(400).json({ error: errorHandler(err) });
             res.status(200).json(data);
         });
