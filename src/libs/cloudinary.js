@@ -8,7 +8,7 @@ cloudinary.config({
 
 exports.uploadImage = async filePath => {
     return await cloudinary.uploader.upload(filePath, {
-        folder: 'LSEC'
+        folder: 'test'
     });
 }
 
