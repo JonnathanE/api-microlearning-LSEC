@@ -203,7 +203,7 @@ describe('PUT /api/module/', () => {
 describe('DELETE /api/module/', () => {
 
     test('CP23 the module cannot be removed if the id does not match', async () => {
-        const deleteModule = await Module.findOne({name: initialModules[0].name});
+        const deleteModule = await Module.findOne({ name: initialModules[0].name });
         const response = await api
             .delete(`/api/module/${deleteModule._id}f`)
             .set('authorization', `Bearer ${tokenAdmin}`)
@@ -213,7 +213,7 @@ describe('DELETE /api/module/', () => {
     });
 
     test('CP24 the module cannot be deleted if the user is not admin', async () => {
-        const deleteModule = await Module.findOne({name: initialModules[0].name});
+        const deleteModule = await Module.findOne({ name: initialModules[0].name });
         const response = await api
             .put(`/api/module/${deleteModule._id}`)
             .set('authorization', `Bearer ${tokenUser}`)
@@ -223,7 +223,7 @@ describe('DELETE /api/module/', () => {
     });
 
     test('CP25 the module cannot be deleted if the token has been modified', async () => {
-        const deleteModule = await Module.findOne({name: initialModules[0].name});
+        const deleteModule = await Module.findOne({ name: initialModules[0].name });
         const response = await api
             .put(`/api/module/${deleteModule._id}`)
             .set('authorization', `Bearer ${tokenAdmin}modi`)
@@ -233,7 +233,7 @@ describe('DELETE /api/module/', () => {
     });
 
     test('CP26 delete a module with authenticated admin', async () => {
-        const deleteModule = await Module.findOne({name: initialModules[0].name});
+        const deleteModule = await Module.findOne({ name: initialModules[0].name });
         const response = await api
             .delete(`/api/module/${deleteModule._id}`)
             .set('authorization', `Bearer ${tokenAdmin}`)
@@ -250,340 +250,6 @@ afterAll(async () => {
     mongoose.connection.close();
     server.close();
 });
-
-
-// describe('POST /api/micro/', () => {
-//     test('create a new microcontent with an authenticated admin', async () => {
-//         const adminLogin = await api
-//             .post('/api/auth/signin')
-//             .send(singnInAdminUser)
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const models = await api.get('/api/module');
-//         await api
-//                 .post('/api/lesson/')
-//                 .set('authorization', `Bearer ${adminLogin.body.token}`)
-//                 .set({connection: 'keep-alive'})
-//                 .field('name', 'lesson 1')
-//                 .field('module', models.body[0]._id)
-//                 .attach('icon', 'test/fixtures/lsec.png')
-//                 .expect(200)
-//         const lessons = await api.get('/api/lesson');
-//         const response = await api
-//             .post('/api/micro/')
-//             .set('authorization', `Bearer ${adminLogin.body.token}`)
-//             .set({connection: 'keep-alive'})
-//             .field('title', 'microcontent 1')
-//             .field('lesson', lessons.body[0]._id)
-//             .attach('image', 'test/fixtures/lsec.png')
-//             .attach('gif', 'test/fixtures/lsec.png')
-//             .expect(200)
-//         expect(response.body.title).toBe('microcontent 1');
-//     });
-
-//     test('the microcontent is not created if it does not send all the parameters', async () => {
-//         const adminLogin = await api
-//             .post('/api/auth/signin')
-//             .send(singnInAdminUser)
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const response = await api
-//             .post('/api/micro/')
-//             .set('authorization', `Bearer ${adminLogin.body.token}`)
-//             .set({connection: 'keep-alive'})
-//             .field('title', 'microcontent 1')
-//             .attach('image', 'test/fixtures/lsec.png')
-//             .attach('gif', 'test/fixtures/lsec.png')
-//             .expect(400)
-//         expect(response.body.error).toBe('No se pudo crear el microcontenido');
-//     });
-    
-//     test('microcontent is not created if user is not admin', async () => {
-//         const adminLogin = await api
-//             .post('/api/auth/signin')
-//             .send(signInStudent)
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)        
-//         const lessons = await api.get('/api/lesson');
-//         const response = await api
-//             .post('/api/micro/')
-//             .set('authorization', `Bearer ${adminLogin.body.token}`)
-//             .set({connection: 'keep-alive'})
-//             .field('title', 'microcontent 1')
-//             .field('lesson', lessons.body[0]._id)
-//             .attach('image', 'test/fixtures/lsec.png')
-//             .attach('gif', 'test/fixtures/lsec.png')
-//             .expect(403)
-//         expect(response.body.error).toBe('Requiere rol de administrador');
-//     });
-// });
-
-// describe('GET /api/micro/', () => {
-//     test('get all microcontent', async () => {
-//         await api
-//             .get('/api/micro/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//     });
-
-//     test('get microcontent by id', async () => {
-//         const micro = await api
-//             .get('/api/micro/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const response = await api
-//             .get(`/api/micro/${micro.body[0]._id}`)
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         expect(micro.body[0].title).toBe(response.body.title);
-//     });
-
-//     test('if an invalid id is provided it presents an error', async () => {
-//         const micro = await api
-//             .get('/api/micro/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const response = await api
-//             .get(`/api/micro/${micro.body[0]._id}f`)
-//             .expect(400)
-//             .expect('Content-Type', /application\/json/)
-//         expect(response.body.error).toBe('El microcontenido no se encontró o no existe');
-//     });
-// });
-
-// describe('PUT /api/micro/', () => {
-//     test('update the parameter of the microcontent title', async () => {
-//         const adminLogin = await api
-//             .post('/api/auth/signin')
-//             .send(singnInAdminUser)
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const micros = await api
-//             .get('/api/micro/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const updateMicro = {
-//             title: 'Micro 137',
-//         }
-//         const response = await api
-//             .put(`/api/micro/${micros.body[0]._id}`)
-//             .send(updateMicro)
-//             .set('authorization', `Bearer ${adminLogin.body.token}`)
-//             .expect('Content-Type', /application\/json/)
-//             .expect(200)
-//         expect(response.body.message).toBe('El microcontenido se actualizado correctamente');
-//     });
-
-//     test('update the parameter of the microcontent lesson', async () => {
-//         const adminLogin = await api
-//             .post('/api/auth/signin')
-//             .send(singnInAdminUser)
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const lessons = await api
-//             .get('/api/lesson/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const micros = await api
-//             .get('/api/micro/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const updateMicro = {
-//             lesson: lessons.body[0]._id
-//         }
-//         const response = await api
-//             .put(`/api/micro/${micros.body[0]._id}`)
-//             .send(updateMicro)
-//             .set('authorization', `Bearer ${adminLogin.body.token}`)
-//             .expect('Content-Type', /application\/json/)
-//             .expect(200)
-//         expect(response.body.message).toBe('El microcontenido se actualizado correctamente');
-//     });
-
-//     test('update title and lesson of the microcontnent', async () => {
-//         const adminLogin = await api
-//             .post('/api/auth/signin')
-//             .send(singnInAdminUser)
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const lessons = await api
-//             .get('/api/lesson/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const micros = await api
-//             .get('/api/micro/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const updateMicro = {
-//             lesson: lessons.body[0]._id,
-//             title: 'Micro 137'
-//         }
-//         const response = await api
-//             .put(`/api/micro/${micros.body[0]._id}`)
-//             .send(updateMicro)
-//             .set('authorization', `Bearer ${adminLogin.body.token}`)
-//             .expect('Content-Type', /application\/json/)
-//             .expect(200)
-//         expect(response.body.message).toBe('El microcontenido se actualizado correctamente');
-//     });
-
-//     test('update microcontent image', async () => {
-//         const adminLogin = await api
-//             .post('/api/auth/signin')
-//             .send(singnInAdminUser)
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const micros = await api
-//             .get('/api/micro/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         await api
-//             .put(`/api/micro/image/${micros.body[0]._id}`)
-//             .set('authorization', `Bearer ${adminLogin.body.token}`)
-//             .set({connection: 'keep-alive'})
-//             .attach('image', 'test/fixtures/lsec.png')
-//             .expect(200)
-//     });
-
-//     test('the image does not update if an image is not submitted', async () => {
-//         const adminLogin = await api
-//             .post('/api/auth/signin')
-//             .send(singnInAdminUser)
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const micros = await api
-//             .get('/api/micro/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const response = await api
-//             .put(`/api/micro/image/${micros.body[0]._id}`)
-//             .set('authorization', `Bearer ${adminLogin.body.token}`)
-//             .expect(400)
-//         expect(response.body.error).toBe('Debe de enviar una imagen')
-//     });
-
-//     test('update microcontent gif', async () => {
-//         const adminLogin = await api
-//             .post('/api/auth/signin')
-//             .send(singnInAdminUser)
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const micros = await api
-//             .get('/api/micro/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         await api
-//             .put(`/api/micro/gif/${micros.body[0]._id}`)
-//             .set('authorization', `Bearer ${adminLogin.body.token}`)
-//             .set({connection: 'keep-alive'})
-//             .attach('gif', 'test/fixtures/lsec.png')
-//             .expect(200)
-//     });
-
-//     test('the gif does not update if an gif is not submitted', async () => {
-//         const adminLogin = await api
-//             .post('/api/auth/signin')
-//             .send(singnInAdminUser)
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const micros = await api
-//             .get('/api/micro/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const response = await api
-//             .put(`/api/micro/gif/${micros.body[0]._id}`)
-//             .set('authorization', `Bearer ${adminLogin.body.token}`)
-//             .expect(400)
-//         expect(response.body.error).toBe('Debe de enviar un gif')
-//     });
-// });
-
-// describe('DELETE /api/micro/', () => {
-
-//     test('the microcontnet cannot be deleted if the id does not match', async () => {
-//         const micros = await api
-//             .get('/api/micro/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const adminLogin = await api
-//             .post('/api/auth/signin')
-//             .send(singnInAdminUser)
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const response = await api
-//             .delete(`/api/micro/${micros.body[0]._id}ff`)
-//             .set('authorization', `Bearer ${adminLogin.body.token}`)
-//             .expect('Content-Type', /application\/json/)
-//             .expect(400)
-//         expect(response.body.error).toBe('El microcontenido no se encontró o no existe');
-//     });
-
-//     test('the microcontent cannot be deleted if the token is not sent', async () => {
-//         const micros = await api
-//             .get('/api/micro/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const response = await api
-//             .delete(`/api/micro/${micros.body[0]._id}`)
-//             .expect('Content-Type', /application\/json/)
-//             .expect(403)
-//         expect(response.body.error).toBe('No se proporcionó token');
-//     });
-
-//     test('the microcontent cannot be eliminated if the token is not valid', async () => {
-//         const micros = await api
-//             .get('/api/micro/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const adminLogin = await api
-//             .post('/api/auth/signin')
-//             .send(singnInAdminUser)
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const response = await api
-//             .delete(`/api/micro/${micros.body[0]._id}`)
-//             .set('authorization', `Bearer ${adminLogin.body.token}f`)
-//             .expect('Content-Type', /application\/json/)
-//             .expect(401)
-//         expect(response.body.error).toBe('No autorizado');
-//     });
-
-//     test('the microcontent cannot be deleted if the user is not admin', async () => {
-//         const micros = await api
-//             .get('/api/micro/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const adminLogin = await api
-//             .post('/api/auth/signin')
-//             .send(signInStudent)
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const response = await api
-//             .delete(`/api/micro/${micros.body[0]._id}`)
-//             .set('authorization', `Bearer ${adminLogin.body.token}`)
-//             .expect('Content-Type', /application\/json/)
-//             .expect(403)
-//         expect(response.body.error).toBe('Requiere rol de administrador');
-//     });
-
-//     test('delete a microcontent with authenticated admin', async () => {
-//         const micros = await api
-//             .get('/api/micro/')
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const adminLogin = await api
-//             .post('/api/auth/signin')
-//             .send(singnInAdminUser)
-//             .expect(200)
-//             .expect('Content-Type', /application\/json/)
-//         const response = await api
-//             .delete(`/api/micro/${micros.body[0]._id}`)
-//             .set('authorization', `Bearer ${adminLogin.body.token}`)
-//             .expect('Content-Type', /application\/json/)
-//             .expect(200)
-//         expect(response.body.message).toBe('El microcontenido se eliminó con éxito');
-//     });
-// });
 
 // describe('POST /api/card', () => {
 //     test('create a knowledge card', async () => {
@@ -636,7 +302,7 @@ afterAll(async () => {
 //             .post('/api/auth/signin')
 //             .send(signInStudent)
 //             .expect(200)
-//             .expect('Content-Type', /application\/json/)        
+//             .expect('Content-Type', /application\/json/)
 //         const lessons = await api.get('/api/lesson');
 //         const response = await api
 //             .post('/api/card')
