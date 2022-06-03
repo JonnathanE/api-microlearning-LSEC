@@ -18,8 +18,8 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(fileUpload({
-    useTempFiles : true,
-    tempFileDir : './upload'
+    useTempFiles: true,
+    tempFileDir: './upload'
 }));
 
 // Routes
@@ -30,6 +30,10 @@ app.use('/api/lesson', require('../routes/lesson.routes'));
 app.use('/api/micro', require('../routes/microlearning.routes'));
 app.use('/api/home', require('../routes/home.routes'));
 app.use('/api/card', require('../routes/card.routes'));
+if (process.env.NODE_ENV === 'test') {
+    console.log('Ruta Test Habilitada')
+    app.use('/api/testing', require('../routes/test.routes'));
+}
 app.use('/', (req, res) => {
     res.send('Hola desde el servidor proyecto Microlearning LSEC');
 });
