@@ -12,6 +12,7 @@ exports.reset = async (req, res) => {
     await Modules.deleteMany({})
     await Lessons.deleteMany({})
     await Microlearning.deleteMany({})
+    await Card.deleteMany({})
 
     return res.status(204).end();
 }

@@ -31,7 +31,7 @@ app.use('/api/micro', require('../routes/microlearning.routes'));
 app.use('/api/home', require('../routes/home.routes'));
 app.use('/api/card', require('../routes/card.routes'));
 if (process.env.NODE_ENV === 'test') {
-    console.log('Ruta Test Habilitada')
+    console.log('Test Path Enabled...')
     app.use('/api/testing', require('../routes/test.routes'));
 }
 app.use('/', (req, res) => {
