@@ -13,6 +13,8 @@ const user = factory.getController('user');
 // get all users
 /* This is a route that will get all the users in the database. */
 router.get('/', [verifyToken, isAdmin], user.getAll);
+// get user by token
+router.get('/find', [verifyToken], user.getByToken);
 // get user by id
 router.get('/find/:userId', [verifyToken, isAdmin], user.getById);
 // delete a user by id

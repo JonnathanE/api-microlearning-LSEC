@@ -51,19 +51,23 @@ exports.lessonsAssigned = async (req, res) => {
  * Get all the learning capsules associated with a single lesson
  */
 exports.microlearningAssigned = async (req, res) => {
+    if (req.query.page) {
+        // get learning capsules for paginate
+        const page = parseInt(req.query.page, 10) || 1;
+        const microlearnings = await Microlearning.paginate(
+            { lesson: req.lesson._id },
+            {
+                select: ['-image', '-gif'],
+                limit: 1,
+                page
+            }
+        );
+        if (microlearnings.length === 0) return res.status(400).json({ error: 'No se ha registrado contenido para esta lección' });
+        // returns the response in JSON
+        return res.status(200).json(microlearnings);
+    }
     // get all the learning capsules through the lesson id
-    //const microlearnings = await Microlearning.find({ lesson: req.lesson._id }).select(['-image', '-gif']);
-    const page = parseInt(req.query.page, 10) || 1;
-    const microlearnings = await Microlearning.paginate(
-        { lesson: req.lesson._id },
-        {
-            select: ['-image', '-gif'],
-            limit: 1,
-            page
-        }
-    );
-    if (microlearnings.length === 0) return res.status(400).json({ error: 'No se ha registrado contenido para esta lección' });
-    // returns the response in JSON
+    const microlearnings = await Microlearning.find({ lesson: req.lesson._id }).select(['-image', '-gif']);
     return res.status(200).json(microlearnings);
 }
 
@@ -71,19 +75,23 @@ exports.microlearningAssigned = async (req, res) => {
  * Get all the knowledge cards associated with a single lesson
  */
 exports.cardAssigned = async (req, res) => {
+    if (req.query.page) {
+        // get learning card for paginate
+        const page = parseInt(req.query.page, 10) || 1;
+        const cards = await Card.paginate(
+            { lesson: req.lesson._id },
+            {
+                select: ['-gif'],
+                limit: 1,
+                page
+            }
+        );
+        if (cards.length === 0) return res.status(400).json({ error: 'No se ha registrado contenido para esta lección' });
+        // returns the response in JSON
+        return res.status(200).json(cards);
+    }
     // get all the knowledge cards through the lesson id, except the gif
-    const page = parseInt(req.query.page, 10) || 1;
-    //const cards = await Card.find({ lesson: req.lesson._id }).select(['-gif']);
-    const cards = await Card.paginate(
-        { lesson: req.lesson._id },
-        {
-            select: ['-gif'],
-            limit: 1,
-            page
-        }
-    );
-    if (cards.length === 0) return res.status(400).json({ error: 'No se ha registrado contenido para esta lección' });
-    // returns the response in JSON
+    const cards = await Card.find({ lesson: req.lesson._id }).select(['-gif']);
     return res.status(200).json(cards);
 }
 

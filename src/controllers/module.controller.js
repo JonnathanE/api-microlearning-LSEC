@@ -25,7 +25,7 @@ class Module {
      */
     getAll = async (req, res) => {
         // get all the modules from the database in ascending order according to the module number
-        await Modules.find().sort({number: 1}).exec((err, data) => {
+        await Modules.find().sort({ number: 1 }).exec((err, data) => {
             if (err) return res.status(400).json({ error: errorHandler(err) });
             res.status(200).json(data);
         });
@@ -62,10 +62,12 @@ class Module {
         const { number, name } = req.body;
         // get the module object from the request
         let module = req.module;
+        //console.log(module)
         // replace the information in the module object
         if (number) module.number = number;
         if (name) module.name = name;
         // update the new information in the database
+        //console.log(module)
         module.save((err, data) => {
             if (err) return res.status(400).json({ error: errorHandler(err) });
             res.status(200).json({ message: 'Modulo actualizado correctamente' });
