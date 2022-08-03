@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
     "start": "node src/index.js",
+    "start:test": "cross-env NODE_ENV=test nodemon src/index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --detectOpenHandles --runInBand",
     "test:watch": "npm run test -- --watch",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage",

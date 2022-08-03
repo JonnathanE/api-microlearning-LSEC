@@ -34,7 +34,11 @@ const cardSchema = new mongoose.Schema(
             type: ObjectId,
             ref: 'Lesson',
             required: true
-        }
+        },
+        options: [{
+            response: String,
+            isRight: Boolean
+        }]
     },
     {
         timestamps: true

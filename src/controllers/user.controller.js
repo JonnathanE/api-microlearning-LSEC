@@ -38,6 +38,21 @@ class User {
         }
     }
 
+    /* Get the user's data by their toekn. */
+    getByToken = async (req, res) => {
+        try {
+            // search user by id
+            await UserSchema.findById(req.userId).populate("roles")
+                .exec((err, user) => {
+                    if (err || !user) return res.status(400).json({ error: 'El usuario no se encontró o no existe' });
+                    const { hashed_password, salt, roles, _id, ...others } = user._doc;
+                    res.status(200).json(others);
+                });
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
+
     /* The user is retrieved from the request object, and then the user is removed.
     
     The user is removed by calling the remove() method on the user object.
@@ -72,7 +87,7 @@ class User {
             if (password) user.hashed_password = user.encryptPassword(password);
 
             const updateUser = await user.save();
-            
+
             res.status(200).json(updateUser);
         } catch (error) {
             res.status(500).json(error);
