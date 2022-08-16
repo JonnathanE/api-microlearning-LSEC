@@ -9,9 +9,9 @@ The proyect is build in Nodejs. The forntend are below:
 
 ## Tech Stack
 
-**Client:** React, Bootstrap 4
+**Client:** React, Tailwind
 
-**Server:** Node, Express, MongoDb
+**Server:** Node v13.12.0, Express, MongoDb
 
 
 ## Environment Variables
@@ -70,10 +70,16 @@ To deploy this project run
   
 ## Running Tests
 
-To run tests, run the following command
+To run unit tests, run the following command
 
 ```bash
   npm run test
+```
+
+To run e2e tests, run the following command
+
+```bash
+  npm run start:test
 ```
 
 ## API Reference
