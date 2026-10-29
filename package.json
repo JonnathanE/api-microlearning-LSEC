@@ -10,7 +10,8 @@
     "test": "cross-env NODE_ENV=test jest --verbose --detectOpenHandles --runInBand",
     "test:watch": "pnpm test --watch",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage",
-    "docs": "jsdoc -c jsdoc.json"
+    "docs": "jsdoc -c jsdoc.json",
+    "seed": "node src/scripts/seed.js"
   },
   "engines": {
     "node": "13.x"
