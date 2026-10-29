@@ -1,0 +1,45 @@
+services:
+  mongo:
+    image: mongo:8
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      target: dev
+    env_file: .env
+    environment:
+      DATABASE: mongodb://mongo:27017/lsec
+      DATABASE_TEST: mongodb://mongo:27017/lsec_test
+    ports:
+      - "${PORT:-3000}:3000"
+    volumes:
+      - ./src:/app/src
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  # Web UI for MongoDB: docker compose --profile tools up
+  mongo-express:
+    image: mongo-express:1
+    profiles: [tools]
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+      ME_CONFIG_BASICAUTH: "false"
+    ports:
+      - "127.0.0.1:8081:8081"
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+volumes:
+  mongo-data:

@@ -7,23 +7,27 @@ REST API for a microlearning platform to teach Ecuadorian Sign Language (LSEC). 
 
 ## Current state (update as phases complete)
 
-- Plain JavaScript (CommonJS), Express 4, Mongoose 5, Jest 27, npm.
+- Plain JavaScript (CommonJS), Express 4, Mongoose 5, Jest 27.
+- Done: phase 0 (baseline 45/73 tests; failures are Cloudinary-dependent) and phase 1 (pnpm, Docker, MongoDB, seed). Runs on Node 24; Node 26 breaks until phase 2.
 - Target: Node 26 LTS, pnpm, Docker + MongoDB, Express 5, latest Mongoose, TypeScript (strict, ESM).
 - Phase order: 0 baseline → 1 pnpm + Docker → 2 dependencies → 3 business logic → 4 TypeScript. Do not jump ahead (e.g. no TypeScript during phase 2).
 
 ## Commands
 
 ```bash
-npm run dev            # nodemon, NODE_ENV=development
-npm start              # production
-npm test               # jest, runs in band against DATABASE_TEST
-npm run test:coverage
-npm run docs           # JSDoc into ./doc
+docker compose up -d mongo   # MongoDB only (localhost:27017)
+docker compose up -d         # MongoDB + API with hot reload
+pnpm dev                     # nodemon, NODE_ENV=development
+pnpm start                   # production
+pnpm test                    # jest, runs in band against DATABASE_TEST (needs Mongo up)
+pnpm test:coverage
+pnpm seed                    # roles + admin user from ADMIN_* env vars (idempotent)
+pnpm docs                    # JSDoc into ./doc
 ```
 
-Once phase 1 lands, use `pnpm` instead of `npm` and `docker compose up` to start MongoDB.
+Use pnpm only; never npm or yarn (there is no `package-lock.json`). Copy `.env.example` to `.env` to start.
 
-Required environment variables (`.env`): `DATABASE`, `DATABASE_TEST`, `JWT_SECRET`, `PORT`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`.
+Environment variables: see `.env.example`. Inside docker compose, `DATABASE`/`DATABASE_TEST` are overridden to point at the `mongo` service.
 
 ## Structure
 
@@ -36,6 +40,7 @@ src/controllers/        classes per resource, instantiated through controllersFa
 src/middlewares/        authJwt (verifyToken, isAdmin, isModerator), verifySignup
 src/models/             Mongoose schemas: User, Role, Module, Lesson, Microlearning, Card, Learn
 src/libs/               cloudinary, initialSetup (creates roles)
+src/scripts/seed.js     roles + initial admin user
 test/                   supertest + jest; test/helpers.js holds fixtures
 http_API/               Postman collection
 ```
