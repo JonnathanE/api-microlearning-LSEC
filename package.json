@@ -8,7 +8,7 @@
     "start": "node src/index.js",
     "start:test": "cross-env NODE_ENV=test nodemon src/index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --detectOpenHandles --runInBand",
-    "test:watch": "npm run test -- --watch",
+    "test:watch": "pnpm test --watch",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage",
     "docs": "jsdoc -c jsdoc.json"
   },
@@ -48,5 +48,6 @@
   },
   "jest": {
     "testEnvironment": "node"
-  }
+  },
+  "packageManager": "pnpm@12.15.0"
 }
