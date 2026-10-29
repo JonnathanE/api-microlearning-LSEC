@@ -11,60 +11,66 @@ The proyect is build in Nodejs. The forntend are below:
 
 **Client:** React, Tailwind
 
-**Server:** Node v13.12.0, Express, MongoDb
+**Server:** Node 24, Express, MongoDB, Docker
 
+
+## Requirements
+
+- Node.js 24 (Node 26 once the dependency upgrade lands)
+- pnpm 12 (`npm install -g pnpm@12`)
+- Docker with Docker Compose
 
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your .env file
+Copy `.env.example` to `.env` and fill in the values:
 
-`DATABASE`
+```bash
+cp .env.example .env
+```
 
-`DATABASE_TEST`
+| Variable | Description |
+|---|---|
+| `PORT` | API port (default `3000`) |
+| `DATABASE` | MongoDB connection string |
+| `DATABASE_TEST` | MongoDB connection string used by the tests |
+| `JWT_SECRET` | Secret used to sign tokens |
+| `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | Cloudinary credentials for images and GIFs |
+| `ADMIN_NAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` | Initial admin user created by `pnpm seed` |
 
-`JWT_SECRET`
+## Run with Docker
 
-`PORT`
+Start MongoDB and the API (with hot reload on `src/`):
 
-`CLOUDINARY_CLOUD_NAME`
+```bash
+docker compose up -d
+docker compose exec api pnpm seed   # create roles and the admin user
+```
 
-`CLOUDINARY_API_KEY`
+Optional MongoDB web UI on http://localhost:8081:
 
-`CLOUDINARY_API_SECRET`
-    
+```bash
+docker compose --profile tools up -d
+```
+
 ## Run Locally
 
-Clone the project
+Start only MongoDB in Docker and run the API on the host:
 
 ```bash
-  git clone https://github.com/JonnathanE/api-microlearning-LSEC.git
+git clone https://github.com/JonnathanE/api-microlearning-LSEC.git
+cd api-microlearning-LSEC
+docker compose up -d mongo
+pnpm install
+pnpm seed
+pnpm dev
 ```
 
-Go to the project directory
-
-```bash
-  cd api-microlearning-LSEC
-```
-
-Install dependencies
-
-```bash
-  npm install
-```
-
-Start the server
-
-```bash
-  npm run start
-```
-
-  
 ## Documentation
 
 To deploy this project run
 
 ```bash
-  npm run docs
+  pnpm docs
 ```
 [Documentation](https://linktodocumentation)
   
@@ -73,13 +79,13 @@ To deploy this project run
 To run unit tests, run the following command
 
 ```bash
-  npm run test
+  pnpm test
 ```
 
 To run e2e tests, run the following command
 
 ```bash
-  npm run start:test
+  pnpm start:test
 ```
 
 ## API Reference

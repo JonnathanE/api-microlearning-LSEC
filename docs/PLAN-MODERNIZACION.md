@@ -34,32 +34,37 @@ El orden cambia un poco respecto a la lista de objetivos, porque cada fase neces
 
 ## Fase 0 — Línea base
 
-- [ ] Crear la rama `feature/pnpm-docker` desde `develop`.
-- [ ] Documentar las variables de entorno en un `.env.example` (`DATABASE`, `DATABASE_TEST`, `JWT_SECRET`, `PORT`, `CLOUDINARY_*`).
-- [ ] Ejecutar la suite actual (`auth`, `module`, `lesson`, `microlearning`, `card`) contra un MongoDB local y anotar qué pasa y qué falla.
+- [x] Crear la rama `feature/pnpm-docker` desde `develop`.
+- [x] Documentar las variables de entorno en un `.env.example` (`DATABASE`, `DATABASE_TEST`, `JWT_SECRET`, `PORT`, `CLOUDINARY_*`).
+- [x] Ejecutar la suite actual (`auth`, `module`, `lesson`, `microlearning`, `card`) contra un MongoDB local y anotar qué pasa y qué falla.
+
+**Resultado (Node 24, Mongo 8 en Docker): 45/73 tests pasan.**
+- `auth`, `module` y `lesson`: todos pasan.
+- `microlearning` (15 fallos) y `card` (13 fallos): la creación (CP40, CP58) devuelve 400 porque sube a Cloudinary sin credenciales y el resto falla en cascada. Hay que mockear Cloudinary en los tests (fase 3) o configurar credenciales de prueba.
 
 ## Fase 1 — pnpm y Docker
 
 ### pnpm
-- [ ] `corepack enable` y fijar `"packageManager": "pnpm@<versión>"` en `package.json`.
-- [ ] `pnpm import` (genera `pnpm-lock.yaml` a partir de `package-lock.json`) y luego borrar `package-lock.json`.
-- [ ] Reemplazar `npm run` por `pnpm` en los scripts y en el README.
+- [x] Fijar `"packageManager": "pnpm@12.15.0"` en `package.json`. Corepack ya no viene con Node 25+, así que pnpm se instala con `npm i -g pnpm@12`.
+- [x] `pnpm import` (genera `pnpm-lock.yaml` a partir de `package-lock.json`) y luego borrar `package-lock.json`.
+- [x] `pnpm-workspace.yaml` con `allowBuilds`: los postinstall de `core-js` y `nodemon` quedan desactivados (solo imprimían mensajes).
+- [x] Reemplazar `npm run` por `pnpm` en los scripts y en el README.
 
 ### Docker
-- [ ] `Dockerfile` multi-stage basado en `node:26-alpine`: una etapa de dependencias y build, y una etapa final con solo lo necesario, ejecutada con el usuario `node` (no root).
-- [ ] `.dockerignore` (`node_modules`, `.env`, `coverage`, `doc`, `upload`, `.git`).
-- [ ] `docker-compose.yml` con estos servicios:
+- [x] `Dockerfile` multi-stage basado en `node:24-alpine` (**pasa a `node:26-alpine` en la fase 2**: con Node 26 la app falla porque `jsonwebtoken@8` usa `SlowBuffer`, eliminado en Node 25): una etapa de dependencias y build, y una etapa final con solo lo necesario, ejecutada con el usuario `node` (no root).
+- [x] `.dockerignore` (`node_modules`, `.env`, `coverage`, `doc`, `upload`, `.git`).
+- [x] `docker-compose.yml` con estos servicios:
   - `mongo`: imagen `mongo:8`, un volumen con nombre para persistir los datos, un healthcheck y el puerto 27017 expuesto solo en local.
   - `api`: depende de `mongo` (con `condition: service_healthy`), lee `.env` y en desarrollo monta `src/` con hot reload.
   - Opcional: `mongo-express`, para inspeccionar la base desde el navegador.
-- [ ] Usar dos bases separadas en el mismo contenedor: `lsec` para desarrollo y `lsec_test` para los tests.
-- [ ] Script `seed`, que crea los roles y un usuario admin inicial a partir de variables de entorno.
+- [x] Usar dos bases separadas en el mismo contenedor: `lsec` para desarrollo y `lsec_test` para los tests.
+- [x] Script `seed` (`src/scripts/seed.js`), que crea los roles y un usuario admin inicial a partir de variables de entorno. Se puede ejecutar varias veces.
 
 > Nota: en WSL hay que activar la integración de Docker Desktop con la distro (Settings → Resources → WSL integration).
 
 ## Fase 2 — Dependencias compatibles con Node 26
 
-Objetivo: Node 26 (LTS desde octubre de 2026). Fijar `"engines": { "node": ">=26" }` y crear un `.nvmrc`.
+Objetivo: Node 26 (LTS desde octubre de 2026). Fijar `"engines": { "node": ">=26" }`, crear un `.nvmrc` y cambiar el `Dockerfile` a `node:26-alpine`.
 
 ### Dependencias a eliminar (no se usan o son redundantes)
 | Paquete | Motivo |
