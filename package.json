@@ -48,7 +48,10 @@
     "supertest": "^6.1.3"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "<rootDir>/test/setup.js"
+    ]
   },
   "packageManager": "pnpm@12.15.0"
 }
