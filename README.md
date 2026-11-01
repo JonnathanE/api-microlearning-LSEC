@@ -31,10 +31,12 @@ cp .env.example .env
 | Variable | Description |
 |---|---|
 | `PORT` | API port (default `3000`) |
+| `CORS_ORIGINS` | Allowed origins, separated by commas (default `http://localhost:3000`) |
+| `LOG_LEVEL` | Log level (default `info`) |
 | `DATABASE` | MongoDB connection string |
 | `DATABASE_TEST` | MongoDB connection string used by the tests |
-| `JWT_SECRET` | Secret used to sign tokens |
-| `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | Cloudinary credentials for images and GIFs |
+| `JWT_SECRET` | Secret used to sign tokens, at least 32 characters (`openssl rand -hex 32`) |
+| `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | Cloudinary credentials for images and GIFs. Required in production; without them, uploads fail |
 | `ADMIN_NAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` | Initial admin user created by `pnpm seed` |
 
 ## Run with Docker
@@ -65,30 +67,29 @@ pnpm seed
 pnpm dev
 ```
 
-## Documentation
+## API Documentation
 
-To deploy this project run
+With the server running, the OpenAPI documentation is available at `/docs`.
 
-```bash
-  pnpm run docs
-```
-[Documentation](https://linktodocumentation)
-  
+Changes that affect the frontend are listed in [CHANGELOG.md](CHANGELOG.md).
+
 ## Running Tests
 
-To run unit tests, run the following command
+MongoDB must be running (`docker compose up -d mongo`). Cloudinary is mocked, so no credentials are needed.
 
 ```bash
-  pnpm test
+pnpm test
 ```
 
-To run e2e tests, run the following command
+To run the API for the frontend e2e tests, which use `/api/testing/reset`:
 
 ```bash
-  pnpm start:test
+pnpm start:test
 ```
 
-## API Reference
+## Lint and Format
 
-You can go to the `http_API` folder, where you can find a json document of the API and its routes. Upload the file to Postman to view it.
-  
+```bash
+pnpm lint     # check with Biome
+pnpm format   # apply the fixes
+```
