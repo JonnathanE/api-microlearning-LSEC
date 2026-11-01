@@ -72,5 +72,6 @@ Domain: `Module` → has `Lesson`s → each lesson has `Microlearning`s (learnin
 - Jest needs `NODE_OPTIONS=--experimental-vm-modules` (already in the scripts): the MongoDB 7 driver loads `os` with a dynamic `import()`, and without the flag it silently sends empty client metadata and the server rejects the connection (`Missing required sub-document 'driver'`).
 - Tests within a file depend on their execution order; each file starts with an empty database. Admins are created with `createAdmin()` from `test/helpers.js`, since the public signup only creates students.
 - The `/api/testing/reset` route only exists with `NODE_ENV=test`.
+- MongoDB refuses to start on Linux 6.19+ unless `GLIBC_TUNABLES=glibc.pthread.rseq=1` is set (SERVER-121912). It is set in `docker-compose.yml` and in the CI workflow; it can be removed once the image includes a fix.
 - `pnpm-workspace.yaml` must list every package with build scripts under `allowBuilds`, or pnpm 12 fails. `argon2` ships prebuilt binaries, so its script stays disabled.
 - Databases created before phase 3 have users with the old password format, and they cannot sign in. Recreate them with `docker compose down -v`.
