@@ -18,10 +18,16 @@ services:
       target: dev
     env_file: .env
     environment:
+      PORT: ${PORT:-3000}
       DATABASE: mongodb://mongo:27017/lsec
       DATABASE_TEST: mongodb://mongo:27017/lsec_test
     ports:
-      - "${PORT:-3000}:3000"
+      - "${PORT:-3000}:${PORT:-3000}"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:$$PORT/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - ./src:/app/src
     depends_on:

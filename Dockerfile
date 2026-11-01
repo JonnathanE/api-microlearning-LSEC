@@ -27,4 +27,4 @@ COPY --from=prod-deps --chown=node:node /app/node_modules ./node_modules
 COPY --chown=node:node package.json ./
 COPY --chown=node:node src ./src
 EXPOSE 3000
-CMD ["node", "src/index.js"]
+CMD ["node", "src/server.js"]

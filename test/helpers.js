@@ -1,46 +1,46 @@
-const Module = require('../src/models/Module');
+const Role = require('../src/models/Role');
 const User = require('../src/models/User');
-const Lesson = require('../src/models/Lesson');
 
 exports.student = {
     name: 'Damián',
     email: 'damian@unl.edu.ec',
-    password: '1234'
-}
+    password: 'password1234',
+};
 
 exports.adminUser = {
-    "name": "admin",
-    "email": "admin@test.com",
-    "password": "1234",
-    "roles": [
-        "student",
-        "admin",
-        "moderator"
-    ]
-}
+    name: 'admin',
+    email: 'admin@test.com',
+    password: 'password1234',
+};
 
 exports.signInStudent = {
     email: 'damian@unl.edu.ec',
-    password: '1234'
-}
+    password: 'password1234',
+};
 
 exports.singnInAdminUser = {
-    "email": "admin@test.com",
-    "password": "1234",
-}
+    email: 'admin@test.com',
+    password: 'password1234',
+};
 
 exports.singleModule = {
     number: 3,
-    name: "Modulo 3"
-}
+    name: 'Modulo 3',
+};
 
 exports.initialModules = [
     {
         number: 1,
-        name: "Modulo 1"
+        name: 'Modulo 1',
     },
     {
         number: 2,
-        name: "Modulo 2"
-    }
-]
+        name: 'Modulo 2',
+    },
+];
+
+// admins cannot be created through the public signup
+exports.createAdmin = async () => {
+    const roles = await Role.find();
+    return User.create({ ...exports.adminUser, roles });
+};

@@ -6,20 +6,25 @@ const learnSchema = new mongoose.Schema(
         user: {
             type: ObjectId,
             ref: 'User',
-            required: true
+            required: true,
+            unique: true,
         },
-        lesson: [{
-            type: ObjectId,
-            ref: 'Lesson'
-        }],
-        microlearning: [{
-            type: ObjectId,
-            ref: 'Microlearning'
-        }]
+        lesson: [
+            {
+                type: ObjectId,
+                ref: 'Lesson',
+            },
+        ],
+        microlearning: [
+            {
+                type: ObjectId,
+                ref: 'Microlearning',
+            },
+        ],
     },
     {
-        versionKey: false
-    }
+        versionKey: false,
+    },
 );
 
 module.exports = mongoose.model('Learn', learnSchema);

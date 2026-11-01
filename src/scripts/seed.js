@@ -1,23 +1,18 @@
-require('dotenv').config({ quiet: true });
-const mongoose = require('mongoose');
+const env = require('../config/env');
+const { connectDatabase, disconnectDatabase } = require('../config/database');
 const Role = require('../models/Role');
 const User = require('../models/User');
-const Learn = require('../models/Learn');
+const { newPassword } = require('../schemas/auth.schema');
+const roleService = require('../services/role.service');
 
 /**
  * Creates the roles and the initial admin user. Safe to run more than once.
  * Usage: pnpm seed
  */
 const seed = async () => {
-    const { DATABASE, ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD } = process.env;
-    if (!DATABASE) throw new Error('DATABASE is not defined in .env');
-
-    await mongoose.connect(DATABASE);
-
-    // create the roles that do not exist yet
-    for (const name of ['student', 'moderator', 'admin']) {
-        await Role.updateOne({ name }, { $setOnInsert: { name } }, { upsert: true });
-    }
+    const { ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD } = env;
+    await connectDatabase();
+    await roleService.ensureRoles();
     console.log('Roles ready');
 
     if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
@@ -28,21 +23,18 @@ const seed = async () => {
         console.log(`Admin user ${ADMIN_EMAIL} already exists`);
         return;
     }
-    const roles = await Role.find({ name: { $in: ['student', 'moderator', 'admin'] } });
-    const admin = await new User({
-        name: ADMIN_NAME || 'admin',
+    await User.create({
+        name: ADMIN_NAME,
         email: ADMIN_EMAIL,
-        password: ADMIN_PASSWORD,
-        roles: roles.map(role => role._id)
-    }).save();
-    // every user needs a Learn record to store their progress
-    await new Learn({ user: admin._id }).save();
+        password: newPassword.parse(ADMIN_PASSWORD),
+        roles: await roleService.findByNames(Role.ROLES),
+    });
     console.log(`Admin user ${ADMIN_EMAIL} created`);
 };
 
 seed()
-    .catch(error => {
+    .catch((error) => {
         console.error(error);
         process.exitCode = 1;
     })
-    .finally(() => mongoose.disconnect());
+    .finally(disconnectDatabase);

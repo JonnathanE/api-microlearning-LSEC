@@ -6,13 +6,9 @@ node_modules
 
 # ejecution
 build
-upload
 
 # configuración de editor de texto
 .vscode
 
 # testing
 coverage
-
-# documentation
-doc

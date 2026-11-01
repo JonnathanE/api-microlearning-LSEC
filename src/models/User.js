@@ -1,62 +1,60 @@
+const argon2 = require('argon2');
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema;
-const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema(
     {
         name: {
             type: String,
             trim: true,
-            maxlength: 32
+            required: true,
+            maxlength: 32,
         },
         email: {
             type: String,
             trim: true,
+            lowercase: true,
             required: true,
-            unique: true
+            unique: true,
         },
-        hashed_password: {
+        password: {
             type: String,
-            required: true
+            required: true,
+            select: false,
         },
-        salt: String,
-        roles: [{
-            ref: "Role",
-            type: ObjectId
-        }]
+        roles: [
+            {
+                ref: 'Role',
+                type: ObjectId,
+            },
+        ],
     },
     {
         timestamps: true,
-        versionKey: false
-    }
+        versionKey: false,
+        toJSON: {
+            transform: (doc, ret) => {
+                delete ret.password;
+                return ret;
+            },
+        },
+    },
 );
-// virtual field for password hash
-userSchema.virtual('password')
-    .set(function (password) {
-        this._password = password;
-        this.salt = crypto.randomUUID();
-        this.hashed_password = this.encryptPassword(password);
-    })
-    .get(function () {
-        return this._password;
-    });
 
-// Methoss of Schema
+userSchema.pre('save', async function () {
+    if (this.isModified('password')) this.password = await argon2.hash(this.password);
+});
+
 userSchema.methods = {
-    authenticate: function (plainText) {
-        return this.encryptPassword(plainText) === this.hashed_password;
+    /** The password must have been selected in the query: .select('+password') */
+    verifyPassword(plainText) {
+        return argon2.verify(this.password, plainText);
     },
 
-    encryptPassword: function (password) {
-        if (!password) return '';
-        try {
-            return crypto.createHmac('sha1', this.salt)
-                .update(password)
-                .digest('hex')
-        } catch (error) {
-            return error;
-        }
-    }
+    /** The roles must have been populated in the query */
+    hasRole(name) {
+        return this.roles.some((role) => role.name === name);
+    },
 };
 
 module.exports = mongoose.model('User', userSchema);

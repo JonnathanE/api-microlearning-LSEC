@@ -1,16 +1,13 @@
-const mongoose = require('mongoose');
 const supertest = require('supertest');
-const { app, server } = require('../src/index');
+const app = require('../src/app');
 
 const Module = require('../src/models/Module');
-const User = require('../src/models/User');
-// const Lesson = require('../src/models/Lesson');
-
-const { initialModules, singleModule, student, signInStudent, adminUser, singnInAdminUser } = require('./helpers');
+//
+const { createAdmin, initialModules, singleModule, student, signInStudent, singnInAdminUser } = require('./helpers');
 
 const api = supertest(app);
-let tokenAdmin = "";
-let tokenUser = "";
+let tokenAdmin = '';
+let tokenUser = '';
 
 beforeEach(async () => {
     //jest.setTimeout(60000);
@@ -22,29 +19,24 @@ beforeEach(async () => {
 });
 
 describe('POST /api/module', () => {
-
     test('CP11 create a module with an authenticated admin', async () => {
         // create a new admin
-        await api
-            .post('/api/auth/signup')
-            .send(adminUser)
-            .expect(200)
-            .expect('Content-Type', /application\/json/)
+        await createAdmin();
         // login admin
         const adminLogin = await api
             .post('/api/auth/signin')
             .send(singnInAdminUser)
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         // get token
-        tokenAdmin = adminLogin.body.token
+        tokenAdmin = adminLogin.body.token;
         // create module
         const response = await api
             .post('/api/module/')
             .send(singleModule)
             .set('authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /application\/json/)
-            .expect(200)
+            .expect(201);
         expect(response.body.name).toBe(singleModule.name);
         const allModules = await api.get('/api/module');
         expect(allModules.body).toHaveLength(initialModules.length + 1);
@@ -55,23 +47,23 @@ describe('POST /api/module', () => {
         await api
             .post('/api/auth/signup')
             .send(student)
-            .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect(201)
+            .expect('Content-Type', /application\/json/);
         // login end user
         const userLogin = await api
             .post('/api/auth/signin')
             .send(signInStudent)
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         // get token
-        tokenUser = userLogin.body.token
+        tokenUser = userLogin.body.token;
         // create a module
         const response = await api
             .post('/api/module/')
             .send(singleModule)
             .set('authorization', `Bearer ${tokenUser}`)
             .expect('Content-Type', /application\/json/)
-            .expect(403)
+            .expect(403);
         expect(response.body.error).toBe('Requiere rol de administrador');
         //const allModules = await api.get('/api/module');
         //expect(allModules.body).toHaveLength(initialModules.length);
@@ -82,7 +74,7 @@ describe('POST /api/module', () => {
             .post('/api/module/')
             .send(singleModule)
             .expect('Content-Type', /application\/json/)
-            .expect(403)
+            .expect(401);
         expect(response.body.error).toBe('No se proporcionó token');
         //const allModules = await api.get('/api/module');
         //expect(allModules.body).toHaveLength(initialModules.length);
@@ -94,21 +86,19 @@ describe('POST /api/module', () => {
             .send(singleModule)
             .set('authorization', `Bearer ${tokenAdmin}modificado`)
             .expect('Content-Type', /application\/json/)
-            .expect(401)
+            .expect(401);
         expect(response.body.error).toBe('No autorizado');
         //const allModules = await api.get('/api/module');
         //expect(allModules.body).toHaveLength(initialModules.length);
     });
-
 });
 
 describe('GET /api/module/', () => {
-
     test('CP15 modules are returned as array', async () => {
         await api
             .get('/api/module/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
     });
 
     test('CP16 there are two modules', async () => {
@@ -118,40 +108,39 @@ describe('GET /api/module/', () => {
 
     test('CP17 the first module is about number 1', async () => {
         const response = await api.get('/api/module');
-        const contents = response.body.map(module => module.number);
+        const contents = response.body.map((module) => module.number);
         expect(contents).toContain(1);
     });
 });
 
 describe('PUT /api/module/', () => {
-
     test('CP18 update a module with authenticated admin', async () => {
         const getModuleOne = await Module.findOne({ name: initialModules[0].name });
         const updateModule = {
             name: 'Modulo 1',
-            number: 4
-        }
+            number: 4,
+        };
         const response = await api
             .put(`/api/module/${getModuleOne._id}`)
             .send(updateModule)
             .set('authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /application\/json/)
-            .expect(200)
-        expect(response.body.message).toBe('Modulo actualizado correctamente');
+            .expect(200);
+        expect(response.body.message).toBe('Módulo actualizado correctamente');
     });
 
     test('CP19 the module cannot be updated if the user is not admin', async () => {
         const getModuleOne = await Module.findOne({ name: initialModules[0].name });
         const updateModule = {
             name: 'Modulo 1',
-            number: 1
-        }
+            number: 1,
+        };
         const response = await api
             .put(`/api/module/${getModuleOne._id}`)
             .send(updateModule)
             .set('authorization', `Bearer ${tokenUser}`)
             .expect('Content-Type', /application\/json/)
-            .expect(403)
+            .expect(403);
         expect(response.body.error).toBe('Requiere rol de administrador');
     });
 
@@ -159,14 +148,14 @@ describe('PUT /api/module/', () => {
         const getModuleOne = await Module.findOne({ name: initialModules[0].name });
         const updateModule = {
             name: 'Modulo 1',
-            number: 4
-        }
+            number: 4,
+        };
         const response = await api
             .put(`/api/module/${getModuleOne._id}`)
             .send(updateModule)
             .set('authorization', `Bearer ${tokenAdmin}modi`)
             .expect('Content-Type', /application\/json/)
-            .expect(401)
+            .expect(401);
         expect(response.body.error).toBe('No autorizado');
     });
 
@@ -174,42 +163,40 @@ describe('PUT /api/module/', () => {
         const getModuleOne = await Module.findOne({ name: initialModules[0].name });
         const updateModule = {
             name: 'Modulo 137',
-        }
+        };
         const response = await api
             .put(`/api/module/${getModuleOne._id}`)
             .send(updateModule)
             .set('authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /application\/json/)
-            .expect(200)
-        expect(response.body.message).toBe('Modulo actualizado correctamente');
+            .expect(200);
+        expect(response.body.message).toBe('Módulo actualizado correctamente');
     });
 
     test('CP22 update the module number', async () => {
         const getModuleOne = await Module.findOne({ name: initialModules[0].name });
         const updateModule = {
             number: 137,
-        }
+        };
         const response = await api
             .put(`/api/module/${getModuleOne._id}`)
             .send(updateModule)
             .set('authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /application\/json/)
-            .expect(200)
-        expect(response.body.message).toBe('Modulo actualizado correctamente');
+            .expect(200);
+        expect(response.body.message).toBe('Módulo actualizado correctamente');
     });
 });
 
-
 describe('DELETE /api/module/', () => {
-
     test('CP23 the module cannot be removed if the id does not match', async () => {
         const deleteModule = await Module.findOne({ name: initialModules[0].name });
         const response = await api
             .delete(`/api/module/${deleteModule._id}f`)
             .set('authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /application\/json/)
-            .expect(400)
-        expect(response.body.error).toBe('El modulo no se encontró o no existe');
+            .expect(400);
+        expect(response.body.error).toBe('El identificador no es válido');
     });
 
     test('CP24 the module cannot be deleted if the user is not admin', async () => {
@@ -218,7 +205,7 @@ describe('DELETE /api/module/', () => {
             .put(`/api/module/${deleteModule._id}`)
             .set('authorization', `Bearer ${tokenUser}`)
             .expect('Content-Type', /application\/json/)
-            .expect(403)
+            .expect(403);
         expect(response.body.error).toBe('Requiere rol de administrador');
     });
 
@@ -228,25 +215,12 @@ describe('DELETE /api/module/', () => {
             .put(`/api/module/${deleteModule._id}`)
             .set('authorization', `Bearer ${tokenAdmin}modi`)
             .expect('Content-Type', /application\/json/)
-            .expect(401)
+            .expect(401);
         expect(response.body.error).toBe('No autorizado');
     });
 
     test('CP26 delete a module with authenticated admin', async () => {
         const deleteModule = await Module.findOne({ name: initialModules[0].name });
-        const response = await api
-            .delete(`/api/module/${deleteModule._id}`)
-            .set('authorization', `Bearer ${tokenAdmin}`)
-            .expect('Content-Type', /application\/json/)
-            .expect(200)
-        expect(response.body.message).toBe('Modulo eliminado correctamente');
+        await api.delete(`/api/module/${deleteModule._id}`).set('authorization', `Bearer ${tokenAdmin}`).expect(204);
     });
-});
-
-afterAll(async () => {
-    await User.deleteMany({});
-    //await Lesson.deleteMany({});
-    await Module.deleteMany({});
-    mongoose.connection.close();
-    server.close();
 });
