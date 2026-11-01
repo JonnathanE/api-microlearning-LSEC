@@ -7,8 +7,8 @@ REST API for a microlearning platform to teach Ecuadorian Sign Language (LSEC). 
 
 ## Current state (update as phases complete)
 
-- Plain JavaScript (CommonJS), Express 4, Mongoose 5, Jest 27.
-- Done: phase 0 (baseline 45/73 tests; failures are Cloudinary-dependent) and phase 1 (pnpm, Docker, MongoDB, seed). Runs on Node 24; Node 26 breaks until phase 2.
+- Plain JavaScript (CommonJS) on Node 26: Express 5, Mongoose 9, jsonwebtoken 9, Jest 30.
+- Done: phase 0 (baseline), phase 1 (pnpm, Docker, MongoDB, seed) and phase 2 (dependencies, Node 26). 73/73 tests pass.
 - Target: Node 26 LTS, pnpm, Docker + MongoDB, Express 5, latest Mongoose, TypeScript (strict, ESM).
 - Phase order: 0 baseline → 1 pnpm + Docker → 2 dependencies → 3 business logic → 4 TypeScript. Do not jump ahead (e.g. no TypeScript during phase 2).
 
@@ -22,7 +22,7 @@ pnpm start                   # production
 pnpm test                    # jest, runs in band against DATABASE_TEST (needs Mongo up)
 pnpm test:coverage
 pnpm seed                    # roles + admin user from ADMIN_* env vars (idempotent)
-pnpm docs                    # JSDoc into ./doc
+pnpm run docs                # JSDoc into ./doc (`pnpm docs` is a pnpm built-in)
 ```
 
 Use pnpm only; never npm or yarn (there is no `package-lock.json`). Copy `.env.example` to `.env` to start.
@@ -71,3 +71,7 @@ Routes use `router.param('<id>', controller.byId)` to load the document into `re
 - Images live in two places: `Buffer` in Mongo (`icon`, `image`, `gif`) and Cloudinary (`*_url`).
 - `createRoles()` runs before the DB connection is established.
 - Tests share the database and depend on execution order (`--runInBand`); `/api/testing/reset` only exists with `NODE_ENV=test`.
+- Tests start the real server on `PORT` (3000): stop the `api` container first (`docker compose stop api`) or they fail with `EADDRINUSE`.
+- Jest needs `NODE_OPTIONS=--experimental-vm-modules` (already in the scripts): the MongoDB 7 driver loads `os` with a dynamic `import()`, and without the flag it silently sends empty client metadata and the server rejects the connection (`Missing required sub-document 'driver'`).
+- Cloudinary is mocked in `test/setup.js`; tests never hit the real service.
+- Express 5 leaves `req.body` undefined when no parser runs; `app.js` defaults it to `{}` to keep the Express 4 behaviour.

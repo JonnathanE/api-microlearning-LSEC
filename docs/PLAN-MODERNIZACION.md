@@ -102,6 +102,22 @@ Al dejar de aceptar callbacks, Mongoose obliga a reescribir con `async/await` + 
 
 Criterio de cierre: la suite de la fase 0 pasa igual o mejor sobre Node 26.
 
+### Resultado
+- [x] Rama `feature/deps-node26`.
+- [x] Mock de Cloudinary en `test/setup.js`, adelantado de la fase 3 para tener cobertura de `microlearning` y `card` antes de reescribirlos. Línea base real: **73/73** con las dependencias antiguas.
+- [x] Eliminados: `body-parser`, `crypto-js`, `formidable`, `lodash`, `fs-extra` (→ `fs.promises.rm`), `uuid` (→ `crypto.randomUUID()`, el formato del hash no cambia), `express-validator` (se decide en la fase 3) y `nodemon` (→ `node --watch`). Se mantiene `dotenv` (actualizado a 18, con `quiet: true`).
+- [x] `jsdoc`, `docdash` y `jsdoc-http-plugin` pasan a `devDependencies`. Se ejecuta con `pnpm run docs`, porque `pnpm docs` es un comando propio de pnpm.
+- [x] Actualizados: Express 5.3, Mongoose 9.11, jsonwebtoken 9, cloudinary 2, mongoose-paginate-v2 1.9, helmet 8 (montado, con `crossOriginResourcePolicy: cross-origin` para que el frontend pueda cargar las imágenes), cors, morgan, express-fileupload, Jest 30, supertest 7 y cross-env 10.
+- [x] Todos los callbacks de Mongoose reescritos con `async/await`. `remove()` → `deleteOne()`. Se mantienen los mismos códigos y mensajes de respuesta.
+- [x] `engines: >=26`, `.nvmrc` y `Dockerfile` con `node:26-alpine`.
+- [x] **73/73 tests en Node 24 (local) y en Node 26 (contenedor).** La imagen de producción arranca y pesa 281 MB (antes 308 MB).
+
+Hallazgos:
+- Jest necesita `NODE_OPTIONS=--experimental-vm-modules`: el driver `mongodb@7` carga `os` con `import()` dinámico. Sin la opción, envía metadatos de cliente vacíos sin avisar y MongoDB rechaza la conexión (`Missing required sub-document 'driver'`). En la fase 4 conviene evaluar `vitest`, que no tiene este problema.
+- Express 5 deja `req.body` en `undefined` si ningún parser lo procesa. Se agregó un middleware que lo inicializa en `{}` para mantener el comportamiento de Express 4, hasta que la validación de la fase 3 lo vuelva innecesario.
+- `PUT /api/home/complete/lesson/:id` devuelve en `message` el resultado de `updateOne`, que ahora tiene otra forma (`acknowledged`, `modifiedCount`...). El frontend no lo usa.
+- Los tests levantan el servidor en el puerto 3000: si el contenedor `api` está corriendo, fallan con `EADDRINUSE`. En la fase 3 conviene separar `app` de `listen` para que los tests no abran un puerto.
+
 ## Fase 3 — Mejoras en la lógica de negocio
 
 ### 🔴 Seguridad (prioridad alta)
