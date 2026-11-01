@@ -13,11 +13,7 @@ if (!connectionString) {
 }
 
 // make the connection to the database
-mongoose.connect(connectionString, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true
-})
+mongoose.connect(connectionString)
     .then(db => {
         if (NODE_ENV !== 'test') {
             console.log('DB is connected to', db.connection.name)

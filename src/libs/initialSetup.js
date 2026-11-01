@@ -1,4 +1,3 @@
-const { Promise } = require('mongoose');
 const Role = require('../models/Role');
 
 /**

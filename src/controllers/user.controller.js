@@ -42,35 +42,20 @@ class User {
     getByToken = async (req, res) => {
         try {
             // search user by id
-            await UserSchema.findById(req.userId).populate("roles")
-                .exec((err, user) => {
-                    if (err || !user) return res.status(400).json({ error: 'El usuario no se encontró o no existe' });
-                    const { hashed_password, salt, roles, _id, ...others } = user._doc;
-                    res.status(200).json(others);
-                });
+            const user = await UserSchema.findById(req.userId).populate("roles");
+            if (!user) return res.status(400).json({ error: 'El usuario no se encontró o no existe' });
+            const { hashed_password, salt, roles, _id, ...others } = user._doc;
+            res.status(200).json(others);
         } catch (error) {
             res.status(500).json(error);
         }
     }
 
-    /* The user is retrieved from the request object, and then the user is removed.
-    
-    The user is removed by calling the remove() method on the user object.
-    
-    The remove() method returns a promise, so we can use the .then() method to handle the response.
-    
-    The .then() method takes a callback function that is called when the promise is resolved.
-    
-    The callback function is called with the value of the promise.
-    
-    The .then() method returns a new promise, so we can chain another .then() method to handle the
-    response.
-    
-    The */
+    /* Delete the user stored in the request by byId. */
     remove = async (req, res) => {
         try {
             const user = req.user;
-            await user.remove();
+            await user.deleteOne();
             res.status(200).json('El usuario fue eliminado');
         } catch (error) {
             res.status(500).json(error);
@@ -101,14 +86,17 @@ class User {
     */
     byId = async (req, res, next, id) => {
         // search user by id
-        await UserSchema.findById(id).populate("roles")
-            .exec((err, user) => {
-                if (err || !user) return res.status(400).json({ error: 'El usuario no se encontró o no existe' });
-                // save the user found in the request
-                req.user = user;
-                // continue with the next process
-                next();
-            });
+        let user;
+        try {
+            user = await UserSchema.findById(id).populate("roles");
+        } catch (err) {
+            user = null;
+        }
+        if (!user) return res.status(400).json({ error: 'El usuario no se encontró o no existe' });
+        // save the user found in the request
+        req.user = user;
+        // continue with the next process
+        next();
     }
 }
 

@@ -104,13 +104,15 @@ exports.addCompleteLesson = async (req, res) => {
     // the Learn object corresponding to the database user is obtained, except for the microlearning attribute
     const learn = await Learn.find({ user }).select(['-microlearning']);
     // the new lesson is added in Learn in the database
-    await Learn.updateOne(
-        { _id: learn[0]._id },
-        { $addToSet: { lesson: [req.lesson._id] } },
-        function (err, managerparent) {
-            if (err) return res.status(400).json({ error: 'no agregado la lección culminada' });
-            res.status(200).json({ message: managerparent })
-        });
+    try {
+        const managerparent = await Learn.updateOne(
+            { _id: learn[0]._id },
+            { $addToSet: { lesson: [req.lesson._id] } }
+        );
+        res.status(200).json({ message: managerparent });
+    } catch (err) {
+        res.status(400).json({ error: 'no agregado la lección culminada' });
+    }
 }
 
 /**
@@ -135,15 +137,17 @@ exports.getCompleteLearn = async (req, res) => {
  */
 exports.lessonById = async (req, res, next, id) => {
     // search the lesson by id
-    await Lessons.findById(id)
-        .populate("module")
-        .exec((err, lesson) => {
-            if (err || !lesson) {
-                return res.status(400).json({ error: "La lección no se encontró o no existe" });
-            }
-            // save the lesson found in the request
-            req.lesson = lesson;
-            // continue with the next process
-            next();
-        });
+    let lesson;
+    try {
+        lesson = await Lessons.findById(id).populate("module");
+    } catch (err) {
+        lesson = null;
+    }
+    if (!lesson) {
+        return res.status(400).json({ error: "La lección no se encontró o no existe" });
+    }
+    // save the lesson found in the request
+    req.lesson = lesson;
+    // continue with the next process
+    next();
 }

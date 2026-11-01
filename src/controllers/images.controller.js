@@ -1,7 +1,4 @@
-const formidable = require('formidable');
-const _ = require('lodash');
 const fs = require('fs');
-const fse = require('fs-extra');
 
 const { uploadImage, deleteImage } = require('../libs/cloudinary');
 const { errorHandler } = require('../helpers/dberrorHandler');
@@ -38,7 +35,7 @@ exports.updateLessonIcon = async (req, res) => {
             // the icon is stored in the object lesson as a buffer data type
             lesson.icon.data = fs.readFileSync(req.files.icon.tempFilePath);
             lesson.icon.contentType = req.files.icon.mimetype;
-            await fse.remove(req.files.icon.tempFilePath);
+            await fs.promises.rm(req.files.icon.tempFilePath, { force: true });
         }
         // save to database
         await lesson.save();
@@ -77,7 +74,7 @@ exports.updateMicrolearningImage = async (req, res) => {
                 url: resultImage.secure_url,
                 public_id: resultImage.public_id
             }
-            await fse.remove(req.files.image.tempFilePath);
+            await fs.promises.rm(req.files.image.tempFilePath, { force: true });
         }
         // check if you have the image url registered and delete it
         if (microlearning.image_url.public_id) {
@@ -123,7 +120,7 @@ exports.updateMicrolearningGif = async (req, res) => {
                 url: resultGif.secure_url,
                 public_id: resultGif.public_id
             }
-            await fse.remove(req.files.gif.tempFilePath);
+            await fs.promises.rm(req.files.gif.tempFilePath, { force: true });
         }
         // check if you have the gif url registered and delete it
         if (microlearning.gif_url.public_id) {
@@ -169,7 +166,7 @@ exports.updateCardGif = async (req, res) => {
                 url: resultGif.secure_url,
                 public_id: resultGif.public_id
             }
-            await fse.remove(req.files.gif.tempFilePath);
+            await fs.promises.rm(req.files.gif.tempFilePath, { force: true });
         }
         // check if you have the gif url registered and delete it
         if (card.gif_url.public_id) {
