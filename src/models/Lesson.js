@@ -7,21 +7,22 @@ const lessonSchema = new mongoose.Schema(
             type: String,
             trim: true,
             required: true,
-            maxlength: 32
+            maxlength: 32,
         },
         module: {
             type: ObjectId,
             ref: 'Module',
-            required: true
+            required: true,
+            index: true,
         },
-        icon: {
-            data: Buffer,
-            contentType: String
-        }
+        icon_url: {
+            url: String,
+            public_id: String,
+        },
     },
     {
-        timestamps: true
-    }
+        timestamps: true,
+    },
 );
 
 module.exports = mongoose.model('Lesson', lessonSchema);

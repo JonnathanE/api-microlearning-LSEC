@@ -120,51 +120,67 @@ Hallazgos:
 
 ## Fase 3 — Mejoras en la lógica de negocio
 
-### 🔴 Seguridad (prioridad alta)
-- [ ] **Escalada de privilegios en el registro:** `POST /api/auth/signup` acepta `roles` en el body, así que cualquiera puede registrarse como `admin`. El registro público debe asignar siempre `student`. La asignación de roles debe hacerse en un endpoint de administración.
-- [ ] **Edición de usuarios sin control de propiedad:** `PUT /api/user/:userId` solo exige un token válido, así que cualquier usuario puede modificar a otro. Hay que exigir que sea el propio usuario o un admin, y que nadie pueda cambiarse los roles a sí mismo.
-- [ ] **Hash de contraseñas:** hoy se usa HMAC-SHA1 con un salt `uuid v1`. Hay que migrar a `bcrypt` o `argon2`. Para los usuarios existentes, se re-hashea la contraseña al iniciar sesión si el hash es antiguo, o se fuerza un reseteo.
-- [ ] `GET /api/user` devuelve `hashed_password` y `salt`. Hay que excluirlos en el schema (`select: false`) o con `toJSON`.
-- [ ] `isAdmin` e `isModerator` fallan con un error 500 si el usuario no existe. Además consultan la base dos veces por request. Mejor cargar el usuario con sus roles en `verifyToken` y guardarlo en `req.user`.
-- [ ] Validar que `JWT_SECRET` exista al arrancar. Tomar el token solo con el formato `Bearer <token>`.
-- [ ] Montar `helmet`, configurar `cors` con una lista blanca de orígenes y poner rate limiting en `/api/auth/*`.
-- [ ] La ruta `/api/testing/reset` debe existir solo cuando `NODE_ENV === 'test'`. Hoy es así, pero hay que asegurarlo también en la imagen de Docker.
-- [ ] Hay una cookie `t` con `expire: new Date() + 9999` (concatena texto, no es una fecha) y no hay `cookie-parser`. Hay que decidir entre cookie `httpOnly` o solo el header `Authorization`, y quitar lo que no se use.
+Decisiones tomadas:
+- **Lint y formato:** Biome, en lugar de ESLint + Prettier (una sola herramienta). Solo cubre `src/` y `test/`.
+- **Validación:** zod, también para las variables de entorno.
+- **Sin migración de datos:** el proyecto no está en producción. No se migran imágenes a Cloudinary ni se rehashean contraseñas; una base de datos local anterior se debe recrear (`docker compose down -v`).
+- **Borrado:** si un módulo o una lección tiene contenido, se bloquea con 409.
+- **Formato de error:** `{ error, code, details? }`. `error` sigue siendo un texto, así que el frontend actual muestra los mensajes.
+- **Contraseñas:** argon2id, con un mínimo de 8 caracteres.
+- **Sesión:** solo el header `Authorization: Bearer`. Se eliminan la cookie `t` y `signout`, que el frontend no usa.
+- **Rutas sin versionar:** `/api/v1` solo hacía falta para convivir con un frontend en producción.
+- **Sin Husky:** el lint y los tests se comprueban en CI.
+
+Los cambios que afectan al frontend están en `CHANGELOG.md`.
+
+### 🔴 Seguridad
+- [x] `signup` asigna siempre `student` e ignora `roles`. Nuevo `PUT /api/user/:userId/roles`, solo para admins y nunca sobre uno mismo.
+- [x] `PUT /api/user/:userId` exige ser el propio usuario o un admin, y no permite cambiar roles.
+- [x] Contraseñas con argon2id, en un hook `pre('save')`.
+- [x] La contraseña tiene `select: false` y se excluye en `toJSON`: la API nunca la devuelve.
+- [x] `authenticate` carga el usuario con sus roles en `req.user`. Un token de un usuario eliminado responde 401 en lugar de 500.
+- [x] `JWT_SECRET` se valida al arrancar (mínimo 32 caracteres), el token solo se acepta como `Bearer <token>` y el algoritmo queda fijado en HS256.
+- [x] `helmet`, `cors` con lista blanca (`CORS_ORIGINS`) y rate limiting en `/api/auth/*`.
+- [x] `/api/testing/reset` solo existe con `NODE_ENV=test`, y la imagen de producción fija `NODE_ENV=production`.
+- [x] Eliminada la cookie `t`.
+- [x] Agregado: `signin` responde igual ante un correo desconocido y una contraseña errónea, para no revelar qué correos están registrados.
+- [x] Agregado: la validación impide inyectar operadores de MongoDB en las credenciales.
+- [x] Agregado: solo se aceptan imágenes, con límite de tamaño, y `express-fileupload` se monta después de la autenticación para que un anónimo no pueda escribir en disco.
 
 ### 🟠 Bugs
-- [ ] `helpers/dberrorHandler.js` tiene errores de escritura que lo rompen: `outuput`, `fieldName` vs `filedName`, `chartAt` y `errorors`. Además empieza con `message = "'"`. Hay que reescribirlo.
-- [ ] Existe `res.starus(...)` en `images.controller.js` (3 veces), que lanza un TypeError.
-- [ ] En `home.controller.js` se usa `microlearnings.length === 0` sobre el resultado de `paginate`, que es un objeto y no un array. Hay que usar `docs.length` o `totalDocs`.
-- [ ] Los esquemas usan `trin: true` en vez de `trim: true` (Card y Microlearning).
-- [ ] `user.update` cambia la contraseña sin volver a generar el salt. Hay que usar el virtual o el nuevo hook de bcrypt.
-- [ ] `createRoles()` se ejecuta antes de que exista la conexión a MongoDB. Hay que moverlo después de `mongoose.connect` o al script `seed`.
-- [ ] Si `req.files` es `undefined` (request sin archivos), se lanza un error en `lesson.create` y en las actualizaciones de imágenes.
-- [ ] En `lesson.getAll`, `sortBy` y `order` llegan del query sin validar. Hay que limitarlos a una lista blanca.
+- [x] Eliminados `dberrorHandler.js` e `images.controller.js` con sus errores de escritura (`outuput`, `chartAt`, `errorors`, `res.starus`). Los reemplaza el middleware central de errores.
+- [x] La paginación comprueba `totalDocs`.
+- [x] `trin` → `trim` en Card y Microlearning.
+- [x] Cambiar la contraseña pasa por el mismo hook que al crearla.
+- [x] Los roles se crean después de conectar a MongoDB, y el servidor no acepta peticiones hasta entonces.
+- [x] Una petición sin archivos responde 400.
+- [x] `sortBy` y `order` tienen lista blanca.
 
 ### 🟡 Integridad de datos
-- [ ] Al eliminar un módulo o una lección quedan huérfanos sus lecciones, microlearnings, cards y referencias en `Learn`. Hay que decidir entre borrado en cascada, borrado lógico o bloquear el borrado si hay hijos.
-- [ ] Al eliminar un microlearning o una card no se borran sus archivos de Cloudinary.
-- [ ] Unificar el almacenamiento de imágenes: hoy conviven `Buffer` en Mongo (`icon`, `image`, `gif`) y Cloudinary (`*_url`). Pasar todo a Cloudinary con un script de migración y quitar los campos `Buffer`.
-- [ ] Validar que `module` y `lesson` referencien documentos que existen antes de guardar.
-- [ ] Revisar el modelo `Card`: `correctAnswer` y `wrongAnswer` conviven con `options[]`. Dejar un solo formato.
-- [ ] Crear índices para `Lesson.module`, `Microlearning.lesson`, `Card.lesson` y `Learn.user` (único).
+- [x] Módulos y lecciones con contenido no se pueden eliminar (409). Eliminar una lección o un microcontenido limpia sus referencias en `Learn`, y eliminar un usuario borra su progreso.
+- [x] Eliminar un documento borra sus archivos de Cloudinary, y reemplazar un archivo borra el anterior.
+- [x] Agregado: si falla una subida o el guardado, se borran los archivos ya subidos.
+- [x] Todas las imágenes están en Cloudinary (`icon_url`, `image_url`, `gif_url`) y se quitaron los campos `Buffer`. `GET /api/lesson/icon/:id` redirige a Cloudinary para que el frontend actual siga funcionando.
+- [x] `module` y `lesson` se validan antes de subir archivos o guardar.
+- [x] `Card` conserva `correctAnswer` y `wrongAnswer`, que son los que usa el frontend. Se quitó `options`.
+- [x] Índices en `Lesson.module`, `Microlearning.lesson`, `Card.lesson` y `Learn.user` (único).
 
 ### 🟢 Arquitectura y calidad
-- [ ] Separar en capas: `routes → controllers (HTTP) → services (negocio) → models`. El `controllersFactory` no aporta nada y se elimina.
-- [ ] Usar un middleware central de errores, con errores tipados (`NotFoundError`, `ValidationError`…) y un formato de respuesta uniforme `{ error: { code, message } }`. Express 5 ya propaga los errores async.
-- [ ] Validar las entradas con `zod` o `express-validator` en cada endpoint.
-- [ ] Usar códigos HTTP correctos: 201 al crear, 404 cuando no se encuentra algo (hoy se usa 400), 409 para duplicados y 204 al borrar.
-- [ ] `modulesAssigned` hace una consulta por cada módulo (N+1). Hay que reemplazarlo por un `aggregate` o un `distinct`.
-- [ ] Usar un config central validado con `zod` para las variables de entorno.
-- [ ] Usar un logger estructurado (`pino`) en vez de `console.log` y `morgan`.
-- [ ] Hacer graceful shutdown: cerrar el servidor y la conexión de Mongo ante `SIGTERM`, que es necesario en Docker.
-- [ ] Agregar un endpoint `GET /health`, para el healthcheck del contenedor.
-- [ ] Documentar la API con OpenAPI/Swagger (`/docs`) en lugar de JSDoc + Postman.
-- [ ] Versionar las rutas (`/api/v1/...`) si el frontend tiene que convivir con los cambios.
-- [ ] Usar ESLint + Prettier, y opcionalmente Husky + lint-staged.
-- [ ] Configurar CI en GitHub Actions: lint + tests con un servicio de MongoDB.
+- [x] Capas `routes → controllers → services → models`. Se eliminó `controllersFactory`.
+- [x] Middleware central de errores con errores tipados.
+- [x] Validación con zod en cada endpoint (`src/schemas/`).
+- [x] Códigos HTTP: 201 al crear, 204 al borrar, 401, 403, 404, 409, 413 y 502.
+- [x] `modulesAssigned` sin N+1, con `distinct`.
+- [x] Configuración central validada con zod (`src/config/env.js`).
+- [x] Logger estructurado con `pino` y `pino-http`, en lugar de `morgan` y `console.log`. Los tokens se ocultan en los logs.
+- [x] Graceful shutdown ante `SIGTERM` y `SIGINT`.
+- [x] `GET /health`, usado por el healthcheck de Compose.
+- [x] OpenAPI en `/docs`, generado a partir de los esquemas de zod. Se eliminaron JSDoc y la colección de Postman.
+- [x] `app` separado de `listen` (`src/app.js` y `src/server.js`): los tests ya no abren un puerto ni chocan con el contenedor `api`.
+- [x] Biome (`pnpm lint`, `pnpm format`).
+- [x] CI en GitHub Actions: lint y tests con un servicio de MongoDB.
 
-> ⚠️ Varios de estos cambios (códigos HTTP, formato de errores, roles en el registro, imágenes) **afectan al frontend** `microlearning-LSEC`. Hay que anotarlos en un `CHANGELOG.md` para tenerlos en cuenta en su plan.
+**Resultado: 110/110 tests** (los 73 originales adaptados al nuevo contrato y 37 nuevos de seguridad e integridad).
 
 ## Fase 4 — Migración a TypeScript
 

@@ -1,16 +1,14 @@
-const mongoose = require('mongoose');
 const supertest = require('supertest');
-const { app, server } = require('../src/index');
+const app = require('../src/app');
 
 const Module = require('../src/models/Module');
 const User = require('../src/models/User');
-const Lesson = require('../src/models/Lesson');
 
-const { initialModules, student, signInStudent, adminUser, singnInAdminUser } = require('./helpers');
+const { createAdmin, initialModules, student, signInStudent, singnInAdminUser } = require('./helpers');
 
 const api = supertest(app);
-let tokenAdmin = "dsfsd";
-let tokenUser = "sfdsfsdf";
+let tokenAdmin = 'dsfsd';
+let tokenUser = 'sfdsfsdf';
 
 beforeEach(async () => {
     //jest.setTimeout(60000);
@@ -25,19 +23,15 @@ describe('POST /api/micro/', () => {
     test('CP40 create a new microcontent with an authenticated admin', async () => {
         await User.deleteMany({});
         // create a new admin
-        await api
-            .post('/api/auth/signup')
-            .send(adminUser)
-            .expect(200)
-            .expect('Content-Type', /application\/json/)
+        await createAdmin();
         // login admin
         const adminLogin = await api
             .post('/api/auth/signin')
             .send(singnInAdminUser)
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         // get token
-        tokenAdmin = adminLogin.body.token
+        tokenAdmin = adminLogin.body.token;
         // get models
         const modules = await api.get('/api/module');
         // creata a lesson
@@ -48,7 +42,7 @@ describe('POST /api/micro/', () => {
             .field('name', 'lesson 1')
             .field('module', modules.body[0]._id)
             .attach('icon', 'test/fixtures/lsec.png')
-            .expect(200)
+            .expect(201);
         // get lessons
         const lessons = await api.get('/api/lesson');
         // create a microlearning
@@ -60,7 +54,7 @@ describe('POST /api/micro/', () => {
             .field('lesson', lessons.body[0]._id)
             .attach('image', 'test/fixtures/lsec.png')
             .attach('gif', 'test/fixtures/lsec.png')
-            .expect(200)
+            .expect(201);
         expect(response.body.title).toBe('microcontent 1');
     });
 
@@ -72,8 +66,8 @@ describe('POST /api/micro/', () => {
             .field('title', 'microcontent 1')
             .attach('image', 'test/fixtures/lsec.png')
             .attach('gif', 'test/fixtures/lsec.png')
-            .expect(400)
-        expect(response.body.error).toBe('No se pudo crear el microcontenido');
+            .expect(400);
+        expect(response.body.error).toBe('La lección es requerida');
     });
 
     test('CP42 microcontent is not created if user is not admin', async () => {
@@ -81,16 +75,16 @@ describe('POST /api/micro/', () => {
         await api
             .post('/api/auth/signup')
             .send(student)
-            .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect(201)
+            .expect('Content-Type', /application\/json/);
         // login end user
         const userLogin = await api
             .post('/api/auth/signin')
             .send(signInStudent)
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         // get token
-        tokenUser = userLogin.body.token
+        tokenUser = userLogin.body.token;
         // get lessons
         const lessons = await api.get('/api/lesson');
         // create microlearning
@@ -102,7 +96,7 @@ describe('POST /api/micro/', () => {
             .field('lesson', lessons.body[0]._id)
             .attach('image', 'test/fixtures/lsec.png')
             .attach('gif', 'test/fixtures/lsec.png')
-            .expect(403)
+            .expect(403);
         expect(response.body.error).toBe('Requiere rol de administrador');
     });
 });
@@ -112,18 +106,18 @@ describe('GET /api/micro/', () => {
         await api
             .get('/api/micro/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
     });
 
     test('CP44 get microcontent by id', async () => {
         const micro = await api
             .get('/api/micro/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         const response = await api
             .get(`/api/micro/${micro.body[0]._id}`)
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         expect(micro.body[0].title).toBe(response.body.title);
     });
 
@@ -131,152 +125,150 @@ describe('GET /api/micro/', () => {
         const micro = await api
             .get('/api/micro/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         const response = await api
             .get(`/api/micro/${micro.body[0]._id}f`)
             .expect(400)
-            .expect('Content-Type', /application\/json/)
-        expect(response.body.error).toBe('El microcontenido no se encontró o no existe');
+            .expect('Content-Type', /application\/json/);
+        expect(response.body.error).toBe('El identificador no es válido');
     });
 });
 
 describe('PUT /api/micro/', () => {
-
     test('CP46 update the parameter of the microcontent title', async () => {
         const micros = await api
             .get('/api/micro/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         const updateMicro = {
             title: 'Micro 137',
-        }
+        };
         const response = await api
             .put(`/api/micro/${micros.body[0]._id}`)
             .send(updateMicro)
             .set('authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /application\/json/)
-            .expect(200)
-        expect(response.body.message).toBe('El microcontenido se actualizado correctamente');
+            .expect(200);
+        expect(response.body.message).toBe('El microcontenido se actualizó correctamente');
     });
 
     test('CP47 update the parameter of the microcontent lesson', async () => {
         const lessons = await api
             .get('/api/lesson/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         const micros = await api
             .get('/api/micro/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         const updateMicro = {
-            lesson: lessons.body[0]._id
-        }
+            lesson: lessons.body[0]._id,
+        };
         const response = await api
             .put(`/api/micro/${micros.body[0]._id}`)
             .send(updateMicro)
             .set('authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /application\/json/)
-            .expect(200)
-        expect(response.body.message).toBe('El microcontenido se actualizado correctamente');
+            .expect(200);
+        expect(response.body.message).toBe('El microcontenido se actualizó correctamente');
     });
 
     test('CP48 update title and lesson of the microcontnent', async () => {
         const lessons = await api
             .get('/api/lesson/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         const micros = await api
             .get('/api/micro/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         const updateMicro = {
             lesson: lessons.body[0]._id,
-            title: 'Micro 137'
-        }
+            title: 'Micro 137',
+        };
         const response = await api
             .put(`/api/micro/${micros.body[0]._id}`)
             .send(updateMicro)
             .set('authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /application\/json/)
-            .expect(200)
-        expect(response.body.message).toBe('El microcontenido se actualizado correctamente');
+            .expect(200);
+        expect(response.body.message).toBe('El microcontenido se actualizó correctamente');
     });
 
     test('CP49 update microcontent image', async () => {
         const micros = await api
             .get('/api/micro/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         await api
             .put(`/api/micro/image/${micros.body[0]._id}`)
             .set('authorization', `Bearer ${tokenAdmin}`)
             .set({ connection: 'keep-alive' })
             .attach('image', 'test/fixtures/lsec.png')
-            .expect(200)
+            .expect(200);
     });
 
     test('CP50 the image does not update if an image is not submitted', async () => {
         const micros = await api
             .get('/api/micro/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         const response = await api
             .put(`/api/micro/image/${micros.body[0]._id}`)
             .set('authorization', `Bearer ${tokenAdmin}`)
-            .expect(400)
-        expect(response.body.error).toBe('No se pudo actualizar la imagen')
+            .expect(400);
+        expect(response.body.error).toBe('Debe enviar un archivo en el campo image');
     });
 
     test('CP51 update microcontent gif', async () => {
         const micros = await api
             .get('/api/micro/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         await api
             .put(`/api/micro/gif/${micros.body[0]._id}`)
             .set('authorization', `Bearer ${tokenAdmin}`)
             .set({ connection: 'keep-alive' })
             .attach('gif', 'test/fixtures/lsec.png')
-            .expect(200)
+            .expect(200);
     });
 
     test('CP52 the gif does not update if an gif is not submitted', async () => {
         const micros = await api
             .get('/api/micro/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         const response = await api
             .put(`/api/micro/gif/${micros.body[0]._id}`)
             .set('authorization', `Bearer ${tokenAdmin}`)
-            .expect(400)
-        expect(response.body.error).toBe('No se pudo actualizar el GIF')
+            .expect(400);
+        expect(response.body.error).toBe('Debe enviar un archivo en el campo gif');
     });
 });
 
 describe('DELETE /api/micro/', () => {
-
     test('CP53 the microcontnet cannot be deleted if the id does not match', async () => {
         const micros = await api
             .get('/api/micro/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         const response = await api
             .delete(`/api/micro/${micros.body[0]._id}ff`)
             .set('authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /application\/json/)
-            .expect(400)
-        expect(response.body.error).toBe('El microcontenido no se encontró o no existe');
+            .expect(400);
+        expect(response.body.error).toBe('El identificador no es válido');
     });
 
     test('CP54 the microcontent cannot be deleted if the token is not sent', async () => {
         const micros = await api
             .get('/api/micro/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         const response = await api
             .delete(`/api/micro/${micros.body[0]._id}`)
             .expect('Content-Type', /application\/json/)
-            .expect(403)
+            .expect(401);
         expect(response.body.error).toBe('No se proporcionó token');
     });
 
@@ -284,12 +276,12 @@ describe('DELETE /api/micro/', () => {
         const micros = await api
             .get('/api/micro/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         const response = await api
             .delete(`/api/micro/${micros.body[0]._id}`)
             .set('authorization', `Bearer ${tokenAdmin}f`)
             .expect('Content-Type', /application\/json/)
-            .expect(401)
+            .expect(401);
         expect(response.body.error).toBe('No autorizado');
     });
 
@@ -297,12 +289,12 @@ describe('DELETE /api/micro/', () => {
         const micros = await api
             .get('/api/micro/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
+            .expect('Content-Type', /application\/json/);
         const response = await api
             .delete(`/api/micro/${micros.body[0]._id}`)
             .set('authorization', `Bearer ${tokenUser}`)
             .expect('Content-Type', /application\/json/)
-            .expect(403)
+            .expect(403);
         expect(response.body.error).toBe('Requiere rol de administrador');
     });
 
@@ -310,20 +302,7 @@ describe('DELETE /api/micro/', () => {
         const micros = await api
             .get('/api/micro/')
             .expect(200)
-            .expect('Content-Type', /application\/json/)
-        const response = await api
-            .delete(`/api/micro/${micros.body[0]._id}`)
-            .set('authorization', `Bearer ${tokenAdmin}`)
-            .expect('Content-Type', /application\/json/)
-            .expect(200)
-        expect(response.body.message).toBe('El microcontenido se eliminó con éxito');
+            .expect('Content-Type', /application\/json/);
+        await api.delete(`/api/micro/${micros.body[0]._id}`).set('authorization', `Bearer ${tokenAdmin}`).expect(204);
     });
-});
-
-afterAll(async () => {
-    await Lesson.deleteMany({});
-    await User.deleteMany({});
-    await Module.deleteMany({});
-    mongoose.connection.close();
-    server.close();
 });

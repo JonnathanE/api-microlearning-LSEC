@@ -6,35 +6,28 @@ const microlearningSchema = new mongoose.Schema(
     {
         title: {
             type: String,
-            trin: true,
+            trim: true,
             required: true,
-            maxlength: 32
+            maxlength: 32,
         },
         lesson: {
             type: ObjectId,
             ref: 'Lesson',
-            required: true
-        },
-        image: {
-            data: Buffer,
-            contentType: String
+            required: true,
+            index: true,
         },
         image_url: {
             url: String,
-            public_id: String
-        },
-        gif: {
-            data: Buffer,
-            contentType: String
+            public_id: String,
         },
         gif_url: {
             url: String,
-            public_id: String
-        }
+            public_id: String,
+        },
     },
     {
-        timestamps: true
-    }
+        timestamps: true,
+    },
 );
 
 microlearningSchema.plugin(mongoosePaginate);
