@@ -1,7 +1,5 @@
 'use strict';
-const formidable = require('formidable');
-const _ = require('lodash');
-const fs = require('fs-extra');
+const fs = require('fs');
 const { uploadImage, deleteImage } = require('../libs/cloudinary');
 
 
@@ -28,7 +26,7 @@ class Card {
                     url: resultGif.secure_url,
                     public_id: resultGif.public_id
                 }
-                await fs.remove(req.files.gif.tempFilePath)
+                await fs.promises.rm(req.files.gif.tempFilePath, { force: true })
             }
             // a knowledge cards is created with the form data
             let card = new Cards({ question, lesson, correctAnswer, wrongAnswer, gif_url: gif });
@@ -50,14 +48,15 @@ class Card {
         let order = req.query.order ? req.query.order : 'asc';
         let sortBy = req.query.sortBy ? req.query.sortBy : 'name';
         // all the knowledge cards from the database are obtained and returned in JSON format
-        await Cards.find()
-            .select(['-gif'])
-            .populate('lesson', '-icon')
-            .sort([[sortBy, order]])
-            .exec((err, card) => {
-                if (err) return res.status(400).json({ error: 'Tarjetas de Conocimiento no encontradas' });
-                res.status(200).json(card);
-            });
+        try {
+            const card = await Cards.find()
+                .select(['-gif'])
+                .populate('lesson', '-icon')
+                .sort([[sortBy, order]]);
+            res.status(200).json(card);
+        } catch (err) {
+            res.status(400).json({ error: 'Tarjetas de Conocimiento no encontradas' });
+        }
     }
 
     /**
@@ -85,7 +84,7 @@ class Card {
                 await deleteImage(card.gif_url.public_id);
             }
             // remove the knowledge cards
-            const cardRemoved = card.remove();
+            const cardRemoved = await card.deleteOne();
             // check if it was deleted
             if (!cardRemoved) return res.status(400).json({ error: 'La tarjeta de conocimiento no se eliminó' });
             // return a response
@@ -111,10 +110,12 @@ class Card {
         if (correctAnswer) card.correctAnswer = correctAnswer;
         if (wrongAnswer) card.wrongAnswer = wrongAnswer;
         // update the new information in the database
-        await card.save((err, data) => {
-            if (err) return res.status(400).json({ error: 'La tarjeta de conocimiento no se ha actualizado' });
+        try {
+            await card.save();
             res.status(200).json({ message: 'La tarjeta de conocmiento se actualizado correctamente' });
-        });
+        } catch (err) {
+            res.status(400).json({ error: 'La tarjeta de conocimiento no se ha actualizado' });
+        }
     }
 
     /**
@@ -127,15 +128,17 @@ class Card {
      */
     byId = async (req, res, next, id) => {
         // search for knowledge cards by id
-        await Cards.findById(id)
-            .populate('lesson', '-icon')
-            .exec((err, card) => {
-                if (err || !card) return res.status(400).json({ error: 'La tarjeta de conocimiento no se encontró o no existe' });
-                // save the knowledge cards found in the request
-                req.card = card;
-                // continue with the next process
-                next();
-            });
+        let card;
+        try {
+            card = await Cards.findById(id).populate('lesson', '-icon');
+        } catch (err) {
+            card = null;
+        }
+        if (!card) return res.status(400).json({ error: 'La tarjeta de conocimiento no se encontró o no existe' });
+        // save the knowledge cards found in the request
+        req.card = card;
+        // continue with the next process
+        next();
     }
 }
 

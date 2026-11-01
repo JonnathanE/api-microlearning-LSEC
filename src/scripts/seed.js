@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 const mongoose = require('mongoose');
 const Role = require('../models/Role');
 const User = require('../models/User');
@@ -12,11 +12,7 @@ const seed = async () => {
     const { DATABASE, ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD } = process.env;
     if (!DATABASE) throw new Error('DATABASE is not defined in .env');
 
-    await mongoose.connect(DATABASE, {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useUnifiedTopology: true
-    });
+    await mongoose.connect(DATABASE);
 
     // create the roles that do not exist yet
     for (const name of ['student', 'moderator', 'admin']) {

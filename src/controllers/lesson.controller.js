@@ -1,8 +1,5 @@
 'use strict';
-const formidable = require('formidable');
-const _ = require('lodash');
 const fs = require('fs');
-const fse = require('fs-extra');
 
 const Lessons = require('../models/Lesson');
 const { errorHandler } = require('../helpers/dberrorHandler');
@@ -29,7 +26,7 @@ class Lesson {
                 // the icon is stored in the object lesson as a buffer data type
                 lesson.icon.data = fs.readFileSync(req.files.icon.tempFilePath);
                 lesson.icon.contentType = req.files.icon.mimetype;
-                await fse.remove(req.files.icon.tempFilePath);
+                await fs.promises.rm(req.files.icon.tempFilePath, { force: true });
             }
             // save to database
             await lesson.save();
@@ -50,16 +47,15 @@ class Lesson {
         let order = req.query.order ? req.query.order : 'asc'; // variable to sort the results; ascending by default
         let sortBy = req.query.sortBy ? req.query.sortBy : 'module'; // filter
         // all the lessons from the database are obtained and returned in JSON format
-        await Lessons.find()
-            .select("-icon")
-            .populate("module")
-            .sort([[sortBy, order]])
-            .exec((err, lesson) => {
-                if (err) {
-                    return res.status(400).json({ error: "Lecciones no encontrados" });
-                }
-                res.json(lesson);
-            });
+        try {
+            const lesson = await Lessons.find()
+                .select("-icon")
+                .populate("module")
+                .sort([[sortBy, order]]);
+            res.json(lesson);
+        } catch (err) {
+            res.status(400).json({ error: "Lecciones no encontrados" });
+        }
     }
 
     /**
@@ -77,21 +73,23 @@ class Lesson {
      * Method to remove a lesson
      * @param {{req: {lesson: Object}}} req request with the lesson object provided by the {@link byId} function
      */
-    remove = (req, res) => {
+    remove = async (req, res) => {
         // get the Lesson object provided by the request
         let lesson = req.lesson;
         // remove the lesson
-        lesson.remove((err, deleteLesson) => {
-            if (err) return res.status(400).json({ error: errorHandler(err) });
+        try {
+            await lesson.deleteOne();
             res.json({ message: "La lección se eliminó con éxito" });
-        });
+        } catch (err) {
+            res.status(400).json({ error: errorHandler(err) });
+        }
     }
 
     /**
      * Method to update a lesson
      * @param {{body: Object}} req Request where the form data is located
      */
-    update = (req, res) => {
+    update = async (req, res) => {
         // get the data from the request form
         const { name, module } = req.body;
         // get the lesson object from the request
@@ -100,10 +98,12 @@ class Lesson {
         if (name) lesson.name = name;
         if (module) lesson.module = module;
         // update the new information in the database
-        lesson.save((err, data) => {
-            if (err) return res.status(400).json({ error: 'No se guardaron los cambios' });
+        try {
+            await lesson.save();
             res.status(200).json({ message: 'Lección actualizado correctamente' });
-        });
+        } catch (err) {
+            res.status(400).json({ error: 'No se guardaron los cambios' });
+        }
     }
 
     /**
@@ -115,17 +115,19 @@ class Lesson {
      * @param {string} id Lesson ID obtained from the URL parameter
      */
     byId = async (req, res, next, id) => {
-        await Lessons.findById(id)
-            .populate("module")
-            .exec((err, lesson) => {
-                if (err || !lesson) {
-                    return res.status(400).json({ error: "La lección no se encontró o no existe" });
-                }
-                // save the lesson found in the request
-                req.lesson = lesson;
-                // continue with the next process
-                next();
-            });
+        let lesson;
+        try {
+            lesson = await Lessons.findById(id).populate("module");
+        } catch (err) {
+            lesson = null;
+        }
+        if (!lesson) {
+            return res.status(400).json({ error: "La lección no se encontró o no existe" });
+        }
+        // save the lesson found in the request
+        req.lesson = lesson;
+        // continue with the next process
+        next();
     }
 }
 

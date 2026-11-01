@@ -1,6 +1,5 @@
 'use strict';
-const formidable = require('formidable');
-const fs = require('fs-extra');
+const fs = require('fs');
 
 const Micro = require('../models/Microlearning');
 const { errorHandler } = require('../helpers/dberrorHandler');
@@ -27,7 +26,7 @@ class Microlearning {
                     url: resultImage.secure_url,
                     public_id: resultImage.public_id
                 }
-                await fs.remove(req.files.image.tempFilePath)
+                await fs.promises.rm(req.files.image.tempFilePath, { force: true })
             }
             // check if an gif was sent and save it in cloudinary
             let gif;
@@ -37,7 +36,7 @@ class Microlearning {
                     url: resultGif.secure_url,
                     public_id: resultGif.public_id
                 }
-                await fs.remove(req.files.gif.tempFilePath)
+                await fs.promises.rm(req.files.gif.tempFilePath, { force: true })
             }
             // create a Microlearning object
             const newMicrolearning = new Micro({ title, lesson, image_url: image, gif_url: gif });
@@ -59,14 +58,15 @@ class Microlearning {
         let order = req.query.order ? req.query.order : 'asc'; // variable to sort the results; ascending by default
         let sortBy = req.query.sortBy ? req.query.sortBy : 'title'; // filter
         // all the learning capsules from the database are obtained and returned in JSON format
-        await Micro.find()
-            .select(['-image', '-gif'])
-            .populate('lesson', '-icon')
-            .sort([[sortBy, order]])
-            .exec((err, micro) => {
-                if (err) return res.status(400).json({ error: 'Microcontenidos no encontrados' });
-                res.status(200).json(micro);
-            });
+        try {
+            const micro = await Micro.find()
+                .select(['-image', '-gif'])
+                .populate('lesson', '-icon')
+                .sort([[sortBy, order]]);
+            res.status(200).json(micro);
+        } catch (err) {
+            res.status(400).json({ error: 'Microcontenidos no encontrados' });
+        }
     }
 
     /**
@@ -99,7 +99,7 @@ class Microlearning {
                 await deleteImage(microlearning.gif_url.public_id);
             }
             // remove microlearning from database
-            const microRemoved = microlearning.remove();
+            const microRemoved = await microlearning.deleteOne();
             // check if it was deleted
             if (!microRemoved) return res.status(400).json({ message: 'El microcontenido no se eliminó' })
             // return a response
@@ -114,7 +114,7 @@ class Microlearning {
      * @param {{body: Object}} req Request where the form data is located
      * @returns {JSON}
      */
-    update = (req, res) => {
+    update = async (req, res) => {
         // get the data from the request form
         const { title, lesson } = req.body;
         // get the microlearning object from the request
@@ -123,10 +123,12 @@ class Microlearning {
         if (title) microlearning.title = title;
         if (lesson) microlearning.lesson = lesson;
         // update the new information in the database
-        microlearning.save((err, data) => {
-            if (err) return res.status(400).json({ error: errorHandler(err) });
+        try {
+            await microlearning.save();
             res.status(200).json({ message: 'El microcontenido se actualizado correctamente' });
-        });
+        } catch (err) {
+            res.status(400).json({ error: errorHandler(err) });
+        }
     }
 
     /**
@@ -139,15 +141,17 @@ class Microlearning {
      */
     byId = async (req, res, next, id) => {
         // search for learning capsule by id
-        await Micro.findById(id)
-            .populate('lesson', '-icon')
-            .exec((err, micro) => {
-                if (err || !micro) return res.status(400).json({ error: 'El microcontenido no se encontró o no existe' });
-                // save the learning capsule found in the request
-                req.microlearning = micro;
-                // continue with the next process
-                next();
-            });
+        let micro;
+        try {
+            micro = await Micro.findById(id).populate('lesson', '-icon');
+        } catch (err) {
+            micro = null;
+        }
+        if (!micro) return res.status(400).json({ error: 'El microcontenido no se encontró o no existe' });
+        // save the learning capsule found in the request
+        req.microlearning = micro;
+        // continue with the next process
+        next();
     }
 }
 

@@ -1,13 +1,13 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
+const helmet = require('helmet');
 const cors = require('cors');
 const { createRoles } = require('../libs/initialSetup');
 
 // use methods libs
 const app = express();
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 createRoles();
 
 // Settings
@@ -15,7 +15,14 @@ app.set('port', process.env.PORT || 3000);
 
 // Middlewares
 app.use(morgan('dev'));
-app.use(bodyParser.json());
+// images are served to the frontend from another origin
+app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+app.use(express.json());
+// Express 5 leaves req.body undefined when no parser runs; Express 4 + body-parser set it to {}
+app.use((req, res, next) => {
+    req.body ??= {};
+    next();
+});
 app.use(cors());
 app.use(fileUpload({
     useTempFiles: true,

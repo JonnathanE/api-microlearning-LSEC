@@ -1,6 +1,5 @@
-# Node 24 until phase 2: jsonwebtoken@8 relies on SlowBuffer, removed in Node 25+
 # pnpm is installed explicitly because corepack is no longer bundled from Node 25
-FROM node:24-alpine AS base
+FROM node:26-alpine AS base
 RUN npm install -g pnpm@12.15.0
 WORKDIR /app
 RUN chown node:node /app
@@ -19,7 +18,7 @@ CMD ["pnpm", "dev"]
 FROM base AS prod-deps
 RUN pnpm install --frozen-lockfile --prod
 
-FROM node:24-alpine AS prod
+FROM node:26-alpine AS prod
 ENV NODE_ENV=production
 WORKDIR /app
 RUN chown node:node /app

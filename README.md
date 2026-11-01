@@ -11,12 +11,12 @@ The proyect is build in Nodejs. The forntend are below:
 
 **Client:** React, Tailwind
 
-**Server:** Node 24, Express, MongoDB, Docker
+**Server:** Node 26, Express 5, MongoDB (Mongoose 9), Docker
 
 
 ## Requirements
 
-- Node.js 24 (Node 26 once the dependency upgrade lands)
+- Node.js 26 (see `.nvmrc`)
 - pnpm 12 (`npm install -g pnpm@12`)
 - Docker with Docker Compose
 
@@ -70,7 +70,7 @@ pnpm dev
 To deploy this project run
 
 ```bash
-  pnpm docs
+  pnpm run docs
 ```
 [Documentation](https://linktodocumentation)
   

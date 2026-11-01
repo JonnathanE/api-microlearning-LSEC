@@ -31,22 +31,22 @@ class Auth {
             user.roles = [role._id];
         }
         // saves the new user to the database and returns the user data in JSON format.
-        await user.save(async (error, user) => {
-            if (error) return res.status(400).json({
+        try {
+            await user.save();
+        } catch (error) {
+            return res.status(400).json({
                 message: 'Verifique los campos, hubo un error'
             });
-            user.salt = undefined;
-            user.hashed_password = undefined;
-            // a user Learn record is created that stores the user's learning
-            const learn = new Learn({ user });
-            const learnSave = await learn.save();
-            // crear el token con vencimiento en 24 horas
-            const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: 86400 });
-            // I get relevant information from the user to send as a response
-            const { name, email, ...other } = user._doc;
-            //returns the user data ( name, email)
-            res.status(200).json({ token, name, email });
-        });
+        }
+        user.salt = undefined;
+        user.hashed_password = undefined;
+        // a user Learn record is created that stores the user's learning
+        const learn = new Learn({ user });
+        await learn.save();
+        // crear el token con vencimiento en 24 horas
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: 86400 });
+        //returns the user data ( name, email)
+        res.status(200).json({ token, name: user.name, email: user.email });
     }
 
     /**
@@ -58,23 +58,26 @@ class Auth {
     sigin = async (req, res) => {
         const { email, password } = req.body;
         // find the user based on email
-        await User.findOne({ email }, (error, user) => {
-            if (error || !user) {
-                return res.status(400).json({ error: 'El usuario con ese correo electrónico no existe' });
-            }
-            // if the user is found, make sure the email and password match
-            // call the authentication method in the user model
-            if (!user.authenticate(password)) {
-                return res.status(401).json({ error: 'El correo electrónico o la contraseña no coinciden' });
-            }
-            // crear el token con vencimiento en 24 horas
-            const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: 86400 });
-            // persist the token as 't' in cookie with expiration date
-            res.cookie('t', token, { expire: new Date() + 9999 });
-            // return response with user and token to frontend client
-            const { name, email } = user;
-            return res.status(200).json({ token, name, email });
-        }).populate("roles");
+        let user;
+        try {
+            user = await User.findOne({ email }).populate("roles");
+        } catch (error) {
+            user = null;
+        }
+        if (!user) {
+            return res.status(400).json({ error: 'El usuario con ese correo electrónico no existe' });
+        }
+        // if the user is found, make sure the email and password match
+        // call the authentication method in the user model
+        if (!user.authenticate(password)) {
+            return res.status(401).json({ error: 'El correo electrónico o la contraseña no coinciden' });
+        }
+        // crear el token con vencimiento en 24 horas
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: 86400 });
+        // persist the token as 't' in cookie with expiration date
+        res.cookie('t', token, { expire: new Date() + 9999 });
+        // return response with user and token to frontend client
+        return res.status(200).json({ token, name: user.name, email: user.email });
     }
 
     /**

@@ -14,10 +14,12 @@ class Module {
         // create a module object
         const modules = new Modules(req.body);
         // save the module object in the database
-        await modules.save((err, data) => {
-            if (err) return res.status(400).json({ error: errorHandler(err) });
+        try {
+            const data = await modules.save();
             res.status(200).json(data);
-        });
+        } catch (err) {
+            res.status(400).json({ error: errorHandler(err) });
+        }
     }
 
     /**
@@ -25,10 +27,12 @@ class Module {
      */
     getAll = async (req, res) => {
         // get all the modules from the database in ascending order according to the module number
-        await Modules.find().sort({ number: 1 }).exec((err, data) => {
-            if (err) return res.status(400).json({ error: errorHandler(err) });
+        try {
+            const data = await Modules.find().sort({ number: 1 });
             res.status(200).json(data);
-        });
+        } catch (err) {
+            res.status(400).json({ error: errorHandler(err) });
+        }
     }
 
     /**
@@ -47,10 +51,12 @@ class Module {
         // get the learnig module provided by the request
         let module = req.module;
         // remove the learning module
-        module.remove((err, data) => {
-            if (err) return res.status(400).json({ error: errorHandler(err) });
+        try {
+            await module.deleteOne();
             res.status(200).json({ message: 'Modulo eliminado correctamente' });
-        });
+        } catch (err) {
+            res.status(400).json({ error: errorHandler(err) });
+        }
     }
 
     /**
@@ -67,11 +73,12 @@ class Module {
         if (number) module.number = number;
         if (name) module.name = name;
         // update the new information in the database
-        //console.log(module)
-        module.save((err, data) => {
-            if (err) return res.status(400).json({ error: errorHandler(err) });
+        try {
+            await module.save();
             res.status(200).json({ message: 'Modulo actualizado correctamente' });
-        });
+        } catch (err) {
+            res.status(400).json({ error: errorHandler(err) });
+        }
     }
 
     /**
@@ -84,13 +91,17 @@ class Module {
      */
     byId = async (req, res, next, id) => {
         // search for learning module by id
-        await Modules.findById(id).exec((err, data) => {
-            if (err || !data) return res.status(400).json({ error: 'El modulo no se encontró o no existe' });
-            // save the learning module found in the request
-            req.module = data;
-            // continue with the next process
-            next();
-        });
+        let data;
+        try {
+            data = await Modules.findById(id);
+        } catch (err) {
+            data = null;
+        }
+        if (!data) return res.status(400).json({ error: 'El modulo no se encontró o no existe' });
+        // save the learning module found in the request
+        req.module = data;
+        // continue with the next process
+        next();
     }
 }
 
