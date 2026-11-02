@@ -2,87 +2,104 @@
 
 The project is a rest API with the objective of teaching Ecuadorian Sign Language.
 
-The proyect is build in Nodejs. The forntend are below:
+The project is built with Node.js and TypeScript. The frontend is in its own repository:
 
-- Fontend: https://github.com/JonnathanE/microlearning-LSEC
-- DEMO: https://learn-lsec.herokuapp.com/
+- Frontend: https://github.com/JonnathanE/microlearning-LSEC
+
+## About this version
+
+This is a new, modernized version of the project, which was originally built as a university thesis.
+
+The original thesis version is preserved unchanged in the [`master-legacy`](https://github.com/JonnathanE/api-microlearning-LSEC/tree/master-legacy) branch and the [`v-tesis`](https://github.com/JonnathanE/api-microlearning-LSEC/tree/v-tesis) tag.
 
 ## Tech Stack
 
 **Client:** React, Tailwind
 
-**Server:** Node v13.12.0, Express, MongoDb
+**Server:** Node 26, TypeScript, Express 5, MongoDB (Mongoose 9), Docker
 
+
+## Requirements
+
+- Node.js 26 (see `.nvmrc`)
+- pnpm 12 (`npm install -g pnpm@12`)
+- Docker with Docker Compose
 
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your .env file
+Copy `.env.example` to `.env` and fill in the values:
 
-`DATABASE`
+```bash
+cp .env.example .env
+```
 
-`DATABASE_TEST`
+| Variable | Description |
+|---|---|
+| `PORT` | API port (default `3000`) |
+| `CORS_ORIGINS` | Allowed origins, separated by commas (default `http://localhost:3000`) |
+| `LOG_LEVEL` | Log level (default `info`) |
+| `DATABASE` | MongoDB connection string |
+| `DATABASE_TEST` | MongoDB connection string used by the tests |
+| `JWT_SECRET` | Secret used to sign tokens, at least 32 characters (`openssl rand -hex 32`) |
+| `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | Cloudinary credentials for images and GIFs. Required in production; without them, uploads fail |
+| `ADMIN_NAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` | Initial admin user created by `pnpm seed` |
 
-`JWT_SECRET`
+## Run with Docker
 
-`PORT`
+Start MongoDB and the API (with hot reload on `src/`):
 
-`CLOUDINARY_CLOUD_NAME`
+```bash
+docker compose up -d
+docker compose exec api pnpm seed   # create roles and the admin user
+```
 
-`CLOUDINARY_API_KEY`
+Optional MongoDB web UI on http://localhost:8081:
 
-`CLOUDINARY_API_SECRET`
-    
+```bash
+docker compose --profile tools up -d
+```
+
 ## Run Locally
 
-Clone the project
+Start only MongoDB in Docker and run the API on the host:
 
 ```bash
-  git clone https://github.com/JonnathanE/api-microlearning-LSEC.git
+git clone https://github.com/JonnathanE/api-microlearning-LSEC.git
+cd api-microlearning-LSEC
+docker compose up -d mongo
+pnpm install
+pnpm seed
+pnpm dev
 ```
 
-Go to the project directory
+## API Documentation
 
-```bash
-  cd api-microlearning-LSEC
-```
+With the server running, the OpenAPI documentation is available at `/docs`.
 
-Install dependencies
+Changes that affect the frontend are listed in [CHANGELOG.md](CHANGELOG.md).
 
-```bash
-  npm install
-```
-
-Start the server
-
-```bash
-  npm run start
-```
-
-  
-## Documentation
-
-To deploy this project run
-
-```bash
-  npm run docs
-```
-[Documentation](https://linktodocumentation)
-  
 ## Running Tests
 
-To run unit tests, run the following command
+MongoDB must be running (`docker compose up -d mongo`). Cloudinary is mocked, so no credentials are needed.
 
 ```bash
-  npm run test
+pnpm test
 ```
 
-To run e2e tests, run the following command
+To run the API for the frontend e2e tests, which use `/api/testing/reset`:
 
 ```bash
-  npm run start:test
+pnpm start:test
 ```
 
-## API Reference
+## Lint, Types and Build
 
-You can go to the `http_API` folder, where you can find a json document of the API and its routes. Upload the file to Postman to view it.
-  
+```bash
+pnpm lint        # check with Biome
+pnpm format      # apply the fixes
+pnpm typecheck   # check the types of src/ and test/
+pnpm build       # compile src/ into dist/
+pnpm start       # run the compiled server
+```
+
+In a production image, the seed runs with `node dist/scripts/seed.js`.
