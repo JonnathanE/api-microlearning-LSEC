@@ -2,10 +2,15 @@
 
 The project is a rest API with the objective of teaching Ecuadorian Sign Language.
 
-The proyect is build in Nodejs. The forntend are below:
+The project is built with Node.js and TypeScript. The frontend is in its own repository:
 
-- Fontend: https://github.com/JonnathanE/microlearning-LSEC
-- DEMO: https://learn-lsec.herokuapp.com/
+- Frontend: https://github.com/JonnathanE/microlearning-LSEC
+
+## About this version
+
+This is a new, modernized version of the project, which was originally built as a university thesis.
+
+The original thesis version is preserved unchanged in the [`master-legacy`](https://github.com/JonnathanE/api-microlearning-LSEC/tree/master-legacy) branch and the [`v-tesis`](https://github.com/JonnathanE/api-microlearning-LSEC/tree/v-tesis) tag.
 
 ## Tech Stack
 
