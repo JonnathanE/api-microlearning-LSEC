@@ -184,21 +184,24 @@ Los cambios que afectan al frontend están en `CHANGELOG.md`.
 
 ## Fase 4 — Migración a TypeScript
 
-- [ ] Instalar `typescript`, `@types/node` y `@types/express`. Usar `tsx` para desarrollo y `tsc` para el build (o `tsup`).
-- [ ] `tsconfig.json`: `"strict": true`, `"module": "NodeNext"`, `"target": "ES2024"`, `outDir: dist`.
-- [ ] Pasar a ESM (`import`/`export`, `"type": "module"`).
-- [ ] Migrar de abajo hacia arriba: `config` → `models` (interfaces + `Schema<T>`) → `services` → `middlewares` (extender `Express.Request` con `user`) → `controllers` → `routes` → `app`/`index`.
-- [ ] Inferir los tipos de los DTO desde los esquemas de `zod` (`z.infer`).
-- [ ] Migrar los tests a TypeScript (`vitest`, o `jest` con `ts-jest`).
-- [ ] Ajustar el `Dockerfile`: compilar en la etapa de build y ejecutar `node dist/index.js`.
-- [ ] Al terminar, `allowJs: false`: no debe quedar ningún archivo `.js` en `src/`.
+- [x] `typescript`, `@types/*`, `tsx` para desarrollo y `tsc` para el build.
+- [x] `tsconfig.json`: `strict`, `noUncheckedIndexedAccess`, `verbatimModuleSyntax`, `"module": "NodeNext"`, `"target": "ES2024"`, `allowJs: false`. `tsconfig.build.json` compila solo `src/` en `dist/`.
+- [x] ESM (`import`/`export`, `"type": "module"`).
+- [x] Todo `src/` migrado: modelos con interfaces y `Schema<T>`, `Express.Request` extendido con `user` y `validatedQuery` (`src/types/express.d.ts`).
+- [x] Tipos de entrada inferidos desde zod (`z.infer`).
+- [x] Tests migrados a TypeScript y de Jest a **Vitest**. Ya no hace falta `--experimental-vm-modules`, y `fileParallelism: false` mantiene una sola base compartida.
+- [x] `Dockerfile` con etapa de build, y la imagen de producción ejecuta `node dist/server.js`.
+- [x] No queda ningún archivo `.js` en `src/` ni en `test/`.
+- [x] CI: lint, `pnpm typecheck`, `pnpm build` y tests.
+
+El contrato de la API no cambia en esta fase.
 
 ## Estructura propuesta al final
 
 ```
 src/
   config/        env.ts, database.ts
-  models/        user.model.ts, module.model.ts, ...
+  models/        User.ts, Module.ts, ...
   services/      auth.service.ts, lesson.service.ts, ...
   controllers/   auth.controller.ts, ...
   routes/        index.ts, auth.routes.ts, ...
@@ -208,6 +211,9 @@ src/
   errors/        http-errors.ts
   app.ts
   server.ts
+  types/         express.d.ts, http.ts
+  docs/          openapi.ts
+  scripts/       seed.ts
 test/
 docs/
 Dockerfile

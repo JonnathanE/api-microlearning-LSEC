@@ -11,7 +11,7 @@ The proyect is build in Nodejs. The forntend are below:
 
 **Client:** React, Tailwind
 
-**Server:** Node 26, Express 5, MongoDB (Mongoose 9), Docker
+**Server:** Node 26, TypeScript, Express 5, MongoDB (Mongoose 9), Docker
 
 
 ## Requirements
@@ -87,9 +87,14 @@ To run the API for the frontend e2e tests, which use `/api/testing/reset`:
 pnpm start:test
 ```
 
-## Lint and Format
+## Lint, Types and Build
 
 ```bash
-pnpm lint     # check with Biome
-pnpm format   # apply the fixes
+pnpm lint        # check with Biome
+pnpm format      # apply the fixes
+pnpm typecheck   # check the types of src/ and test/
+pnpm build       # compile src/ into dist/
+pnpm start       # run the compiled server
 ```
+
+In a production image, the seed runs with `node dist/scripts/seed.js`.
