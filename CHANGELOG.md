@@ -1,6 +1,6 @@
 # Changelog
 
-## Sin publicar (3.0.0)
+## 3.0.0 (2026-11-02)
 
 ### Cambios que afectan al frontend
 
