@@ -14,6 +14,13 @@ COPY --chown=node:node . .
 EXPOSE 3000
 CMD ["pnpm", "dev"]
 
+# Compiles TypeScript into dist/
+FROM base AS build
+RUN pnpm install --frozen-lockfile
+COPY --chown=node:node tsconfig.json tsconfig.build.json ./
+COPY --chown=node:node src ./src
+RUN pnpm build
+
 # Production: runtime dependencies only
 FROM base AS prod-deps
 RUN pnpm install --frozen-lockfile --prod
@@ -24,7 +31,7 @@ WORKDIR /app
 RUN chown node:node /app
 USER node
 COPY --from=prod-deps --chown=node:node /app/node_modules ./node_modules
+COPY --from=build --chown=node:node /app/dist ./dist
 COPY --chown=node:node package.json ./
-COPY --chown=node:node src ./src
 EXPOSE 3000
-CMD ["node", "src/server.js"]
+CMD ["node", "dist/server.js"]

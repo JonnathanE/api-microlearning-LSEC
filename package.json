@@ -2,17 +2,19 @@
   "name": "lsec-api-rest",
   "version": "2.2.1",
   "description": "",
-  "main": "src/server.js",
+  "main": "dist/server.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development node --watch src/server.js",
-    "start": "node src/server.js",
-    "start:test": "cross-env NODE_ENV=test node --watch src/server.js",
-    "test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --verbose --detectOpenHandles --runInBand",
-    "test:watch": "pnpm test --watch",
-    "test:coverage": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --coverage",
-    "seed": "node src/scripts/seed.js",
+    "dev": "cross-env NODE_ENV=development tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/server.js",
+    "start:test": "cross-env NODE_ENV=test tsx watch src/server.ts",
+    "typecheck": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "lint": "biome check .",
-    "format": "biome check --write ."
+    "format": "biome check --write .",
+    "seed": "tsx src/scripts/seed.ts"
   },
   "engines": {
     "node": ">=26"
@@ -39,16 +41,21 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.4",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/express-fileupload": "^1.5.1",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^26.6.6",
+    "@types/supertest": "^7.2.1",
+    "@types/swagger-ui-express": "^4.1.8",
+    "@vitest/coverage-v8": "^5.0.5",
     "cross-env": "^10.1.0",
-    "jest": "^30.5.2",
     "pino-pretty": "^13.2.0",
-    "supertest": "^7.3.1"
+    "supertest": "^7.3.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "setupFilesAfterEnv": [
-      "<rootDir>/test/setup.js"
-    ]
-  },
-  "packageManager": "pnpm@12.15.0"
+  "packageManager": "pnpm@12.15.0",
+  "type": "module"
 }
